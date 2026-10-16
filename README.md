@@ -64,13 +64,14 @@ Chi tiết quy tắc, file, lịch và ca kiểm thử: **[docs/BONUS.md](docs/B
 | B02 | Xuất sao kê CSV của tài khoản đang xác thực | Người 6; người 1 thêm menu/nút, người 9 đối chiếu dữ liệu | `util/CsvStatementExporter.java` |
 | B03 | Hoàn thiện InterestBearing và kiểm tra cộng lãi qua interface | Người 4; người 3/9 phối hợp | Dùng `model/InterestBearing.java` và các lớp đã giao, không tạo interface trùng |
 
-Đã có sẵn 3 **mẫu Issue**; bấm để mở nội dung điền sẵn rồi chọn Assignees, Project và bấm Create. Các liên kết này mở biểu mẫu, **không phải Issue đã được tạo**:
+Đã bổ sung checklist BONUS và đường dẫn file trực tiếp vào **9 Issue nhiệm vụ hiện có**, đồng thời liên kết tại [bảng phân công #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Theo dõi tại:
 
-- [Tạo Issue B01 — PIN và khóa tài khoản](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-pin.md)
-- [Tạo Issue B02 — Sao kê CSV](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-csv.md)
-- [Tạo Issue B03 — InterestBearing](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-interest.md)
+- [B01 — PIN và khóa tài khoản: #9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9); giao diện PIN ở [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8).
+- [B02 — Sao kê CSV: #7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7).
+- [B03 — InterestBearing và cộng lãi: #5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5); SavingsAccount phối hợp ở [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4).
+- [Tích hợp chung: #3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3); [dữ liệu mẫu: #2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2); [nghiệp vụ: #6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6); [biểu đồ: #10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10).
 
-Có thể thêm các Issue sau khi tạo làm sub-issue của Issue #1. Các nhiệm vụ 1–9 vẫn giữ nguyên; B01–B03 là phần bổ sung phối hợp, không phải ba thành viên mới. Ngày 4 ghép cả bonus, ngày 5 kiểm thử, ngày 6 chốt tài liệu; giữ thời gian chung một tuần.
+Các mẫu trong `.github/ISSUE_TEMPLATE/` được giữ để tham khảo, **không cần tạo lại Issue BONUS**. Các nhiệm vụ 1–9 vẫn giữ nguyên; B01–B03 là phần bổ sung phối hợp, không phải ba thành viên mới. Ngày 4 ghép cả bonus, ngày 5 kiểm thử, ngày 6 chốt tài liệu; giữ thời gian chung một tuần. Checklist mô tả việc cần làm, không xác nhận chức năng đã hoàn thành.
 
 ## 3. Lần đầu tải và chạy project
 

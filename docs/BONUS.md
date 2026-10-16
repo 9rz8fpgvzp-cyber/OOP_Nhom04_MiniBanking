@@ -100,13 +100,18 @@ Các ca dưới đây là **kế hoạch kiểm thử, chưa có kết quả th�
 | BI02 | Xử lý lại cùng kỳ và xử lý kỳ kế tiếp | Cùng kỳ không cộng trùng; kỳ tiếp theo tính đúng |
 | BI03 | Cộng lãi thành công | Lịch sử và biểu đồ khớp số dư mới |
 
-## 7. Tạo Issue và liên kết công việc
+## 7. Issue theo dõi công việc
 
-Ba mẫu trong `.github/ISSUE_TEMPLATE/` đã được soạn để mở biểu mẫu điền sẵn. **Mẫu không tự tạo Issue hoặc tự gán thành viên**.
+BONUS đã được bổ sung vào 9 Issue nhiệm vụ hiện có. [Issue #1 — Bảng phân công](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1) liên kết đầy đủ các nhiệm vụ và mốc bàn giao.
 
-1. Mở liên kết B01/B02/B03 trong README gốc hoặc Issues → New issue, chọn mẫu tương ứng.
-2. Chọn Assignees là username thật của người chủ trì; thêm Project **MiniBank - oop**, để Todo.
-3. Bấm Create, rồi liên kết vào Issue #1 bằng Add existing sub-issue nếu muốn theo dõi chung.
-4. Gắn link các Issue nhiệm vụ cũ có liên quan; cập nhật In progress/In review/Done theo quy trình chung.
+| BONUS | Issue chủ trì | Issue phối hợp |
+| --- | --- | --- |
+| B01 — PIN và khóa | [#9 — người 8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | [#8 — dialog](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8), [#3 — tích hợp](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#6 — nghiệp vụ](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6), [#2 — dữ liệu mẫu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) |
+| B02 — CSV | [#7 — người 6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | [#3 — menu/chọn file](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#10 — đối chiếu số liệu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) |
+| B03 — InterestBearing | [#5 — người 4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | [#4 — SavingsAccount](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4), [#10 — biểu đồ](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) |
 
-Không tạo một Issue mới nếu nhóm đã có Issue cùng nội dung; có thể bổ sung checklist từ mẫu vào Issue hiện có. Trong báo cáo chỉ ghi hoàn thành bonus khi chức năng đã chạy và có kiểm thử đạt; điểm bonus tối đa theo thang của thầy, không tự cộng điểm dự kiến.
+Không cần tạo thêm Issue trùng. Ba mẫu trong `.github/ISSUE_TEMPLATE/` chỉ giữ để tham khảo hoặc dùng khi nhóm quyết định tách việc sau này; mẫu không tự tạo Issue hay tự gán thành viên.
+
+Khi nhận việc, gán Assignee là username thật của người phụ trách. Cập nhật tiến độ ngay trong Issue và Project **MiniBank - oop** theo Todo → In progress → In review → Done. Chỉ Done sau khi code đã ghép, chạy đúng và có kết quả kiểm thử. Các checklist mới hiện chưa được đánh dấu hoàn thành.
+
+Trong báo cáo chỉ ghi hoàn thành bonus khi chức năng đã chạy và có kiểm thử đạt; điểm bonus tối đa theo thang của thầy, không tự cộng điểm dự kiến.
