@@ -4,7 +4,7 @@ Ngày lập: 14/10/2026. Cập nhật: 16/10/2026. Trạng thái: đã có bản
 
 Nguồn yêu cầu: tài liệu `Java_OOP_ThuyetTrinh_10Nhom.pdf` trong thư mục môn học, đặc biệt mục 3–5, thẻ Mini Banking trang 11, mục 7–9 và checklist trang 27. Các quy tắc bổ sung được ghi rõ là quyết định thiết kế của nhóm, không phải yêu cầu nguyên văn của giảng viên.
 
-Phạm vi đã chốt: 9 thành viên, 1 tuần, ứng dụng trên một máy, ưu tiên hoàn thành yêu cầu bắt buộc. Số nhóm đã chốt: 04. Chưa có tên đầy đủ của thành viên và hạn nộp chính thức. Dùng thành viên 1–9 làm ký hiệu; lịch tính từ ngày bắt đầu làm. Thẻ đề số 3 không nhất thiết là số nhóm thực tế.
+Nhóm 04 có 9 thành viên, làm ứng dụng trên một máy. Chốt bản cuối trước 21:00 ngày 20/10/2026, thuyết trình sáng 22/10. Tên và username của các thành viên được bổ sung khi nhận Issue.
 
 ## 1. Mục tiêu và phạm vi
 
@@ -129,13 +129,13 @@ Chuẩn bị 4–6 tài khoản của ít nhất ba khách hàng, đủ ba loạ
 | Thứ Tư 21/10 | Tập 2 lượt đủ 9 người, demo ≤10 phút, phản biện; kiểm tra máy trình chiếu và bản dự phòng |
 | Sáng thứ Năm 22/10 | Thuyết trình; dùng bản đã kiểm tra, không đổi tính năng sát giờ |
 
-Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn. Đây là kế hoạch giao việc, chưa phải xác nhận đã hoàn thành.
+Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn.
 
-## 7. Phân công hiện hành cho 9 người
+## 7. Phân công cho 9 người
 
-| Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
+| Người | Issue | Phần phụ trách | Hồ sơ |
 | --- | --- | --- | --- |
-| 1 — bạn | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
+| 1 — Phạm Đình Doanh | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
 | 2 | [#2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) | Model nền, dữ liệu mẫu và tổng hợp báo cáo | Đầu mối báo cáo; viết phần Customer/Account và đóng gói |
 | 3 | [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4) | Quy tắc tiết kiệm, thanh toán và UML | Đầu mối UML, viết kế thừa/đa hình và test hai loại tài khoản |
 | 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
@@ -149,13 +149,12 @@ Chi tiết file, điều kiện bàn giao và cách làm song song xem [BAN_GIAO
 
 ### Chuẩn bị UI chung trước khi code
 
-1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Đây là bước chuẩn bị ngắn; người 9 tiếp tục biểu đồ sau đó.
+1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Sau đó, người 9 làm phần biểu đồ.
 2. **Cả nhóm xem và chốt bản phác**: danh sách tài khoản, chi tiết, tab Lịch sử, tab Biểu đồ, vị trí nút nạp/rút/chuyển/CSV/cuối tháng, dialog PIN/giao dịch/About, thông báo lỗi. Thống nhất font, định dạng VND và kích thước cơ bản; chưa cần thiết kế cầu kỳ. Bản phác chỉ được coi là đã chốt khi có xác nhận trong Issue #1.
 3. **Người 1** dựng khung Swing theo bản phác đã chốt, có các vùng/tab trống và điểm gắn thành phần. Chỉ người 1 sửa bố cục MainWindow; khung có bản chạy trước 12:00 ngày 17/10. Trong lúc chờ chốt, các bạn vẫn làm model, nghiệp vụ và thử thành phần độc lập.
-4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình. Không chỉ gửi file rồi để người 1 tự nối toàn bộ.
+4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình.
 
-**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ. Giữ nguyên API v1, chín nhiệm vụ và các hạn chức năng đã chốt.
-
+**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ.
 
 ## 8. Kế hoạch kiểm thử
 

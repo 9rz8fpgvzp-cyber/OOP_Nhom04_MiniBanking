@@ -26,7 +26,7 @@ Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng d
 - Customer và Account trừu tượng; số dư private, không có `setBalance()` public.
 - SavingsAccount: lãi suất, tối đa 3 lần rút/tháng.
 - CheckingAccount: hạn mức thấu chi.
-- Loại tài khoản thứ ba có quy tắc riêng để đáp ứng yêu cầu chung ít nhất 3 lớp con nghiệp vụ; nhóm đề xuất FixedTermAccount.
+- FixedTermAccount: tài khoản kỳ hạn, chỉ được rút khi đến ngày đáo hạn.
 - Nạp, rút, chuyển khoản và lịch sử giao dịch bất biến.
 - Chuyển khoản toàn vẹn: nếu lỗi thì số dư, lịch sử và bộ đếm rút không bị thay đổi một phần.
 - Danh sách tài khoản, thông tin chi tiết, bảng lịch sử; dialog giao dịch và About.
@@ -43,9 +43,9 @@ Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và B
 
 [Bản bàn giao chi tiết từng người](docs/BAN_GIAO.md) · [API v1 đã chốt — dùng khi viết code](docs/API.md) · [Quy tắc và test BONUS](docs/BONUS.md).
 
-| Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
+| Người | Issue | Phần phụ trách | Hồ sơ |
 | --- | --- | --- | --- |
-| 1 — bạn | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
+| 1 — Phạm Đình Doanh | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
 | 2 | [#2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) | Model nền, dữ liệu mẫu và tổng hợp báo cáo | Đầu mối báo cáo; viết phần Customer/Account và đóng gói |
 | 3 | [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4) | Quy tắc tiết kiệm, thanh toán và UML | Đầu mối UML, viết kế thừa/đa hình và test hai loại tài khoản |
 | 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
@@ -59,16 +59,14 @@ Thay số người bằng tên/username khi nhận việc, gán Assignee ở đ�
 
 BONUS PIN do người 8 làm trọn PinService + LoginDialog; CSV do người 6 làm trọn chọn file + exporter; InterestBearing do người 4 chủ trì cùng người 3. Người 7 làm UI danh sách/chi tiết tài khoản, dialog giao dịch và About; không làm lịch sử/CSV/PIN/biểu đồ. Mỗi tác giả cùng ghép phần mình với người 1. Không tạo Issue bonus trùng; các mẫu cũ chỉ để tham khảo.
 
-
 ### Chuẩn bị UI chung trước khi code
 
-1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Đây là bước chuẩn bị ngắn; người 9 tiếp tục biểu đồ sau đó.
+1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Sau đó, người 9 làm phần biểu đồ.
 2. **Cả nhóm xem và chốt bản phác**: danh sách tài khoản, chi tiết, tab Lịch sử, tab Biểu đồ, vị trí nút nạp/rút/chuyển/CSV/cuối tháng, dialog PIN/giao dịch/About, thông báo lỗi. Thống nhất font, định dạng VND và kích thước cơ bản; chưa cần thiết kế cầu kỳ. Bản phác chỉ được coi là đã chốt khi có xác nhận trong Issue #1.
 3. **Người 1** dựng khung Swing theo bản phác đã chốt, có các vùng/tab trống và điểm gắn thành phần. Chỉ người 1 sửa bố cục MainWindow; khung có bản chạy trước 12:00 ngày 17/10. Trong lúc chờ chốt, các bạn vẫn làm model, nghiệp vụ và thử thành phần độc lập.
-4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình. Không chỉ gửi file rồi để người 1 tự nối toàn bộ.
+4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình.
 
-**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ. Giữ nguyên API v1, chín nhiệm vụ và các hạn chức năng đã chốt.
-
+**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ.
 
 ## 3. Lần đầu tải và chạy project
 
@@ -192,7 +190,7 @@ Git không lưu thư mục rỗng. Các thư mục mới có README giải thíc
 
 Ví dụ người 2: chuột phải package `vn.edu.ptit.oop.nhom04.model` → New → Class → Name: `Customer` → Finish. File được tạo tại `src/vn/edu/ptit/oop/nhom04/model/Customer.java`.
 
-Trước khi làm sâu, người phụ trách model/nghiệp vụ thống nhất constructor, tên phương thức, kiểu tiền, thời gian mô phỏng, exception và cấu trúc Transaction trong Issue. Đề xuất dùng **BigDecimal** cho tiền. Quy tắc chuyển tiền ra có tính lượt rút, cách chốt tháng/lãi và phạm vi thống kê phải được cả nhóm ghi rõ.
+Dùng **BigDecimal** cho tiền; các chức năng dùng chung một đồng hồ mô phỏng. Constructor, phương thức, exception, cấu trúc Transaction và quy tắc giao dịch được quy định trong [API.md](docs/API.md).
 
 - Chỉ người phụ trách nhiệm vụ 1 sửa bố cục chính của MainWindow; các thành viên khác bàn giao dialog/panel/dataset qua API thống nhất.
 - GUI gọi nghiệp vụ; không tự sửa số dư, tính lãi hay cập nhật lịch sử riêng.

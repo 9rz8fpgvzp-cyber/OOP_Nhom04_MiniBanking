@@ -1,8 +1,8 @@
 # API chung v1 — chốt để triển khai từ 16/10/2026
 
-**Đây là hợp đồng viết code của nhóm, thay phiếu “cần chốt” trước đây.** Mọi người dùng đúng package, tên, kiểu dữ liệu và chữ ký bên dưới. Phần thân phương thức do người phụ trách triển khai. Tài liệu được chốt không có nghĩa các lớp/chức năng đã có code hoặc đã qua kiểm thử.
+Tài liệu quy định package, tên lớp, constructor, phương thức và kiểu dữ liệu dùng chung. Mỗi người triển khai phần mình theo các chữ ký dưới đây. Nếu cần đổi API, trao đổi với người dùng phương thức đó và cập nhật tài liệu trước khi ghép code.
 
-Muốn đổi API phải cập nhật tài liệu và báo người đang gọi trước khi ghép. Không tạo lớp cùng tên ở package khác. Tên constructor không có kiểu trả về; các chữ ký ở đây là mô tả, không phải các đoạn hoàn chỉnh để dán nguyên vào một file.
+Không tạo lớp cùng tên ở package khác. Tên constructor không có kiểu trả về; các chữ ký ở đây là mô tả, không phải các đoạn hoàn chỉnh để dán nguyên vào một file.
 
 ## 1. Quy ước chung
 

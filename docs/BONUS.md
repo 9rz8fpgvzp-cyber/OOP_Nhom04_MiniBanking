@@ -1,6 +1,6 @@
 # Công việc BONUS — MiniBank nhóm 04
 
-Cập nhật phạm vi theo quyết định của nhóm ngày 16/10/2026: thực hiện BONUS cùng các chức năng bắt buộc, vẫn chạy một máy và hoàn thiện trong một tuần. Tài liệu này mô tả **công việc cần triển khai**, không xác nhận đã có chức năng hay đã chạy các ca kiểm thử.
+Các chức năng bổ sung gồm PIN, khóa tài khoản, xuất CSV và interface InterestBearing.
 
 Thẻ đề nêu: LoginDialog nhập PIN, sai 3 lần khóa tài khoản; interface InterestBearing; xuất sao kê CSV. Công thức lãi, định dạng PIN, phạm vi khóa và cách CSV trình bày dưới đây là quy tắc mô phỏng nhóm chọn để làm thống nhất, không phải quy định ngân hàng ngoài đời.
 
@@ -17,7 +17,7 @@ Các đường dẫn tính từ `src/vn/edu/ptit/oop/nhom04/`.
 
 Nhánh đề xuất: `feat/pin-auth` (người 8, gồm LoginDialog), `feat/csv-statement` (người 6). Người 1 tích hợp trên nhánh của mình sau khi nhận API. B03 tiếp tục phần lãi đã giao cho người 4, không tạo thêm bản InterestBearing ở package khác.
 
-Phân công hiện hành xem [BAN_GIAO.md](BAN_GIAO.md): người 8 làm cả PIN và LoginDialog, không làm danh sách/chi tiết (chuyển cho người 7) và không tổng hợp báo cáo (chuyển người 2). Người 6 làm trọn CSV gồm chọn file; người 9 tổng hợp slide/video. Mỗi người tự kiểm thử và viết nội dung phần mình.
+Xem hạn nộp và phân công đầy đủ tại [BAN_GIAO.md](BAN_GIAO.md).
 
 ## 2. B01 — PIN và khóa tài khoản
 
@@ -57,7 +57,7 @@ Tham khảo định dạng CSV: [RFC 4180](https://www.rfc-editor.org/rfc/rfc418
 ## 4. B03 — InterestBearing
 
 - Giữ một interface `model.InterestBearing`, có phương thức `BigDecimal calculateMonthlyInterest()` theo API v1; người 4 và người 3 cùng dùng đúng chữ ký.
-- SavingsAccount cài đặt interface. FixedTermAccount cũng có thể cài đặt theo thiết kế hiện tại của nhóm; CheckingAccount không hưởng lãi trong bản mô phỏng này.
+- SavingsAccount và FixedTermAccount cài đặt InterestBearing; CheckingAccount không hưởng lãi.
 - MonthlyInterestService gọi hành vi qua tham chiếu InterestBearing; không viết lại công thức riêng trong GUI và biểu đồ, không dùng switch tên loại để tính lãi.
 - Công thức mô phỏng: số dư chốt kỳ × lãi suất năm / 12, dùng BigDecimal và quy tắc làm tròn về đồng đã thống nhất. Theo API v1, khoản lãi là TransactionType.INTEREST, description ghi kỳ lãi; không trộn vào tổng nạp của người dùng.
 - Không cộng lại cho cùng một tài khoản/cùng kỳ. Tháng mô phỏng dùng chung cho cộng lãi, giới hạn rút và timestamp.
@@ -75,7 +75,7 @@ Tham khảo định dạng CSV: [RFC 4180](https://www.rfc-editor.org/rfc/rfc418
 | Thứ Tư 21/10 | Tập 2 lượt đủ 9 người, demo ≤10 phút, phản biện; kiểm tra máy trình chiếu và bản dự phòng |
 | Sáng thứ Năm 22/10 | Thuyết trình; dùng bản đã kiểm tra, không đổi tính năng sát giờ |
 
-Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn. Đây là kế hoạch giao việc, chưa phải xác nhận đã hoàn thành.
+Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn.
 
 ## 6. Các ca kiểm thử bổ sung
 
@@ -113,6 +113,6 @@ BONUS đã được bổ sung vào 9 Issue nhiệm vụ hiện có. [Issue #1 �
 
 Không cần tạo thêm Issue trùng. Ba mẫu trong `.github/ISSUE_TEMPLATE/` chỉ giữ để tham khảo hoặc dùng khi nhóm quyết định tách việc sau này; mẫu không tự tạo Issue hay tự gán thành viên.
 
-Khi nhận việc, gán Assignee là username thật của người phụ trách. Cập nhật tiến độ ngay trong Issue và Project **MiniBank - oop** theo Todo → In progress → In review → Done. Chỉ Done sau khi code đã ghép, chạy đúng và có kết quả kiểm thử. Các checklist mới hiện chưa được đánh dấu hoàn thành.
+Khi nhận việc, gán Assignee là username thật của người phụ trách. Cập nhật tiến độ ngay trong Issue và Project **MiniBank - oop** theo Todo → In progress → In review → Done. Chỉ Done sau khi code đã ghép, chạy đúng và có kết quả kiểm thử.
 
 Trong báo cáo chỉ ghi hoàn thành bonus khi chức năng đã chạy và có kiểm thử đạt; điểm bonus tối đa theo thang của thầy, không tự cộng điểm dự kiến.

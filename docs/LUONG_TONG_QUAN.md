@@ -1,6 +1,6 @@
 # Sơ đồ tổng hợp luồng MiniBank — nhóm 04
 
-Đọc sơ đồ 1 để hiểu ứng dụng, sơ đồ 2 để biết phần mình nối vào đâu, sơ đồ 3 để hiểu chuyển khoản toàn vẹn. **Số người trong ô là số nhiệm vụ, không phải số Issue.** Đây là thiết kế bàn giao, chưa xác nhận code đã triển khai. Phạm vi: Java Swing, một máy, dữ liệu giả lập trong bộ nhớ.
+Đọc sơ đồ 1 để hiểu ứng dụng, sơ đồ 2 để biết phần mình nối vào đâu, sơ đồ 3 để hiểu chuyển khoản toàn vẹn. **Số người trong ô là số nhiệm vụ, không phải số Issue.** Phạm vi: Java Swing, một máy, dữ liệu giả lập trong bộ nhớ.
 
 ## 1. Người dùng thao tác như thế nào?
 
