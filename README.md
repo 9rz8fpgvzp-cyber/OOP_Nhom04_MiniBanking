@@ -55,7 +55,6 @@ Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và B
 | 8 — Nguyễn Thắng| [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
 | 9 — Trọng Thắng| [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
-Thay số người bằng tên/username khi nhận việc, gán Assignee ở đúng Issue; số người không phải số Issue. Người 1 là chủ repo đã nhận nhiệm vụ. Mỗi người viết ít nhất 2 lớp có ý nghĩa, commit bằng tài khoản riêng, tự kiểm thử và tự viết phần báo cáo/slide của mình. Người 2/3/6/9 chỉ tổng hợp hồ sơ, không làm thay.
 
 BONUS PIN do người 8 làm trọn PinService + LoginDialog; CSV do người 6 làm trọn chọn file + exporter; InterestBearing do người 4 chủ trì cùng người 3. Người 7 làm UI danh sách/chi tiết tài khoản, dialog giao dịch và About; không làm lịch sử/CSV/PIN/biểu đồ. Mỗi tác giả cùng ghép phần mình với người 1. Không tạo Issue bonus trùng; các mẫu cũ chỉ để tham khảo.
 
