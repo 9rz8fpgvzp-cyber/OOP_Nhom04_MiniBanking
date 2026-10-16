@@ -41,7 +41,7 @@ Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và B
 
 **Bàn giao trong thứ Sáu 16/10/2026; sáng thứ Năm 22/10 thuyết trình. Chốt bản đầy đủ tối 19/10, bản cuối trước 21:00 ngày 20/10; 21/10 chỉ tập trình bày và xử lý lỗi chặn demo.**
 
-[Bản bàn giao chi tiết từng người](docs/BAN_GIAO.md) · [API phải chốt hôm nay](docs/API.md) · [Quy tắc và test BONUS](docs/BONUS.md).
+[Bản bàn giao chi tiết từng người](docs/BAN_GIAO.md) · [API v1 đã chốt — dùng khi viết code](docs/API.md) · [Quy tắc và test BONUS](docs/BONUS.md).
 
 | Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
 | --- | --- | --- | --- |
@@ -158,13 +158,13 @@ Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`
 | Nhiệm vụ | File sẽ viết / tiếp tục sửa | Phần bàn giao |
 | --- | --- | --- |
 | 1 | `ui/MainWindow.java`, `ui/BankController.java` | Cửa sổ chính và tích hợp |
-| 2 | `model/Customer.java`, `model/Account.java`, `util/DemoDataFactory.java` | Model nền, dữ liệu mẫu và tổng hợp báo cáo |
+| 2 | `model/Customer.java`, `model/Account.java`, `model/AccountType.java`, `model/AccountSummary.java`, `util/DemoDataFactory.java` | Model nền, dữ liệu mẫu và tổng hợp báo cáo |
 | 3 | `model/SavingsAccount.java`, `model/CheckingAccount.java`, `exception/InsufficientFundsException.java`, `exception/WithdrawalLimitExceededException.java` | Quy tắc tiết kiệm, thanh toán và UML |
-| 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java`, `service/MonthlyInterestService.java`, `exception/AccountNotMaturedException.java` | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng |
-| 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java`, `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java` | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn |
-| 6 | `model/Transaction.java`, `model/TransactionType.java`, `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java`, `ui/CsvExportAction.java` | Lịch sử và xuất CSV trọn luồng |
+| 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java`, `service/MonthlyInterestService.java`, `service/SimulationClock.java`, `exception/AccountNotMaturedException.java` | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng |
+| 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java`, `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java`, `exception/InvalidTransferException.java` | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn |
+| 6 | `model/Transaction.java`, `model/TransactionType.java`, `model/TransactionDirection.java`, `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java`, `ui/CsvExportAction.java` | Lịch sử và xuất CSV trọn luồng |
 | 7 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | Toàn bộ giao diện tài khoản và giao dịch |
-| 8 | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `ui/dialogs/LoginDialog.java` | PIN và khóa tài khoản trọn luồng |
+| 8 | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `exception/AuthenticationRequiredException.java`, `ui/dialogs/LoginDialog.java` | PIN và khóa tài khoản trọn luồng |
 | 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Biểu đồ, thống kê và tổng hợp slide |
 
 Danh sách trên là **vị trí file đã thống nhất để bắt đầu**, không có nghĩa các chức năng đã được cài đặt. Hiện các file Java đã có vẫn là Main, BaseWindow và MainWindow. Người phụ trách tạo file của mình trên nhánh riêng; các interface, enum và exception được tạo sớm khi phần khác cần dùng. Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.

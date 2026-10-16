@@ -92,7 +92,7 @@ flowchart TB
 | 6 | 1 | TableModel + action CSV đã có chọn file/ghi đè |
 | 9 | 1 | Chart/panel + cách cập nhật dataset, cấu hình JFreeChart |
 
-**Hôm nay 16/10:** chốt tên phương thức/kiểu dữ liệu theo [API.md](API.md). **Trước 12:00 17/10:** có khung dùng chung biên dịch. **Chiều 17/10:** UI và biểu đồ có bản mẫu, không chờ nghiệp vụ đầy đủ. Không tự tạo Account/Transaction giả cùng tên ở package khác; mock ở bản thử phải được ghi rõ và thay bằng nghiệp vụ thật trước khi chốt.
+**Hôm nay 16/10:** nhận và triển khai chữ ký/kiểu dữ liệu theo API v1 tại [API.md](API.md). **Trước 12:00 17/10:** có khung dùng chung biên dịch. **Chiều 17/10:** UI và biểu đồ có bản mẫu, không chờ nghiệp vụ đầy đủ. Không tự tạo Account/Transaction giả cùng tên ở package khác; mock ở bản thử phải được ghi rõ và thay bằng nghiệp vụ thật trước khi chốt.
 
 ## 3. Chuyển khoản phải cập nhật nguyên tử thế nào?
 

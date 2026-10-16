@@ -16,6 +16,10 @@ Bản phân công hiện hành, thay các mốc “ngày 1–7” và phân côn
 | 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
 | 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
+## Bổ sung file theo API v1
+
+API đã chốt tại [API.md](API.md), triển khai đúng chữ ký. Ngoài các file chính dưới đây: người 2 thêm `model/AccountType.java`, `model/AccountSummary.java`; người 4 thêm `service/SimulationClock.java`; người 6 thêm `model/TransactionDirection.java`; người 5 thêm `exception/InvalidTransferException.java`; người 8 thêm `exception/AuthenticationRequiredException.java`. Enum TransactionType có DEPOSIT, WITHDRAW, TRANSFER, INTEREST. Các helper này thuộc nhiệm vụ hiện có, không thêm người hay tính năng mới.
+
 ## Nhánh và cách nhận việc
 
 Mỗi người nhận một Issue tương ứng, ghi tên/username và dùng nhánh riêng: người 1 `feat/main-window`; 2 `feat/account-model`; 3 `feat/account-types`; 4 `feat/monthly-interest`; 5 `feat/transfers`; 6 `feat/transaction-history`; 7 `feat/dialogs`; 8 `feat/pin-auth`; 9 `feat/charts`. Nếu đã có nhánh và code đang làm, tiếp tục nhánh đó sau khi thống nhất phần file chuyển giao, không tạo lại hoặc xóa công việc cũ.
@@ -26,7 +30,7 @@ Bàn giao trong hôm nay nghĩa là mỗi người biết Issue, file, đầu ra
 
 | Mốc (giờ Việt Nam) | Kết quả bắt buộc |
 | --- | --- |
-| Hôm nay, thứ Sáu 16/10 — bàn giao trước 23:00 | Nhận 9 nhiệm vụ, chạy được khung, tạo nhánh; chốt API và người sở hữu file |
+| Hôm nay, thứ Sáu 16/10 — bàn giao trước 23:00 | Nhận 9 nhiệm vụ, chạy được khung, tạo nhánh; nhận API v1 và người sở hữu file |
 | Thứ Bảy 17/10 — 12:00 / 18:00 | API/lớp dùng chung biên dịch / giao diện và biểu đồ mẫu chạy độc lập; ghép nạp/rút bản đầu tối cùng ngày |
 | Chủ nhật 18/10 — 18:00 / 21:00 | Từng phần đủ nghiệp vụ và test riêng / ghép chuyển khoản, lịch sử, cộng lãi và PIN; CSV/biểu đồ có bản chạy |
 | Thứ Hai 19/10 — 18:00 / 21:00 | Nhận nội dung hồ sơ / ghép đủ bắt buộc + bonus, JAR thử; dừng thêm chức năng |
@@ -38,7 +42,7 @@ Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết tr
 
 ## Cách làm để không phải chờ nhau
 
-- Trong 16/10: nhận Issue, tạo nhánh, pull bản chung và xác nhận chạy Main; ghi constructor, tên phương thức, tham số, kiểu trả về, exception vào `docs/API.md`. Các tác giả cần chốt cùng nhau, tài liệu không đồng nghĩa API đã được cài đặt.
+- Trong 16/10: nhận Issue, tạo nhánh, pull bản chung và xác nhận chạy Main; dùng constructor, phương thức, kiểu và exception đã chốt trong [API v1](API.md). Các tác giả triển khai đúng chữ ký; đổi API phải báo người dùng và cập nhật tài liệu. API đã chốt không có nghĩa code đã được cài đặt.
 - Khung lớp/API biên dịch phải bàn giao trước 12:00 ngày 17/10 cho các phần dùng chung; người làm UI/biểu đồ dựng bản mẫu song song, không chờ nghiệp vụ hoàn thiện.
 - Chỉ tác giả sửa file của mình. Người 1 điều phối; tác giả từng phần cùng nối và sửa phần của mình. Không tạo lớp cùng tên ở package khác để né phụ thuộc.
 - Mỗi ngày trước 21:00 có PR nhỏ chạy được và cập nhật Issue: đã làm / còn thiếu / đang bị chặn bởi ai. Vướng quá 2 giờ phải báo để hỗ trợ, không chờ sang hôm sau.
@@ -84,7 +88,7 @@ Issue #2. Nhánh riêng theo nhiệm vụ; dùng tài khoản Git cá nhân.
 
 ### Hạn bàn giao
 
-- Bản đầu: **17/10 12:00: Account/Customer biên dịch, constructor/getter và quy tắc cập nhật đã chốt.**
+- Bản đầu: **17/10 12:00: Account/Customer biên dịch, constructor/getter và cơ chế cập nhật theo API v1.**
 - Bản chức năng: **18/10 18:00: model nền + dữ liệu mẫu đầy đủ; 20/10 18:00: báo cáo bản cuối.**
 - Bản cuối chung: **20/10 21:00**; sáng 22/10 thuyết trình.
 

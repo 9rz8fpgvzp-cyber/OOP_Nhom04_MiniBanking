@@ -56,10 +56,10 @@ Tham khảo định dạng CSV: [RFC 4180](https://www.rfc-editor.org/rfc/rfc418
 
 ## 4. B03 — InterestBearing
 
-- Giữ một interface `model.InterestBearing`, có phương thức tính lãi theo quy tắc đã thống nhất; người 4 chốt chữ ký phương thức với người 3.
+- Giữ một interface `model.InterestBearing`, có phương thức `BigDecimal calculateMonthlyInterest()` theo API v1; người 4 và người 3 cùng dùng đúng chữ ký.
 - SavingsAccount cài đặt interface. FixedTermAccount cũng có thể cài đặt theo thiết kế hiện tại của nhóm; CheckingAccount không hưởng lãi trong bản mô phỏng này.
 - MonthlyInterestService gọi hành vi qua tham chiếu InterestBearing; không viết lại công thức riêng trong GUI và biểu đồ, không dùng switch tên loại để tính lãi.
-- Công thức mô phỏng: số dư chốt kỳ × lãi suất năm / 12, dùng BigDecimal và quy tắc làm tròn về đồng đã thống nhất. Bank ghi nhận khoản lãi thành giao dịch DEPOSIT với nội dung kỳ lãi nếu model có trường mô tả.
+- Công thức mô phỏng: số dư chốt kỳ × lãi suất năm / 12, dùng BigDecimal và quy tắc làm tròn về đồng đã thống nhất. Theo API v1, khoản lãi là TransactionType.INTEREST, description ghi kỳ lãi; không trộn vào tổng nạp của người dùng.
 - Không cộng lại cho cùng một tài khoản/cùng kỳ. Tháng mô phỏng dùng chung cho cộng lãi, giới hạn rút và timestamp.
 - Cập nhật bảng lịch sử và hai biểu đồ sau khi cộng lãi. Nút mô phỏng cuối tháng vốn thuộc phần bắt buộc; việc dùng interface là phần thiết kế có thể trình bày cho bonus.
 

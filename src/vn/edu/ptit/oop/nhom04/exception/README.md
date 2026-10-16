@@ -16,3 +16,5 @@ Các file trong bảng là công việc cần làm, chưa được triển khai.
 Chi tiết BONUS: xem mục Công việc BONUS và docs/BONUS.md ở README gốc. Công việc mới đang chờ triển khai.
 
 > Phân công hiện hành: [BAN_GIAO.md](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BAN_GIAO.md). Mốc chốt 20/10/2026, thuyết trình sáng 22/10. Theo bản này nếu mô tả cũ có khác.
+
+API v1 đã chốt: [chữ ký, constructor, enum và exception dùng chung](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/API.md). Tạo cả các file hỗ trợ mới được phân ở mục 12; không đổi chữ ký mà chưa cập nhật người gọi.

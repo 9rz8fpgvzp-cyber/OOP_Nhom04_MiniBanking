@@ -145,7 +145,7 @@ Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết tr
 | 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
 | 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
-Chi tiết file, điều kiện bàn giao và cách làm song song xem [BAN_GIAO.md](BAN_GIAO.md). Chốt chữ ký phương thức trong [API.md](API.md). PIN giao trọn người 8; UI tài khoản/giao dịch giao người 7; CSV/chọn file giao trọn người 6. Mọi tác giả cùng ghép và kiểm thử phần mình với người 1.
+Chi tiết file, điều kiện bàn giao và cách làm song song xem [BAN_GIAO.md](BAN_GIAO.md). Triển khai đúng chữ ký đã chốt trong [API v1](API.md). PIN giao trọn người 8; UI tài khoản/giao dịch giao người 7; CSV/chọn file giao trọn người 6. Mọi tác giả cùng ghép và kiểm thử phần mình với người 1.
 
 ## 8. Kế hoạch kiểm thử
 

@@ -16,3 +16,5 @@ GUI gọi Bank/BankingOperations, không tự tính hoặc sửa số dư. Khi g
 BONUS — người 1 tích hợp LoginDialog/PinService khi chọn tài khoản, xóa trạng thái xác thực khi đổi tài khoản, nối menu/nút xuất CSV vào CsvExportAction do người 6 bàn giao. Nghiệp vụ vẫn kiểm tra xác thực và khóa ở Bank/PinService, không chỉ ẩn hoặc vô hiệu hóa nút trên GUI. Xem docs/BONUS.md.
 
 > Phân công hiện hành: [BAN_GIAO.md](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BAN_GIAO.md). Mốc chốt 20/10/2026, thuyết trình sáng 22/10. Theo bản này nếu mô tả cũ có khác.
+
+API v1 đã chốt: [chữ ký, constructor, enum và exception dùng chung](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/API.md). Tạo cả các file hỗ trợ mới được phân ở mục 12; không đổi chữ ký mà chưa cập nhật người gọi.
