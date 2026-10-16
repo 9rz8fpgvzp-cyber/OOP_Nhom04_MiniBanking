@@ -51,13 +51,23 @@ Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và B
 | 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
 | 5 | [#6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6) | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn | Viết luồng chuyển khoản, test nguyên tử; rà nghiệp vụ bản JAR |
 | 6 | [#7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | Lịch sử và xuất CSV trọn luồng | Đầu mối bảng kiểm thử; viết immutable/composition và CSV |
-| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | Toàn bộ giao diện tài khoản và giao dịch | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
+| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | UI danh sách/chi tiết tài khoản, dialog giao dịch và About | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
 | 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
 | 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
 Thay số người bằng tên/username khi nhận việc, gán Assignee ở đúng Issue; số người không phải số Issue. Người 1 là chủ repo đã nhận nhiệm vụ. Mỗi người viết ít nhất 2 lớp có ý nghĩa, commit bằng tài khoản riêng, tự kiểm thử và tự viết phần báo cáo/slide của mình. Người 2/3/6/9 chỉ tổng hợp hồ sơ, không làm thay.
 
-BONUS PIN do người 8 làm trọn PinService + LoginDialog; CSV do người 6 làm trọn chọn file + exporter; InterestBearing do người 4 chủ trì cùng người 3. Người 7 làm toàn bộ UI tài khoản/giao dịch. Mỗi tác giả cùng ghép phần mình với người 1. Không tạo Issue bonus trùng; các mẫu cũ chỉ để tham khảo.
+BONUS PIN do người 8 làm trọn PinService + LoginDialog; CSV do người 6 làm trọn chọn file + exporter; InterestBearing do người 4 chủ trì cùng người 3. Người 7 làm UI danh sách/chi tiết tài khoản, dialog giao dịch và About; không làm lịch sử/CSV/PIN/biểu đồ. Mỗi tác giả cùng ghép phần mình với người 1. Không tạo Issue bonus trùng; các mẫu cũ chỉ để tham khảo.
+
+
+### Chuẩn bị UI chung trước khi code
+
+1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Đây là bước chuẩn bị ngắn; người 9 tiếp tục biểu đồ sau đó.
+2. **Cả nhóm xem và chốt bản phác**: danh sách tài khoản, chi tiết, tab Lịch sử, tab Biểu đồ, vị trí nút nạp/rút/chuyển/CSV/cuối tháng, dialog PIN/giao dịch/About, thông báo lỗi. Thống nhất font, định dạng VND và kích thước cơ bản; chưa cần thiết kế cầu kỳ. Bản phác chỉ được coi là đã chốt khi có xác nhận trong Issue #1.
+3. **Người 1** dựng khung Swing theo bản phác đã chốt, có các vùng/tab trống và điểm gắn thành phần. Chỉ người 1 sửa bố cục MainWindow; khung có bản chạy trước 12:00 ngày 17/10. Trong lúc chờ chốt, các bạn vẫn làm model, nghiệp vụ và thử thành phần độc lập.
+4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình. Không chỉ gửi file rồi để người 1 tự nối toàn bộ.
+
+**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ. Giữ nguyên API v1, chín nhiệm vụ và các hạn chức năng đã chốt.
 
 
 ## 3. Lần đầu tải và chạy project
@@ -163,7 +173,7 @@ Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`
 | 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java`, `service/MonthlyInterestService.java`, `service/SimulationClock.java`, `exception/AccountNotMaturedException.java` | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng |
 | 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java`, `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java`, `exception/InvalidTransferException.java` | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn |
 | 6 | `model/Transaction.java`, `model/TransactionType.java`, `model/TransactionDirection.java`, `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java`, `ui/CsvExportAction.java` | Lịch sử và xuất CSV trọn luồng |
-| 7 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | Toàn bộ giao diện tài khoản và giao dịch |
+| 7 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | UI danh sách/chi tiết tài khoản, dialog giao dịch và About |
 | 8 | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `exception/AuthenticationRequiredException.java`, `ui/dialogs/LoginDialog.java` | PIN và khóa tài khoản trọn luồng |
 | 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Biểu đồ, thống kê và tổng hợp slide |
 

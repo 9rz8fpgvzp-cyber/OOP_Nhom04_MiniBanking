@@ -12,13 +12,23 @@ Bản phân công hiện hành, thay các mốc “ngày 1–7” và phân côn
 | 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
 | 5 | [#6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6) | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn | Viết luồng chuyển khoản, test nguyên tử; rà nghiệp vụ bản JAR |
 | 6 | [#7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | Lịch sử và xuất CSV trọn luồng | Đầu mối bảng kiểm thử; viết immutable/composition và CSV |
-| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | Toàn bộ giao diện tài khoản và giao dịch | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
+| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | UI danh sách/chi tiết tài khoản, dialog giao dịch và About | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
 | 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
 | 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
 ## Bổ sung file theo API v1
 
 API đã chốt tại [API.md](API.md), triển khai đúng chữ ký. Ngoài các file chính dưới đây: người 2 thêm `model/AccountType.java`, `model/AccountSummary.java`; người 4 thêm `service/SimulationClock.java`; người 6 thêm `model/TransactionDirection.java`; người 5 thêm `exception/InvalidTransferException.java`; người 8 thêm `exception/AuthenticationRequiredException.java`. Enum TransactionType có DEPOSIT, WITHDRAW, TRANSFER, INTEREST. Các helper này thuộc nhiệm vụ hiện có, không thêm người hay tính năng mới.
+
+### Chuẩn bị UI chung trước khi code
+
+1. **Người 9** dành 30–60 phút đầu để phác bố cục UI (giấy hoặc công cụ quen dùng), đăng ảnh vào [Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Người 7 hỗ trợ rà trường nhập nếu cần. Đây là bước chuẩn bị ngắn; người 9 tiếp tục biểu đồ sau đó.
+2. **Cả nhóm xem và chốt bản phác**: danh sách tài khoản, chi tiết, tab Lịch sử, tab Biểu đồ, vị trí nút nạp/rút/chuyển/CSV/cuối tháng, dialog PIN/giao dịch/About, thông báo lỗi. Thống nhất font, định dạng VND và kích thước cơ bản; chưa cần thiết kế cầu kỳ. Bản phác chỉ được coi là đã chốt khi có xác nhận trong Issue #1.
+3. **Người 1** dựng khung Swing theo bản phác đã chốt, có các vùng/tab trống và điểm gắn thành phần. Chỉ người 1 sửa bố cục MainWindow; khung có bản chạy trước 12:00 ngày 17/10. Trong lúc chờ chốt, các bạn vẫn làm model, nghiệp vụ và thử thành phần độc lập.
+4. **Từng tác giả cùng người 1 ghép phần mình**: người 6 bàn giao bảng lịch sử/action CSV; người 7 bàn giao danh sách/chi tiết/dialog giao dịch/About; người 8 bàn giao PIN; người 9 bàn giao biểu đồ. Người 2–5 hỗ trợ nối nghiệp vụ và sửa lỗi phần mình. Không chỉ gửi file rồi để người 1 tự nối toàn bộ.
+
+**Phạm vi người 7:** UI danh sách/chi tiết tài khoản, dialog nạp–rút–chuyển dùng chung và About; không làm UI lịch sử, CSV, PIN hoặc biểu đồ. Giữ nguyên API v1, chín nhiệm vụ và các hạn chức năng đã chốt.
+
 
 ## Nhánh và cách nhận việc
 
@@ -66,6 +76,8 @@ Issue #3. Nhánh riêng theo nhiệm vụ; dùng tài khoản Git cá nhân.
 - Bản cuối chung: **20/10 21:00**; sáng 22/10 thuyết trình.
 
 ### Checklist
+
+- [ ] Nhận bản phác UI đã được nhóm chốt ở Issue #1; dựng vùng danh sách/chi tiết và các tab trống, thống nhất điểm gắn thành phần với người 6/7/8/9.
 
 - [ ] Menu/toolbar/status/icon/tooltip và bố cục chung; chỉ người 1 sửa MainWindow.
 - [ ] Nhận panel/dialog/action từ người 6/7/8/9; từng tác giả cùng ghép và sửa phần mình.
@@ -217,7 +229,7 @@ Issue #7. Nhánh riêng theo nhiệm vụ; dùng tài khoản Git cá nhân.
 
 Hồ sơ: **Đầu mối bảng kiểm thử; viết immutable/composition và CSV**. Mỗi người tự kiểm thử phần mình và cùng ghép, không chuyển toàn bộ việc nối code cho người 1.
 
-## Người 7 — Toàn bộ giao diện tài khoản và giao dịch
+## Người 7 — UI danh sách/chi tiết tài khoản, dialog giao dịch và About
 
 Issue #8. Nhánh riêng theo nhiệm vụ; dùng tài khoản Git cá nhân.
 
@@ -289,6 +301,8 @@ Issue #10. Nhánh riêng theo nhiệm vụ; dùng tài khoản Git cá nhân.
 - Bản cuối chung: **20/10 21:00**; sáng 22/10 thuyết trình.
 
 ### Checklist
+
+- [ ] Phác UI chung trong 30–60 phút đầu, đăng ảnh Issue #1; nhóm xác nhận bản chốt để người 1 dựng khung. Sau đó tiếp tục biểu đồ; không chờ nghiệp vụ xong mới làm bản mẫu.
 
 - [ ] Hai JFreeChart khác loại: đường biến động số dư, cột tổng nạp/rút theo ngày, đủ nhãn/đơn vị/tiêu đề.
 - [ ] Chốt phạm vi thống kê chuyển/lãi, điểm số dư đầu kỳ, không mất giao dịch trùng timestamp.

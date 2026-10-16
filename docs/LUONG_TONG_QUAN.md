@@ -45,6 +45,17 @@ flowchart TD
 - Menu Help → About do người 7 làm, người 1 nối vào cửa sổ; đây là luồng xem thông tin nhóm, không thay đổi tài khoản.
 - Luồng mô phỏng cuối tháng là tác vụ hệ thống của bản demo, xem phía dưới; không phải giao dịch rút tiền của tài khoản đang chọn.
 
+## Chuẩn bị giao diện chung
+
+```mermaid
+flowchart LR
+    D["Người 9: phác UI 30–60 phút"] --> G["Nhóm chốt ảnh trong Issue 1"]
+    G --> F["Người 1: dựng khung Swing và tab trống"]
+    F --> P["Người 6 / 7 / 8 / 9: cùng ghép thành phần của mình"]
+```
+
+Người 7 chỉ làm danh sách/chi tiết tài khoản, dialog giao dịch và About. Lịch sử/CSV thuộc người 6, PIN người 8, biểu đồ người 9. Không đổi API hoặc hạn chức năng. Xem [bản bàn giao](BAN_GIAO.md) để biết nội dung bản phác và cách chốt.
+
 ## 2. Chín người nối phần của mình vào đâu?
 
 Mũi tên chỉ hướng **gọi hoặc sử dụng dữ liệu**, không có nghĩa phải đợi người trước viết xong. Chốt API trước, dùng dữ liệu mẫu để dựng UI/biểu đồ song song.
