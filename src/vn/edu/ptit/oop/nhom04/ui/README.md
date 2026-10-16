@@ -11,3 +11,5 @@ Package Java: `vn.edu.ptit.oop.nhom04.ui`.
 Dialog nằm trong package ui.dialogs, panel chi tiết trong ui.panels; xem README của hai thư mục con. Người 1 sửa bố cục MainWindow và kết nối các phần; các thành viên còn lại bàn giao thành phần qua API thống nhất.
 
 GUI gọi Bank/BankingOperations, không tự tính hoặc sửa số dư. Khi giao dịch thành công, người 1 điều phối cập nhật danh sách, chi tiết, bảng lịch sử, biểu đồ và status bar.
+
+BONUS — người 1 tích hợp LoginDialog/PinService khi chọn tài khoản, xóa trạng thái xác thực khi đổi tài khoản, thêm menu/nút xuất CSV qua JFileChooser. Nghiệp vụ vẫn kiểm tra xác thực và khóa ở Bank/PinService, không chỉ ẩn hoặc vô hiệu hóa nút trên GUI. Xem docs/BONUS.md.

@@ -17,7 +17,7 @@ Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng d
 - Đã có project Eclipse, cấu hình biên dịch Java 17 và mã hóa UTF-8.
 - Đã có `Main`, `BaseWindow`, `MainWindow`.
 - Chạy được cửa sổ MiniBank với menu File/View/Help và thanh trạng thái.
-- Các phần nghiệp vụ, dialog riêng, icon và biểu đồ đang chờ triển khai theo phân công.
+- Các phần nghiệp vụ, dialog riêng, icon, biểu đồ và BONUS đang chờ triển khai theo phân công.
 - Chưa tích hợp JFreeChart. Bản khung hiện tại chạy được mà chưa cần thư viện này.
 
 ### Các chức năng cần hoàn thành
@@ -34,7 +34,7 @@ Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng d
 - Mô phỏng cuối tháng và cộng lãi, có interface được sử dụng thực tế.
 - UML, kiểm thử, báo cáo, slide, JAR chạy độc lập và hồ sơ nộp.
 
-Tuần này tập trung yêu cầu bắt buộc. Đăng ký/đăng nhập, server, nhiều máy, database, lưu file và xuất CSV nằm ngoài phạm vi đã chốt. Dữ liệu khách hàng và tiền đều là giả lập. Khi chưa có lưu trữ, dữ liệu trong bộ nhớ sẽ mất khi đóng ứng dụng; ghi rõ hạn chế trong báo cáo.
+Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và BONUS của thẻ MiniBank gồm PIN, khóa sau 3 lần sai, InterestBearing và xuất sao kê CSV. Tất cả chạy trên một máy; đăng ký người dùng, server, nhiều máy và lưu/phục hồi dữ liệu bằng file/database vẫn ngoài phạm vi. CSV chỉ là tệp sao kê xuất ra, không phải cơ chế lưu/phục hồi ứng dụng. Dữ liệu và tiền là giả lập; số dư, PIN và trạng thái khóa trong bộ nhớ sẽ được nạp lại từ dữ liệu mẫu khi khởi động lại. Các chức năng bonus hiện là công việc đã giao, chưa được triển khai.
 
 ## 2. Phân công
 
@@ -42,17 +42,35 @@ Thay “Chờ chốt tên” bằng tên và username GitHub sau khi nhóm chọ
 
 | Nhiệm vụ | Người phụ trách | Phần chính / lớp | Nhánh đề xuất |
 | --- | --- | --- | --- |
-| 1 | Chủ repo — đã nhận | MainWindow, BankController; tích hợp và đóng gói | `feat/main-window` |
-| 2 | Chờ chốt tên | Customer, Account, DemoDataFactory | `feat/account-model` |
+| 1 | Chủ repo — đã nhận | MainWindow, BankController; tích hợp PIN/CSV, đóng gói | `feat/main-window` |
+| 2 | Chờ chốt tên | Customer, Account, DemoDataFactory; dữ liệu PIN demo | `feat/account-model` |
 | 3 | Chờ chốt tên | SavingsAccount, CheckingAccount | `feat/account-types` |
 | 4 | Chờ chốt tên | FixedTermAccount, MonthlyInterestService, InterestBearing | `feat/monthly-interest` |
 | 5 | Chờ chốt tên | Bank, TransferService, BankingOperations | `feat/transfers` |
-| 6 | Chờ chốt tên | Transaction, TransactionTableModel; tổng hợp kiểm thử | `feat/transaction-history` |
-| 7 | Chờ chốt tên | TransactionDialog, AboutDialog; tổng hợp slide | `feat/dialogs` |
-| 8 | Chờ chốt tên | AccountListRenderer, AccountDetailsPanel; tổng hợp báo cáo | `feat/account-ui` |
+| 6 | Chờ chốt tên | Transaction, TransactionTableModel, CsvStatementExporter; tổng hợp kiểm thử | `feat/transaction-history` |
+| 7 | Chờ chốt tên | TransactionDialog, AboutDialog, LoginDialog; tổng hợp slide | `feat/dialogs` |
+| 8 | Chờ chốt tên | AccountListRenderer, AccountDetailsPanel, PinService, PinCredential; tổng hợp báo cáo | `feat/account-ui` |
 | 9 | Chờ chốt tên | ChartHelper, StatisticsService; video demo dự phòng | `feat/charts` |
 
 Mỗi thành viên viết ít nhất 2 lớp có ý nghĩa, có commit, kiểm thử phần mình, viết phần báo cáo tương ứng và có phần nói khi bảo vệ. Người tổng hợp tài liệu nhận nội dung từ mọi người. Tỷ lệ đóng góp ghi theo việc thực tế.
+
+### Công việc BONUS đã bổ sung
+
+Chi tiết quy tắc, file, lịch và ca kiểm thử: **[docs/BONUS.md](docs/BONUS.md)**.
+
+| Mã | Công việc | Chủ trì / phối hợp | File mới chính |
+| --- | --- | --- | --- |
+| B01 | PIN và khóa sau 3 lần nhập sai liên tiếp | Người 8; người 7 làm dialog, người 1/5 tích hợp, người 2 chuẩn bị dữ liệu | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `ui/dialogs/LoginDialog.java` |
+| B02 | Xuất sao kê CSV của tài khoản đang xác thực | Người 6; người 1 thêm menu/nút, người 9 đối chiếu dữ liệu | `util/CsvStatementExporter.java` |
+| B03 | Hoàn thiện InterestBearing và kiểm tra cộng lãi qua interface | Người 4; người 3/9 phối hợp | Dùng `model/InterestBearing.java` và các lớp đã giao, không tạo interface trùng |
+
+Đã có sẵn 3 **mẫu Issue**; bấm để mở nội dung điền sẵn rồi chọn Assignees, Project và bấm Create. Các liên kết này mở biểu mẫu, **không phải Issue đã được tạo**:
+
+- [Tạo Issue B01 — PIN và khóa tài khoản](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-pin.md)
+- [Tạo Issue B02 — Sao kê CSV](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-csv.md)
+- [Tạo Issue B03 — InterestBearing](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/new?template=bonus-interest.md)
+
+Có thể thêm các Issue sau khi tạo làm sub-issue của Issue #1. Các nhiệm vụ 1–9 vẫn giữ nguyên; B01–B03 là phần bổ sung phối hợp, không phải ba thành viên mới. Ngày 4 ghép cả bonus, ngày 5 kiểm thử, ngày 6 chốt tài liệu; giữ thời gian chung một tuần.
 
 ## 3. Lần đầu tải và chạy project
 
@@ -156,9 +174,9 @@ Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`
 | 3 | `model/SavingsAccount.java`, `model/CheckingAccount.java`, `exception/InsufficientFundsException.java`, `exception/WithdrawalLimitExceededException.java` | Dùng Account của người 2; thống nhất exception trước khi các lớp khác gọi |
 | 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java` (interface), `service/MonthlyInterestService.java`, `exception/AccountNotMaturedException.java` | Cộng lãi cho các loại hưởng lãi; phối hợp Bank và GUI |
 | 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java` (interface), `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java` | Chốt InvalidAmountException sớm cho người 2/3; cung cấp API cho người 1/7 |
-| 6 | `model/Transaction.java`, `model/TransactionType.java` (enum), `ui/TransactionTableModel.java` | Chốt dữ liệu giao dịch với người 2/5/9 |
-| 7 | `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | Nạp/rút/chuyển dùng chung dialog, gọi API nghiệp vụ |
-| 8 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java` | Bàn giao danh sách/chi tiết cho người 1; không tự sửa số dư |
+| 6 | `model/Transaction.java`, `model/TransactionType.java` (enum), `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java` (bonus) | Chốt dữ liệu giao dịch với người 2/5/9 |
+| 7 | `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java`, `ui/dialogs/LoginDialog.java` (bonus) | Nạp/rút/chuyển dùng chung dialog, gọi API nghiệp vụ |
+| 8 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java` (bonus) | Bàn giao danh sách/chi tiết cho người 1; không tự sửa số dư |
 | 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Đọc lịch sử và tạo hai biểu đồ; phối hợp thư viện JFreeChart với người 1 |
 
 Danh sách trên là **vị trí file đã thống nhất để bắt đầu**, không có nghĩa các chức năng đã được cài đặt. Hiện các file Java đã có vẫn là Main, BaseWindow và MainWindow. Người phụ trách tạo file của mình trên nhánh riêng; các interface, enum và exception được tạo sớm khi phần khác cần dùng. Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.
