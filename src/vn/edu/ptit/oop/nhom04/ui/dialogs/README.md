@@ -2,10 +2,11 @@
 
 Package Java: `vn.edu.ptit.oop.nhom04.ui.dialogs`.
 
-**Nhiệm vụ 7:** tạo TransactionDialog.java, AboutDialog.java và LoginDialog.java (bonus), kế thừa JDialog.
+- Người 7: `TransactionDialog.java`, `AboutDialog.java`; đồng thời làm renderer/panel tài khoản ở ui và ui.panels.
+- Người 8: `LoginDialog.java` cùng PinService/PinCredential; sở hữu trọn luồng PIN, không tách dialog cho người 7.
 
-TransactionDialog hỗ trợ nạp/rút/chuyển, kiểm tra nhập liệu, gọi API nghiệp vụ và hiển thị lỗi qua JOptionPane. AboutDialog hiển thị thông tin đề tài và đủ 9 thành viên. Thống nhất constructor và cách báo thành công với người 1 trước khi ghép.
+Dialog kế thừa JDialog, không có main riêng. TransactionDialog nạp/rút/chuyển qua API nghiệp vụ, không tự sửa số dư. About có thông tin 9 người. LoginDialog dùng JPasswordField, gọi PinService, xử lý Xác nhận/Hủy, số lần còn lại và khóa.
 
-Tạo các lớp trên nhánh riêng; LoginDialog có thể dùng nhánh feat/login-dialog sau khi cập nhật main. Không tạo main riêng hoặc đặt logic tính số dư trong dialog. Chưa có mã triển khai cho các dialog.
+Chốt constructor/callback trong ngày 16/10; bản mẫu 17/10, chức năng 18/10, tự ghép cùng người 1 trước 21:00 19/10. Xem `docs/BAN_GIAO.md`, `docs/API.md`, `docs/BONUS.md` ở gốc repository. Đây là file hướng dẫn, các lớp chưa được triển khai.
 
-LoginDialog dùng JPasswordField, gọi PinService của người 8, hiển thị số lần còn lại và trạng thái khóa. Hủy dialog không mở chi tiết hoặc giao dịch tài khoản. Xem docs/BONUS.md để thống nhất luồng với người 1.
+> Phân công hiện hành: [BAN_GIAO.md](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BAN_GIAO.md). Mốc chốt 20/10/2026, thuyết trình sáng 22/10. Theo bản này nếu mô tả cũ có khác.

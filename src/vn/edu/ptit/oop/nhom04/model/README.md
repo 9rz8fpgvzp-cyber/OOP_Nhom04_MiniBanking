@@ -15,3 +15,5 @@ Mỗi người tạo đúng file phần mình bằng New → Class/Interface/Enu
 Quy tắc nghiệp vụ không phụ thuộc Swing. Các file trong bảng là công việc cần thực hiện, chưa có mã triển khai.
 
 Chi tiết BONUS: xem mục Công việc BONUS và docs/BONUS.md ở README gốc. Công việc mới đang chờ triển khai.
+
+> Phân công hiện hành: [BAN_GIAO.md](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BAN_GIAO.md). Mốc chốt 20/10/2026, thuyết trình sáng 22/10. Theo bản này nếu mô tả cũ có khác.

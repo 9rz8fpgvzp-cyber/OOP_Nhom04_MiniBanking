@@ -38,40 +38,26 @@ Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và B
 
 ## 2. Phân công
 
-Thay “Chờ chốt tên” bằng tên và username GitHub sau khi nhóm chọn nhiệm vụ. Hạn chi tiết xem từng Issue; “ngày 1” là ngày bắt đầu nhóm đã thống nhất, không phải ngày clone của từng người.
+**Bàn giao trong thứ Sáu 16/10/2026; sáng thứ Năm 22/10 thuyết trình. Chốt bản đầy đủ tối 19/10, bản cuối trước 21:00 ngày 20/10; 21/10 chỉ tập trình bày và xử lý lỗi chặn demo.**
 
-| Nhiệm vụ | Người phụ trách | Phần chính / lớp | Nhánh đề xuất |
+[Bản bàn giao chi tiết từng người](docs/BAN_GIAO.md) · [API phải chốt hôm nay](docs/API.md) · [Quy tắc và test BONUS](docs/BONUS.md).
+
+| Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
 | --- | --- | --- | --- |
-| 1 | Chủ repo — đã nhận | MainWindow, BankController; tích hợp PIN/CSV, đóng gói | `feat/main-window` |
-| 2 | Chờ chốt tên | Customer, Account, DemoDataFactory; dữ liệu PIN demo | `feat/account-model` |
-| 3 | Chờ chốt tên | SavingsAccount, CheckingAccount | `feat/account-types` |
-| 4 | Chờ chốt tên | FixedTermAccount, MonthlyInterestService, InterestBearing | `feat/monthly-interest` |
-| 5 | Chờ chốt tên | Bank, TransferService, BankingOperations | `feat/transfers` |
-| 6 | Chờ chốt tên | Transaction, TransactionTableModel, CsvStatementExporter; tổng hợp kiểm thử | `feat/transaction-history` |
-| 7 | Chờ chốt tên | TransactionDialog, AboutDialog, LoginDialog; tổng hợp slide | `feat/dialogs` |
-| 8 | Chờ chốt tên | AccountListRenderer, AccountDetailsPanel, PinService, PinCredential; tổng hợp báo cáo | `feat/account-ui` |
-| 9 | Chờ chốt tên | ChartHelper, StatisticsService; video demo dự phòng | `feat/charts` |
+| 1 — bạn | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
+| 2 | [#2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) | Model nền, dữ liệu mẫu và tổng hợp báo cáo | Đầu mối báo cáo; viết phần Customer/Account và đóng gói |
+| 3 | [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4) | Quy tắc tiết kiệm, thanh toán và UML | Đầu mối UML, viết kế thừa/đa hình và test hai loại tài khoản |
+| 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
+| 5 | [#6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6) | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn | Viết luồng chuyển khoản, test nguyên tử; rà nghiệp vụ bản JAR |
+| 6 | [#7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | Lịch sử và xuất CSV trọn luồng | Đầu mối bảng kiểm thử; viết immutable/composition và CSV |
+| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | Toàn bộ giao diện tài khoản và giao dịch | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
+| 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
+| 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
-Mỗi thành viên viết ít nhất 2 lớp có ý nghĩa, có commit, kiểm thử phần mình, viết phần báo cáo tương ứng và có phần nói khi bảo vệ. Người tổng hợp tài liệu nhận nội dung từ mọi người. Tỷ lệ đóng góp ghi theo việc thực tế.
+Thay số người bằng tên/username khi nhận việc, gán Assignee ở đúng Issue; số người không phải số Issue. Người 1 là chủ repo đã nhận nhiệm vụ. Mỗi người viết ít nhất 2 lớp có ý nghĩa, commit bằng tài khoản riêng, tự kiểm thử và tự viết phần báo cáo/slide của mình. Người 2/3/6/9 chỉ tổng hợp hồ sơ, không làm thay.
 
-### Công việc BONUS đã bổ sung
+BONUS PIN do người 8 làm trọn PinService + LoginDialog; CSV do người 6 làm trọn chọn file + exporter; InterestBearing do người 4 chủ trì cùng người 3. Người 7 làm toàn bộ UI tài khoản/giao dịch. Mỗi tác giả cùng ghép phần mình với người 1. Không tạo Issue bonus trùng; các mẫu cũ chỉ để tham khảo.
 
-Chi tiết quy tắc, file, lịch và ca kiểm thử: **[docs/BONUS.md](docs/BONUS.md)**.
-
-| Mã | Công việc | Chủ trì / phối hợp | File mới chính |
-| --- | --- | --- | --- |
-| B01 | PIN và khóa sau 3 lần nhập sai liên tiếp | Người 8; người 7 làm dialog, người 1/5 tích hợp, người 2 chuẩn bị dữ liệu | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `ui/dialogs/LoginDialog.java` |
-| B02 | Xuất sao kê CSV của tài khoản đang xác thực | Người 6; người 1 thêm menu/nút, người 9 đối chiếu dữ liệu | `util/CsvStatementExporter.java` |
-| B03 | Hoàn thiện InterestBearing và kiểm tra cộng lãi qua interface | Người 4; người 3/9 phối hợp | Dùng `model/InterestBearing.java` và các lớp đã giao, không tạo interface trùng |
-
-Đã bổ sung checklist BONUS và đường dẫn file trực tiếp vào **9 Issue nhiệm vụ hiện có**, đồng thời liên kết tại [bảng phân công #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1). Theo dõi tại:
-
-- [B01 — PIN và khóa tài khoản: #9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9); giao diện PIN ở [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8).
-- [B02 — Sao kê CSV: #7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7).
-- [B03 — InterestBearing và cộng lãi: #5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5); SavingsAccount phối hợp ở [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4).
-- [Tích hợp chung: #3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3); [dữ liệu mẫu: #2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2); [nghiệp vụ: #6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6); [biểu đồ: #10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10).
-
-Các mẫu trong `.github/ISSUE_TEMPLATE/` được giữ để tham khảo, **không cần tạo lại Issue BONUS**. Các nhiệm vụ 1–9 vẫn giữ nguyên; B01–B03 là phần bổ sung phối hợp, không phải ba thành viên mới. Ngày 4 ghép cả bonus, ngày 5 kiểm thử, ngày 6 chốt tài liệu; giữ thời gian chung một tuần. Checklist mô tả việc cần làm, không xác nhận chức năng đã hoàn thành.
 
 ## 3. Lần đầu tải và chạy project
 
@@ -159,7 +145,7 @@ Package gốc: `vn.edu.ptit.oop.nhom04`.
 | `exception` | Ngoại lệ tự định nghĩa |
 | `ui` | MainWindow, BankController, renderer và TableModel theo thống nhất của nhóm |
 | `ui.panels` | AccountDetailsPanel và panel con |
-| `ui.dialogs` | TransactionDialog, AboutDialog |
+| `ui.dialogs` | TransactionDialog, AboutDialog (người 7); LoginDialog (người 8) |
 | `util` | ChartHelper, DemoDataFactory và tiện ích |
 | `src/resources/icons` | Icon khi tích hợp; nạp qua `/resources/icons/...` |
 | `docs` | UML, ảnh, kiểm thử và tài liệu khi bổ sung |
@@ -168,17 +154,17 @@ Package gốc: `vn.edu.ptit.oop.nhom04`.
 
 Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`. Ví dụ `model/Customer.java` là file trong package `vn.edu.ptit.oop.nhom04.model`.
 
-| Nhiệm vụ | File sẽ viết / tiếp tục sửa | Phạm vi phối hợp |
+| Nhiệm vụ | File sẽ viết / tiếp tục sửa | Phần bàn giao |
 | --- | --- | --- |
-| 1 | `ui/MainWindow.java` (đã có), `ui/BankController.java` (tạo mới); duy trì `Main.java` | Giữ khung `common/BaseWindow.java` của thầy; tích hợp thành phần của mọi người |
-| 2 | `model/Customer.java`, `model/Account.java`, `util/DemoDataFactory.java` | Chốt Account và cách cập nhật trạng thái với người 3/4/5/6 |
-| 3 | `model/SavingsAccount.java`, `model/CheckingAccount.java`, `exception/InsufficientFundsException.java`, `exception/WithdrawalLimitExceededException.java` | Dùng Account của người 2; thống nhất exception trước khi các lớp khác gọi |
-| 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java` (interface), `service/MonthlyInterestService.java`, `exception/AccountNotMaturedException.java` | Cộng lãi cho các loại hưởng lãi; phối hợp Bank và GUI |
-| 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java` (interface), `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java` | Chốt InvalidAmountException sớm cho người 2/3; cung cấp API cho người 1/7 |
-| 6 | `model/Transaction.java`, `model/TransactionType.java` (enum), `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java` (bonus) | Chốt dữ liệu giao dịch với người 2/5/9 |
-| 7 | `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java`, `ui/dialogs/LoginDialog.java` (bonus) | Nạp/rút/chuyển dùng chung dialog, gọi API nghiệp vụ |
-| 8 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java` (bonus) | Bàn giao danh sách/chi tiết cho người 1; không tự sửa số dư |
-| 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Đọc lịch sử và tạo hai biểu đồ; phối hợp thư viện JFreeChart với người 1 |
+| 1 | `ui/MainWindow.java`, `ui/BankController.java` | Cửa sổ chính và tích hợp |
+| 2 | `model/Customer.java`, `model/Account.java`, `util/DemoDataFactory.java` | Model nền, dữ liệu mẫu và tổng hợp báo cáo |
+| 3 | `model/SavingsAccount.java`, `model/CheckingAccount.java`, `exception/InsufficientFundsException.java`, `exception/WithdrawalLimitExceededException.java` | Quy tắc tiết kiệm, thanh toán và UML |
+| 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java`, `service/MonthlyInterestService.java`, `exception/AccountNotMaturedException.java` | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng |
+| 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java`, `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java` | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn |
+| 6 | `model/Transaction.java`, `model/TransactionType.java`, `ui/TransactionTableModel.java`, `util/CsvStatementExporter.java`, `ui/CsvExportAction.java` | Lịch sử và xuất CSV trọn luồng |
+| 7 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java`, `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | Toàn bộ giao diện tài khoản và giao dịch |
+| 8 | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `ui/dialogs/LoginDialog.java` | PIN và khóa tài khoản trọn luồng |
+| 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Biểu đồ, thống kê và tổng hợp slide |
 
 Danh sách trên là **vị trí file đã thống nhất để bắt đầu**, không có nghĩa các chức năng đã được cài đặt. Hiện các file Java đã có vẫn là Main, BaseWindow và MainWindow. Người phụ trách tạo file của mình trên nhánh riêng; các interface, enum và exception được tạo sớm khi phần khác cần dùng. Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.
 
@@ -329,8 +315,8 @@ Lệnh merge đưa bản chung mới vào nhánh đang làm. Nếu Git yêu cầ
 - `main` giữ bản chạy được. Không force push, không xóa code của người khác để giải quyết conflict.
 - Mỗi ngày cập nhật Issue: đã làm gì, còn gì, đang vướng gì; gửi phần chạy được để ghép sớm.
 - Project dùng **Todo → In progress → In review → Done**.
-- Không chờ ngày cuối mới ghép. Mốc kỹ thuật theo Issue: nghiệp vụ ngày 3, ghép chức năng ngày 4, thử JAR ngày 5, hồ sơ ngày 6 và tập bảo vệ ngày 7.
-- Ngày 1 thống nhất API; ngày 4 dừng thêm tính năng; các ngày sau ưu tiên kiểm thử, sửa lỗi và hồ sơ. Deadline chính thức của thầy được nhóm bổ sung khi xác nhận.
+- Ghép lần đầu 17/10; từng phần bàn giao 18/10; đủ chức năng và JAR thử 19/10; bản cuối 20/10 21:00; tập bảo vệ 21/10.
+- Chốt API 16/10; 19/10 dừng thêm tính năng. Sáng 22/10 thuyết trình; nếu hạn nộp của thầy sớm hơn hạn nội bộ thì theo hạn sớm hơn.
 - Có phụ lục AI và Git theo đề. Mỗi người ghi phần được hỗ trợ, đã kiểm chứng/chỉnh sửa gì và hiểu code mình đóng góp.
 - Giữ `.project`, `.classpath`, `.settings` trong Git vì đây là cấu hình project chung. Kiểm tra trước khi thay đổi, tránh đưa đường dẫn tuyệt đối riêng của máy vào cấu hình.
 - `bin` và `.class` là sản phẩm biên dịch, được bỏ qua. Không thêm workspace Eclipse hoặc thư mục `.metadata` vào repository.

@@ -11,13 +11,13 @@ Các đường dẫn tính từ `src/vn/edu/ptit/oop/nhom04/`.
 | Phần | Chủ trì | Phối hợp | File cần tạo / sửa |
 | --- | --- | --- | --- |
 | B01 — trạng thái PIN, kiểm tra PIN và khóa | Người 8 | Người 2 tạo dữ liệu mẫu, người 5 kiểm tra trong nghiệp vụ | Tạo `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java` |
-| B01 — giao diện PIN | Người 7 | Người 1 nối vào luồng chọn tài khoản | Tạo `ui/dialogs/LoginDialog.java`; sửa `ui/BankController.java`, `ui/MainWindow.java` |
-| B02 — sao kê CSV | Người 6 | Người 1 làm nút/menu, người 9 đối chiếu số liệu | Tạo `util/CsvStatementExporter.java`; dùng dữ liệu `Transaction`; không tạo model giao dịch thứ hai |
+| B01 — giao diện PIN | Người 8 | Người 1 nối vào luồng chọn tài khoản | Tạo `ui/dialogs/LoginDialog.java`; sửa `ui/BankController.java`, `ui/MainWindow.java` |
+| B02 — sao kê CSV | Người 6 | Người 6 làm cả CsvExportAction/chọn file; người 1 nối menu, người 9 đối chiếu số liệu | Tạo `util/CsvStatementExporter.java`, `ui/CsvExportAction.java`; dùng dữ liệu `Transaction`; không tạo model giao dịch thứ hai |
 | B03 — InterestBearing | Người 4 | Người 3 áp dụng vào SavingsAccount; người 9 kiểm tra biểu đồ | Dùng `model/InterestBearing.java`, `model/SavingsAccount.java`, `model/FixedTermAccount.java`, `service/MonthlyInterestService.java` đã có trong phân công |
 
-Nhánh đề xuất: `feat/pin-auth` (người 8), `feat/login-dialog` (người 7), `feat/csv-statement` (người 6). Người 1 tích hợp trên nhánh của mình sau khi nhận API. B03 tiếp tục phần lãi đã giao cho người 4, không tạo thêm bản InterestBearing ở package khác.
+Nhánh đề xuất: `feat/pin-auth` (người 8, gồm LoginDialog), `feat/csv-statement` (người 6). Người 1 tích hợp trên nhánh của mình sau khi nhận API. B03 tiếp tục phần lãi đã giao cho người 4, không tạo thêm bản InterestBearing ở package khác.
 
-Người 8 có thêm PIN nên người 2 hỗ trợ tạo dữ liệu và test trạng thái; người 6 tập hợp test bonus, người 7 bổ sung slide, người 9 hỗ trợ ảnh/video. Người tổng hợp báo cáo nhận mô tả và kết quả kiểm tra từ tác giả từng phần.
+Phân công hiện hành xem [BAN_GIAO.md](BAN_GIAO.md): người 8 làm cả PIN và LoginDialog, không làm danh sách/chi tiết (chuyển cho người 7) và không tổng hợp báo cáo (chuyển người 2). Người 6 làm trọn CSV gồm chọn file; người 9 tổng hợp slide/video. Mỗi người tự kiểm thử và viết nội dung phần mình.
 
 ## 2. B01 — PIN và khóa tài khoản
 
@@ -37,14 +37,14 @@ Người 8 có thêm PIN nên người 2 hỗ trợ tạo dữ liệu và test t
 ### Giao diện và dữ liệu bàn giao
 
 - LoginDialog dùng JPasswordField; có Xác nhận/Hủy, thông báo còn bao nhiêu lần và thông báo khóa rõ ràng. Không hiển thị PIN trong danh sách hoặc chi tiết tài khoản.
-- Người 8 và người 5 chốt API đăng ký PIN, xác thực, kiểm tra tài khoản đang xác thực và kiểm tra khóa trước khi người 7/1 nối UI.
+- Người 8 và người 5 chốt API đăng ký PIN, xác thực, kiểm tra tài khoản đang xác thực và kiểm tra khóa trước khi người 8/1 nối UI.
 - Người 2 chuẩn bị ít nhất hai tài khoản PIN khác nhau và một PIN demo có số 0 đầu để kiểm tra.
 - Người 1 đảm bảo hủy dialog không để lộ lại dữ liệu tài khoản trước đó, đổi tài khoản không giữ quyền của tài khoản cũ.
 
 ## 3. B02 — xuất sao kê CSV
 
 - Người 6 viết CsvStatementExporter nhận số tài khoản và bản chụp lịch sử chỉ đọc; không sửa số dư hoặc Transaction.
-- Người 1 thêm menu/nút **Xuất sao kê CSV**, dùng JFileChooser chọn nơi lưu. Xuất tài khoản đang được xác thực, không xuất tài khoản khác bằng cách đổi tham số.
+- Người 6 làm `ui/CsvExportAction.java`, dùng JFileChooser, xác nhận ghi đè và thông báo; người 1 chỉ nối action vào menu/nút **Xuất sao kê CSV**. Xuất tài khoản đang được xác thực, không xuất tài khoản khác bằng cách đổi tham số.
 - Xuất toàn bộ lịch sử hiện có của tài khoản được chọn. Lọc theo ngày là mở rộng sau, chưa bắt buộc cho bonus này.
 - Cột thống nhất: `accountNumber,transactionId,type,direction,amount,timestamp,balanceAfter`. `direction` phân biệt IN/OUT cho TRANSFER; các giao dịch khác có thể để trống vì đã có type.
 - UTF-8, có hàng tiêu đề, dùng dấu phẩy; giá trị có dấu phẩy/ngoặc kép/xuống dòng phải được quote/escape đúng. Số tiền dùng dạng số thập phân không phân nhóm, thời điểm dùng ISO-8601 thống nhất với lịch sử.
@@ -63,18 +63,19 @@ Tham khảo định dạng CSV: [RFC 4180](https://www.rfc-editor.org/rfc/rfc418
 - Không cộng lại cho cùng một tài khoản/cùng kỳ. Tháng mô phỏng dùng chung cho cộng lãi, giới hạn rút và timestamp.
 - Cập nhật bảng lịch sử và hai biểu đồ sau khi cộng lãi. Nút mô phỏng cuối tháng vốn thuộc phần bắt buộc; việc dùng interface là phần thiết kế có thể trình bày cho bonus.
 
-## 5. Mốc bàn giao trong tuần
+## 5. Mốc bàn giao trước sáng 22/10/2026
 
-| Mốc | Kết quả |
+| Mốc (giờ Việt Nam) | Kết quả bắt buộc |
 | --- | --- |
-| Chốt API ngay khi nhận việc | PIN theo tài khoản, phạm vi khóa, dữ liệu Transaction/chiều chuyển, cột CSV và API lãi được thống nhất |
-| Ngày 3 | PinService và exporter chạy được với dữ liệu mẫu; InterestBearing nối được với model |
-| Ngày 4 | Ghép LoginDialog, quyền thao tác, nút CSV và cộng lãi vào bản chung |
-| Ngày 5 | Kiểm thử bắt buộc + bonus, sửa lỗi, thử JAR và CSV từ bản đóng gói |
-| Ngày 6 | Cập nhật UML, báo cáo, slide, bảng hoàn thành bonus và tập demo |
-| Ngày 7 | Tập phản biện, rà bản nộp và sửa lỗi chặn demo nếu có |
+| Hôm nay, thứ Sáu 16/10 — bàn giao trước 23:00 | Nhận 9 nhiệm vụ, chạy được khung, tạo nhánh; chốt API và người sở hữu file |
+| Thứ Bảy 17/10 — 12:00 / 18:00 | API/lớp dùng chung biên dịch / giao diện và biểu đồ mẫu chạy độc lập; ghép nạp/rút bản đầu tối cùng ngày |
+| Chủ nhật 18/10 — 18:00 / 21:00 | Từng phần đủ nghiệp vụ và test riêng / ghép chuyển khoản, lịch sử, cộng lãi và PIN; CSV/biểu đồ có bản chạy |
+| Thứ Hai 19/10 — 18:00 / 21:00 | Nhận nội dung hồ sơ / ghép đủ bắt buộc + bonus, JAR thử; dừng thêm chức năng |
+| Thứ Ba 20/10 — 18:00 / 21:00 | Chốt báo cáo/UML/slide/test / đóng băng source, JAR, CSV, video và gói nộp; sửa hết lỗi chặn demo |
+| Thứ Tư 21/10 | Tập 2 lượt đủ 9 người, demo ≤10 phút, phản biện; kiểm tra máy trình chiếu và bản dự phòng |
+| Sáng thứ Năm 22/10 | Thuyết trình; dùng bản đã kiểm tra, không đổi tính năng sát giờ |
 
-Hạn cụ thể theo mốc tuần nhóm đã chốt, không tính một tuần mới riêng cho bonus. Không mở thêm tính năng ngoài B01–B03 sau mốc ghép ngày 4. Không đánh dấu Done nếu làm bonus nhưng gây hỏng bước 1–7.
+Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn. Đây là kế hoạch giao việc, chưa phải xác nhận đã hoàn thành.
 
 ## 6. Các ca kiểm thử bổ sung
 
@@ -106,8 +107,8 @@ BONUS đã được bổ sung vào 9 Issue nhiệm vụ hiện có. [Issue #1 �
 
 | BONUS | Issue chủ trì | Issue phối hợp |
 | --- | --- | --- |
-| B01 — PIN và khóa | [#9 — người 8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | [#8 — dialog](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8), [#3 — tích hợp](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#6 — nghiệp vụ](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6), [#2 — dữ liệu mẫu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) |
-| B02 — CSV | [#7 — người 6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | [#3 — menu/chọn file](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#10 — đối chiếu số liệu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) |
+| B01 — PIN và khóa | [#9 — người 8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | [#3 — tích hợp](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#6 — nghiệp vụ](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6), [#2 — dữ liệu mẫu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) |
+| B02 — CSV | [#7 — người 6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | [#3 — nối menu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3), [#10 — đối chiếu số liệu](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) |
 | B03 — InterestBearing | [#5 — người 4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | [#4 — SavingsAccount](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4), [#10 — biểu đồ](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) |
 
 Không cần tạo thêm Issue trùng. Ba mẫu trong `.github/ISSUE_TEMPLATE/` chỉ giữ để tham khảo hoặc dùng khi nhóm quyết định tách việc sau này; mẫu không tự tạo Issue hay tự gán thành viên.

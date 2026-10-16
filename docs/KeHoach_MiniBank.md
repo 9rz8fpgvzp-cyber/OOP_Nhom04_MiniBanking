@@ -117,86 +117,35 @@ Sau giao dịch thành công, làm mới danh sách, chi tiết, bảng, hai dat
 
 Chuẩn bị 4–6 tài khoản của ít nhất ba khách hàng, đủ ba loại tài khoản. Có tài khoản tiết kiệm với số dư dễ tính lãi, tài khoản thanh toán có thấu chi và hai tài khoản kỳ hạn ở hai trạng thái trước/đến hạn. Tạo lịch sử bằng nghiệp vụ thật và thời gian mô phỏng để bảng, biểu đồ và số dư không mâu thuẫn. Biểu đồ đường có điểm số dư đầu kỳ và không làm mất giao dịch khi timestamp trùng.
 
-## 6. Tiến độ: chuẩn bị, hai giờ trên lớp và một tuần hoàn thiện
+## 6. Lịch bàn giao hiện hành — 16/10 đến sáng 22/10/2026
 
-### Trước buổi lập trình
+| Mốc (giờ Việt Nam) | Kết quả bắt buộc |
+| --- | --- |
+| Hôm nay, thứ Sáu 16/10 — bàn giao trước 23:00 | Nhận 9 nhiệm vụ, chạy được khung, tạo nhánh; chốt API và người sở hữu file |
+| Thứ Bảy 17/10 — 12:00 / 18:00 | API/lớp dùng chung biên dịch / giao diện và biểu đồ mẫu chạy độc lập; ghép nạp/rút bản đầu tối cùng ngày |
+| Chủ nhật 18/10 — 18:00 / 21:00 | Từng phần đủ nghiệp vụ và test riêng / ghép chuyển khoản, lịch sử, cộng lãi và PIN; CSV/biểu đồ có bản chạy |
+| Thứ Hai 19/10 — 18:00 / 21:00 | Nhận nội dung hồ sơ / ghép đủ bắt buộc + bonus, JAR thử; dừng thêm chức năng |
+| Thứ Ba 20/10 — 18:00 / 21:00 | Chốt báo cáo/UML/slide/test / đóng băng source, JAR, CSV, video và gói nộp; sửa hết lỗi chặn demo |
+| Thứ Tư 21/10 | Tập 2 lượt đủ 9 người, demo ≤10 phút, phản biện; kiểm tra máy trình chiếu và bản dự phòng |
+| Sáng thứ Năm 22/10 | Thuyết trình; dùng bản đã kiểm tra, không đổi tính năng sát giờ |
 
-- Chốt số nhóm, người phụ trách và quy tắc mục 4.
-- Tạo Git repository, mời giảng viên theo yêu cầu; mỗi người dùng tài khoản của mình.
-- Chuẩn bị Eclipse, JDK 17, JFreeChart 1.5.x; có thể dùng phiên bản Maven 1.5.4 được tài liệu nêu.
-- Phác thảo UML và chữ ký phương thức để các phần ghép được với nhau.
-- Chuẩn bị icon PNG 16×16/32×32, không dành thời gian trên lớp để tìm icon.
+Mốc 20/10 là hạn nội bộ để hoàn thiện trước buổi thuyết trình khoảng 1–2 ngày. Nếu hạn nộp chính thức của thầy sớm hơn thì theo hạn sớm hơn. Đây là kế hoạch giao việc, chưa phải xác nhận đã hoàn thành.
 
-### Hai giờ trên lớp
+## 7. Phân công hiện hành cho 9 người
 
-| Thời gian | Công việc | Mốc cần có |
-|---|---|---|
-| 0–15 phút | Tạo project/package, thư viện, Main và BaseWindow | Mở được cửa sổ |
-| 15–50 phút | Customer, Account, hai loại tài khoản chính, exception | Nạp/rút và trường hợp thiếu tiền chạy được |
-| 50–75 phút | JList, renderer, thông tin, bảng lịch sử | Chọn tài khoản xem được dữ liệu |
-| 75–100 phút | TransactionDialog và nối nạp/rút | Thao tác giao dịch có thông báo lỗi |
-| 100–120 phút | Một biểu đồ với dataset mẫu hoặc dữ liệu thật | Cửa sổ + model + ít nhất một JDialog + một biểu đồ |
+| Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
+| --- | --- | --- | --- |
+| 1 — bạn | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
+| 2 | [#2](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/2) | Model nền, dữ liệu mẫu và tổng hợp báo cáo | Đầu mối báo cáo; viết phần Customer/Account và đóng gói |
+| 3 | [#4](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/4) | Quy tắc tiết kiệm, thanh toán và UML | Đầu mối UML, viết kế thừa/đa hình và test hai loại tài khoản |
+| 4 | [#5](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/5) | Tài khoản kỳ hạn và toàn bộ xử lý cuối tháng | Viết phần kỳ hạn/interface/lãi, test và nội dung slide gửi người 2/9 |
+| 5 | [#6](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/6) | Nghiệp vụ ngân hàng và chuyển khoản toàn vẹn | Viết luồng chuyển khoản, test nguyên tử; rà nghiệp vụ bản JAR |
+| 6 | [#7](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/7) | Lịch sử và xuất CSV trọn luồng | Đầu mối bảng kiểm thử; viết immutable/composition và CSV |
+| 7 | [#8](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/8) | Toàn bộ giao diện tài khoản và giao dịch | Viết phần giao diện và ảnh/test; không tổng hợp slide/báo cáo |
+| 8 | [#9](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/9) | PIN và khóa tài khoản trọn luồng | Viết phần PIN/khóa, ảnh và test gửi người 2/9 |
+| 9 | [#10](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/10) | Biểu đồ, thống kê và tổng hợp slide | Đầu mối slide/video; viết phần thống kê/biểu đồ |
 
-Chốt commit `end of lab session`. Đây là mốc tối thiểu cuối buổi theo tài liệu; không coi hai giờ là thời gian hoàn thành toàn bộ ứng dụng.
-
-### Một tuần hoàn thiện
-
-| Ngày | Công việc chính | Điều kiện kết thúc |
-|---|---|---|
-| 1 | Cả nhóm chốt chữ ký phương thức, quy tắc và UML; tạo khung các lớp; nhóm model code nền, GUI dựng khung, biểu đồ dùng mẫu | Một project chung mở được; phân công và API đã chốt; nạp/rút cơ bản chạy được |
-| 2 | Model hoàn chỉnh; Bank/chuyển khoản; GUI, bảng và biểu đồ tiếp tục song song | Ghép được nạp/rút từ dialog vào model; chuyển khoản chạy ở tầng nghiệp vụ |
-| 3 | Ghép chuyển khoản, lịch sử, chi tiết, hai biểu đồ và cộng lãi | Một bản chạy xuyên suốt toàn bộ kịch bản bắt buộc, dù còn lỗi giao diện |
-| 4 | Hoàn thiện menu/icon/status/About, ghép PIN/CSV/InterestBearing; sửa số liệu; kiểm tra bảng yêu cầu | Tất cả yêu cầu có bản hoạt động; đóng gói thử JAR; dừng thêm chức năng |
-| 5 | Kiểm thử toàn bộ, sửa lỗi, thử trên máy trình chiếu; chụp ảnh bản ổn định | Các test đã có kết quả; JAR chạy ngoài Eclipse; ảnh và UML khớp bản chạy |
-| 6 | Chốt code và tài liệu; tập demo lần 1; rà zip và nộp theo hạn | Báo cáo, slide, UML, README, AI/Git hoàn chỉnh; có video dự phòng |
-| 7 | Tập phản biện từng người, demo lần 2; chỉ sửa lỗi chặn demo và kiểm tra lại | Cả 9 người có phần nói; tổng ≤10 phút; sẵn sàng bảo vệ |
-
-Viết nhật ký Git/AI và nội dung báo cáo cùng lúc làm từng phần; không để toàn bộ tài liệu đến ngày 6. Ngày 3 là mốc phải có bản ghép chạy được, không chờ đến ngày 6 mới ghép. Nếu bảo vệ ngay sau tuần này, dự kiến hoàn thành/nộp ngày 6 để có ít nhất một ngày đệm; hạn thực tế theo thông báo của thầy.
-
-## 7. Chia việc cho đúng 9 người
-
-Thay các số bằng tên thật khi nhóm chốt. Mỗi người phụ trách ít nhất hai lớp ứng dụng có ý nghĩa, có commit và có phần nói. Không tính enum, interface, Main chỉ có vài dòng hoặc BaseWindow sao chép từ đề là hai lớp tự viết cho một thành viên. Không tạo lớp cho đủ số lượng. Cả nhóm cần hiểu toàn bộ ứng dụng, đồng thời chịu trách nhiệm sâu nhất với phần mình làm.
-
-| Người | Phụ trách chính và lớp tự viết | Kết quả phải bàn giao | Hồ sơ phụ trách |
-|---|---|---|---|
-| 1 — trưởng nhóm | MainWindow, BankController; cấu hình Main/BaseWindow, Git và đóng gói | Cửa sổ chung, menu/toolbar/status; ghép các phần; JAR | README, kiểm tra zip, tổng hợp đóng góp/Git |
-| 2 — model nền | Account, Customer; bổ sung DemoDataFactory | Đóng gói số dư/lịch sử, nạp tiền, dữ liệu mẫu; thống nhất cơ chế cập nhật với người 5 | UML tổng thể và phần đóng gói |
-| 3 — quy tắc tài khoản | SavingsAccount, CheckingAccount; các exception tương ứng | Giới hạn rút theo tháng, thấu chi và lỗi biên | Phân cấp lớp, kế thừa/đa hình; test hai loại này |
-| 4 — kỳ hạn và lãi | FixedTermAccount, MonthlyInterestService; InterestBearing và thời gian mô phỏng | Loại thứ ba, cộng lãi và chống cộng trùng kỳ | Trừu tượng/interface; test đáo hạn và tính lãi |
-| 5 — ngân hàng và chuyển | Bank, TransferService; BankingOperations | Map tài khoản, nạp/rút/chuyển, toàn vẹn hai phía | Luồng giao dịch; test chuyển và lỗi giữa chừng |
-| 6 — lịch sử | Transaction, TransactionTableModel; enum và thông tin chuyển vào/ra | Giao dịch bất biến, bảng lịch sử đúng dữ liệu | Phần immutable/composition; tập hợp bảng test từ cả nhóm |
-| 7 — dialog | TransactionDialog, AboutDialog | Nhập liệu nạp/rút/chuyển; bắt lỗi và thông báo rõ | Ảnh dialog, phần xử lý sự kiện; dựng slide từ nội dung nhóm |
-| 8 — hiển thị tài khoản | AccountListRenderer, AccountDetailsPanel | Danh sách/icon theo loại, chi tiết tiếng Việt và VND | Ảnh cửa sổ, tổng hợp báo cáo từ phần mọi người gửi |
-| 9 — biểu đồ | ChartHelper, StatisticsService | Hai loại biểu đồ, tổng hợp số liệu chính xác và cập nhật | Phần biểu đồ; quay video demo dự phòng |
-
-Người 6/7/8 làm đầu mối kiểm thử/slide/báo cáo, nhưng mọi thành viên đều gửi nội dung, ảnh và test của phần mình. Người 1 có việc tích hợp xuyên suốt nên cần hỗ trợ đóng gói/rà hồ sơ từ người 6 và 9. Tỷ lệ đóng góp ghi theo việc thực tế, không mặc định mỗi người bằng nhau.
-
-### Phân công BONUS bổ sung — cập nhật 16/10/2026
-
-Nhóm chốt làm cùng trong một tuần; giữ nguyên nhiệm vụ 1–9, bổ sung phần phối hợp sau:
-
-| Công việc | Chủ trì | Phối hợp và file |
-| --- | --- | --- |
-| B01 — PIN và khóa sau 3 lần sai | Người 8 | PinService, PinCredential, AccountLockedException; người 7 làm LoginDialog, người 1 tích hợp, người 5 kiểm tra nghiệp vụ, người 2 chuẩn bị PIN demo |
-| B02 — CSV | Người 6 | CsvStatementExporter; người 1 thêm menu/nút và JFileChooser, người 9 đối chiếu dữ liệu |
-| B03 — InterestBearing | Người 4 | Người 3 cài đặt trên SavingsAccount, dùng các lớp đã giao; người 9 kiểm tra biểu đồ. Không tạo bản interface thứ hai |
-
-Ngày 3 có nghiệp vụ và dữ liệu mẫu, ngày 4 ghép, ngày 5 kiểm thử, ngày 6 chốt hồ sơ. Mọi người tự kiểm thử phần mình; người 6 tổng hợp kết quả. PIN/CSV vẫn gọi nghiệp vụ chung, không sửa số dư trong GUI hoặc bỏ qua kiểm tra khóa tại Bank.
-
-Quy tắc, tên file, ca BP01–BP09, BC01–BC05, BI01–BI03 và mẫu tạo Issue được công bố trong [tài liệu BONUS trên repository](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BONUS.md). Đây là kế hoạch cần thực hiện, chưa có kết quả kiểm thử thực tế.
-
-### Ghép các phần và làm việc hằng ngày
-
-- Chỉ người 1 chỉnh bố cục MainWindow; người 7/8/9 bàn giao dialog, panel và biểu đồ qua các phương thức đã thống nhất.
-- Người 2–5 chốt API model/nghiệp vụ ngày 1: kiểu tiền, kiểu thời gian, constructor, nạp/rút/chuyển, lấy lịch sử, tính lãi và exception. Ghi trong tài liệu API ngắn, thay đổi phải báo người dùng API đó.
-- Người 6 thống nhất cấu trúc Transaction với người 2/5/9 trước khi viết bảng hoặc thống kê.
-- Người 7 nhận BankingOperations/BankController để gọi nghiệp vụ, không truy cập trực tiếp trường số dư. Người 8 nhận Account để hiển thị. Người 9 nhận lịch sử chỉ đọc để tính dataset.
-- Đầu ngày trao đổi 10–15 phút về phần cần ghép; cuối ngày từng người gửi phần chạy được và kết quả kiểm tra. Người 1 ghép thành một bản chung, thông báo ngay lỗi chặn người khác.
-- Dùng nhánh theo phần việc, commit bằng tài khoản cá nhân. Một người rà thay đổi trước khi ghép; tránh sửa chung một file cùng lúc.
-- Ngày 1–2 GUI/biểu đồ có thể dùng dữ liệu mẫu đúng cấu trúc để không chờ model; ngày 3 phải thay bằng nghiệp vụ/lịch sử thực tế.
-- Hết ngày 4 dừng mở rộng chức năng. Ngày 5–7 ưu tiên sửa lỗi, hồ sơ và tập bảo vệ.
-
-Nếu một phần trễ hơn nửa ngày và chặn việc ghép, người 1 điều phối người đã xong sang hỗ trợ. Vẫn ghi đóng góp đúng thực tế; người phụ trách phải hiểu phần được hỗ trợ.
+Chi tiết file, điều kiện bàn giao và cách làm song song xem [BAN_GIAO.md](BAN_GIAO.md). Chốt chữ ký phương thức trong [API.md](API.md). PIN giao trọn người 8; UI tài khoản/giao dịch giao người 7; CSV/chọn file giao trọn người 6. Mọi tác giả cùng ghép và kiểm thử phần mình với người 1.
 
 ## 8. Kế hoạch kiểm thử
 
@@ -263,7 +212,7 @@ Phân bổ phần nói cho 9 người bên dưới là đề xuất điều ch�
 | 8 | Danh sách/chi tiết, menu/dialog và cập nhật giao diện | 60 giây |
 | 9 | Hai biểu đồ, dữ liệu thống kê và cập nhật sau giao dịch | 60 giây |
 
-Nội dung demo và giải thích phải phối hợp để tổng không quá 10 phút; tập bằng đồng hồ ngày 6 và 7. Cả 9 người tập trả lời ngẫu nhiên, không chỉ học phần mình nói.
+Nội dung demo và giải thích phải phối hợp để tổng không quá 10 phút; tập bằng đồng hồ ngày 20 và 21/10. Cả 9 người tập trả lời ngẫu nhiên, không chỉ học phần mình nói.
 
 Demo bắt buộc: chọn tài khoản không thấu chi → rút quá số dư để hiện lỗi → chuyển khoản giữa hai tài khoản → xem lịch sử hai phía và đường số dư → mô phỏng cộng lãi cuối tháng. Trong demo cũng chỉ ra menu, toolbar, dialog và biểu đồ cột. Chuẩn bị số tiền/đối tượng trước, không nhập ngẫu nhiên khi bảo vệ.
 
