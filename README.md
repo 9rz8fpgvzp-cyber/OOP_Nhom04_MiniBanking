@@ -145,6 +145,37 @@ Package gốc: `vn.edu.ptit.oop.nhom04`.
 | `src/resources/icons` | Icon khi tích hợp; nạp qua `/resources/icons/...` |
 | `docs` | UML, ảnh, kiểm thử và tài liệu khi bổ sung |
 
+### File cụ thể cho từng nhiệm vụ
+
+Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`. Ví dụ `model/Customer.java` là file trong package `vn.edu.ptit.oop.nhom04.model`.
+
+| Nhiệm vụ | File sẽ viết / tiếp tục sửa | Phạm vi phối hợp |
+| --- | --- | --- |
+| 1 | `ui/MainWindow.java` (đã có), `ui/BankController.java` (tạo mới); duy trì `Main.java` | Giữ khung `common/BaseWindow.java` của thầy; tích hợp thành phần của mọi người |
+| 2 | `model/Customer.java`, `model/Account.java`, `util/DemoDataFactory.java` | Chốt Account và cách cập nhật trạng thái với người 3/4/5/6 |
+| 3 | `model/SavingsAccount.java`, `model/CheckingAccount.java`, `exception/InsufficientFundsException.java`, `exception/WithdrawalLimitExceededException.java` | Dùng Account của người 2; thống nhất exception trước khi các lớp khác gọi |
+| 4 | `model/FixedTermAccount.java`, `model/InterestBearing.java` (interface), `service/MonthlyInterestService.java`, `exception/AccountNotMaturedException.java` | Cộng lãi cho các loại hưởng lãi; phối hợp Bank và GUI |
+| 5 | `service/Bank.java`, `service/TransferService.java`, `service/BankingOperations.java` (interface), `exception/InvalidAmountException.java`, `exception/AccountNotFoundException.java` | Chốt InvalidAmountException sớm cho người 2/3; cung cấp API cho người 1/7 |
+| 6 | `model/Transaction.java`, `model/TransactionType.java` (enum), `ui/TransactionTableModel.java` | Chốt dữ liệu giao dịch với người 2/5/9 |
+| 7 | `ui/dialogs/TransactionDialog.java`, `ui/dialogs/AboutDialog.java` | Nạp/rút/chuyển dùng chung dialog, gọi API nghiệp vụ |
+| 8 | `ui/AccountListRenderer.java`, `ui/panels/AccountDetailsPanel.java` | Bàn giao danh sách/chi tiết cho người 1; không tự sửa số dư |
+| 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Đọc lịch sử và tạo hai biểu đồ; phối hợp thư viện JFreeChart với người 1 |
+
+Danh sách trên là **vị trí file đã thống nhất để bắt đầu**, không có nghĩa các chức năng đã được cài đặt. Hiện các file Java đã có vẫn là Main, BaseWindow và MainWindow. Người phụ trách tạo file của mình trên nhánh riêng; các interface, enum và exception được tạo sớm khi phần khác cần dùng. Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.
+
+Git không lưu thư mục rỗng. Các thư mục mới có README giải thích người phụ trách và tên file cần tạo, nhờ đó chúng xuất hiện trên GitHub ngay cả khi chưa có Java. Thư mục `repository` chưa cần lớp vì bản tuần này dùng bộ nhớ; không tạo lớp chỉ để lấp thư mục.
+
+### Tạo lớp trong Eclipse
+
+1. Clone/import project và tạo nhánh của mình theo mục 5.
+2. Mở `src`, chọn đúng package. Nếu chưa thấy package đó: chuột phải `src` → **New → Package**, nhập tên đầy đủ.
+3. Chuột phải package → **New → Class**, chỉ nhập tên lớp, ví dụ `Customer`; Eclipse tự thêm `.java` và dòng `package`.
+4. Với `InterestBearing`/`BankingOperations`, chọn **New → Interface**; với `TransactionType`, chọn **New → Enum**. Với Account, chọn modifier **abstract** khi tạo lớp.
+5. Chỉ đánh dấu tạo `public static void main` cho Main. Các lớp khác không cần hàm main riêng.
+6. Viết code, Ctrl + S, chạy kiểm tra rồi commit/push/PR phần mình. Tệp README trong package là hướng dẫn, không phải chỗ dán code Java.
+
+Ví dụ người 2: chuột phải package `vn.edu.ptit.oop.nhom04.model` → New → Class → Name: `Customer` → Finish. File được tạo tại `src/vn/edu/ptit/oop/nhom04/model/Customer.java`.
+
 Trước khi làm sâu, người phụ trách model/nghiệp vụ thống nhất constructor, tên phương thức, kiểu tiền, thời gian mô phỏng, exception và cấu trúc Transaction trong Issue. Đề xuất dùng **BigDecimal** cho tiền. Quy tắc chuyển tiền ra có tính lượt rút, cách chốt tháng/lãi và phạm vi thống kê phải được cả nhóm ghi rõ.
 
 - Chỉ người phụ trách nhiệm vụ 1 sửa bố cục chính của MainWindow; các thành viên khác bàn giao dialog/panel/dataset qua API thống nhất.
