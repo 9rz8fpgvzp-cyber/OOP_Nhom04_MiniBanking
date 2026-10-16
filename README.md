@@ -3,6 +3,7 @@
 Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng dụng ngân hàng giả lập bằng **Java Swing**, chạy trên **một máy**. Nhóm có **9 thành viên**, thời gian thực hiện **1 tuần**.
 
 - [Repository của nhóm](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking)
+- [Sơ đồ luồng ứng dụng và phối hợp 9 người](docs/LUONG_TONG_QUAN.md)
 - [Bảng phân công tổng — Issue #1](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/1)
 - [Các công việc trong Issues](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues)
 - [Các Pull Request](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/pulls)

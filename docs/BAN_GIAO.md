@@ -2,6 +2,8 @@
 
 Bản phân công hiện hành, thay các mốc “ngày 1–7” và phân công cũ. 9 người, Java Swing trên một máy; giữ đầy đủ yêu cầu bắt buộc và bonus PIN/CSV/InterestBearing.
 
+**Đọc trước:** [Sơ đồ luồng ứng dụng và cách nối phần của 9 người](LUONG_TONG_QUAN.md).
+
 | Người | Issue | Phần phụ trách trọn luồng | Hồ sơ |
 | --- | --- | --- | --- |
 | 1 — bạn | [#3](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/issues/3) | Cửa sổ chính và tích hợp | README, bảng đóng góp/Git và cấu trúc gói nộp |
