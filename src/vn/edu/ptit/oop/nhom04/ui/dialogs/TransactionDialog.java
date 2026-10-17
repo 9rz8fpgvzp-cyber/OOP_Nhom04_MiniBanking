@@ -37,7 +37,6 @@ public class TransactionDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Gọi callback nghiệp vụ tại đây
         JOptionPane.showMessageDialog(this, "Thao tác gửi yêu cầu thành công!");
         clearInputs();
         dispose();

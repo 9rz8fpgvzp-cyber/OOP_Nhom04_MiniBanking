@@ -16,12 +16,11 @@ public class AccountListRenderer extends JPanel implements ListCellRenderer<Obje
         add(lblBalance, BorderLayout.EAST);
     }
 
-    @Override
+
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        // Sau này khi ghép code sẽ cast value về AccountSummary
         if (value != null) {
             lblAccountInfo.setText(value.toString());
-            lblBalance.setText("0 VND"); // Định dạng tiền tệ VND
+            lblBalance.setText("0 VND"); 
         } else {
             lblAccountInfo.setText("");
             lblBalance.setText("");

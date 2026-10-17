@@ -20,5 +20,6 @@ public class MainWindow extends BaseWindow {
         titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
         add(titleLabel, BorderLayout.CENTER);
         setStatus("Sẵn sàng");
+        
     }
 }
