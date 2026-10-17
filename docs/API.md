@@ -104,8 +104,10 @@ public BigDecimal getAnnualInterestRate();
 public LocalDate getMaturityDate();
 public Transaction withdraw(BigDecimal amount, LocalDateTime time);
 
-// model.InterestBearing — người 4
-BigDecimal calculateMonthlyInterest();
+// model/InterestBearing.java — người 4
+public interface InterestBearing {
+    BigDecimal calculateMonthlyInterest();
+}
 ```
 
 - Savings: tối đa 3 lần rút/chuyển ra thành công trong YearMonth; không vượt số dư. `getRemainingWithdrawals` không tự sửa trạng thái. `onWithdrawalCommitted` ghi lượt theo tháng của thao tác. Khi đổi tháng, lượt tháng mới là 0; thao tác lỗi không đổi bộ đếm/tháng.
