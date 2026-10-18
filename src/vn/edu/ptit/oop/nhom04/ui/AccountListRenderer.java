@@ -2,28 +2,37 @@ package vn.edu.ptit.oop.nhom04.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.NumberFormat;
-import java.util.Locale;
+import vn.edu.ptit.oop.nhom04.model.AccountSummary;
 
-public class AccountListRenderer extends JPanel implements ListCellRenderer<Object> {
-    private JLabel lblAccountInfo = new JLabel();
-    private JLabel lblBalance = new JLabel();
+public class AccountListRenderer extends JPanel implements ListCellRenderer<AccountSummary> {
+    private JLabel lblAccountNumber = new JLabel();
+    private JLabel lblAccountType = new JLabel();
 
     public AccountListRenderer() {
-        setLayout(new BorderLayout(5, 5));
+        setLayout(new BorderLayout(10, 5));
         setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        add(lblAccountInfo, BorderLayout.CENTER);
-        add(lblBalance, BorderLayout.EAST);
+
+        lblAccountNumber.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        lblAccountType.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 12));
+
+        add(lblAccountNumber, BorderLayout.CENTER);
+        add(lblAccountType, BorderLayout.EAST);
     }
 
+    @Override
+    public Component getListCellRendererComponent(
+            JList<? extends AccountSummary> list, 
+            AccountSummary value, 
+            int index, 
+            boolean isSelected, 
+            boolean cellHasFocus) {
 
-    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if (value != null) {
-            lblAccountInfo.setText(value.toString());
-            lblBalance.setText("0 VND"); 
+            lblAccountNumber.setText("STK: " + value.accountNumber());
+            lblAccountType.setText(value.type() != null ? value.type().toString() : "");
         } else {
-            lblAccountInfo.setText("");
-            lblBalance.setText("");
+            lblAccountNumber.setText("");
+            lblAccountType.setText("");
         }
 
         if (isSelected) {
