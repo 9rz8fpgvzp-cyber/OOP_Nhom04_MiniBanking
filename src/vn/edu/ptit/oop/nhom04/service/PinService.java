@@ -30,9 +30,7 @@ public class PinService {
         }
 
         if (credentials.containsKey(accountNumber)) {
-            throw new IllegalArgumentException(
-                "Tài khoản đã đăng ký PIN, không thể ghi đè."
-            );
+            throw new IllegalArgumentException("Tài khoản đã đăng ký PIN, không thể ghi đè.");
         }
 
         credentials.put(accountNumber, new PinCredential(pin));
@@ -57,9 +55,7 @@ public class PinService {
         credential.recordFailedAttempt();
 
         if (credential.isLocked()) {
-            throw new AccountLockedException(
-                "Nhập sai PIN 3 lần. Tài khoản đã bị khóa."
-            );
+            throw new AccountLockedException("Nhập sai PIN 3 lần. Tài khoản đã bị khóa.");
         }
 
         return false;
@@ -76,9 +72,7 @@ public class PinService {
     public synchronized boolean isAuthenticated(String accountNumber) {
         PinCredential credential = credentials.get(accountNumber);
 
-        return credential != null
-            && !credential.isLocked()
-            && accountNumber.equals(authenticatedAccountNumber);
+        return credential != null && !credential.isLocked() && accountNumber.equals(authenticatedAccountNumber);
     }
 
     public synchronized Optional<String> getAuthenticatedAccountNumber() {
@@ -101,9 +95,7 @@ public class PinService {
         }
 
         if (!isAuthenticated(accountNumber)) {
-            throw new AuthenticationRequiredException(
-                "Bạn cần xác thực PIN của tài khoản này."
-            );
+            throw new AuthenticationRequiredException("Bạn cần xác thực PIN của tài khoản này.");
         }
     }
 
@@ -115,9 +107,7 @@ public class PinService {
         PinCredential credential = credentials.get(accountNumber);
 
         if (credential == null) {
-            throw new AccountNotFoundException(
-                "Không tìm thấy tài khoản: " + accountNumber
-            );
+            throw new AccountNotFoundException("Không tìm thấy tài khoản: " + accountNumber);
         }
 
         return credential;

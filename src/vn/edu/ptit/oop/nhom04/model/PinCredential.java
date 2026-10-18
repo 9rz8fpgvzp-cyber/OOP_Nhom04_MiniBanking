@@ -23,8 +23,7 @@ public final class PinCredential {
 
     public PinCredential(char[] pin) {
         if (!isValidPin(pin)) {
-            throw new IllegalArgumentException(
-                "PIN phải gồm đúng 6 chữ số.");
+            throw new IllegalArgumentException("PIN phải gồm đúng 6 chữ số.");
         }
 
         salt = new byte[SALT_LENGTH];
@@ -47,22 +46,15 @@ public final class PinCredential {
     }
 
     private static byte[] hashPin(char[] pin, byte[] salt) {
-        PBEKeySpec spec = new PBEKeySpec(
-            pin, salt, ITERATIONS, KEY_LENGTH
-        );
+        PBEKeySpec spec = new PBEKeySpec(pin, salt, ITERATIONS, KEY_LENGTH);
 
         try {
-            SecretKeyFactory factory =
-                SecretKeyFactory.getInstance(
-                    "PBKDF2WithHmacSHA256"
-                );
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
             return factory.generateSecret(spec).getEncoded();
 
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(
-                "Không thể xử lý PIN.", e
-            );
+            throw new IllegalStateException("Không thể xử lý PIN.", e);
         } finally {
             spec.clearPassword();
         }
@@ -76,9 +68,7 @@ public final class PinCredential {
         byte[] inputHash = hashPin(inputPin, salt);
 
         try {
-            return MessageDigest.isEqual(
-                pinHash, inputHash
-            );
+            return MessageDigest.isEqual(pinHash, inputHash);
         } finally {
             Arrays.fill(inputHash, (byte) 0);
         }
@@ -103,9 +93,7 @@ public final class PinCredential {
     }
 
     public int getRemainingAttempts() {
-        return locked
-            ? 0
-            : MAX_ATTEMPTS - failedAttempts;
+        return locked ? 0 : MAX_ATTEMPTS - failedAttempts;
     }
 
     public boolean isLocked() {
