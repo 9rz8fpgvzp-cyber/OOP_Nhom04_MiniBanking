@@ -1,39 +1,55 @@
-
 package vn.edu.ptit.oop.nhom04.service;
 
-import java.time.YearMonth;
-import java.util.Objects;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-public class SimulationClock {
+/**
+ * Đồng hồ mô phỏng dùng chung cho toàn bộ hệ thống.
+ * Thuộc sở hữu của Người 4 theo API v1.
+ */
+public class SimulationClock extends Clock {
+    private Instant currentInstant;
+    private final ZoneId zone;
 
-    // Tháng và năm đang được mô phỏng
-    private YearMonth currentMonth;
-
-    // Khởi tạo thời gian mô phỏng
-    public SimulationClock(YearMonth startMonth) {
-        this.currentMonth = Objects.requireNonNull(
-            startMonth,
-            "Thang bat dau khong duoc null"
-        );
+    public SimulationClock(Instant initialInstant, ZoneId zone) {
+        if (initialInstant == null || zone == null) {
+            throw new IllegalArgumentException("initialInstant và zone không được null");
+        }
+        this.currentInstant = initialInstant;
+        this.zone = zone;
     }
 
-    // Lấy tháng/năm hiện tại
-    public YearMonth getCurrentMonth() {
-        return currentMonth;
+    @Override
+    public ZoneId getZone() {
+        return zone;
     }
 
-    // Lấy số tháng hiện tại
-    public int getMonth() {
-        return currentMonth.getMonthValue();
+    @Override
+    public Clock withZone(ZoneId zone) {
+        if (this.zone.equals(zone)) {
+            return this;
+        }
+        return new SimulationClock(this.currentInstant, zone);
     }
 
-    // Lấy năm hiện tại
-    public int getYear() {
-        return currentMonth.getYear();
+    @Override
+    public Instant instant() {
+        return currentInstant;
     }
 
-    // Chuyển sang tháng tiếp theo
-    public void nextMonth() {
-        currentMonth = currentMonth.plusMonths(1);
+    /**
+     * Chuyển thời gian sang 00:00:00 ngày đầu tiên của tháng tiếp theo.
+     */
+    public void advanceToNextMonth() {
+        ZonedDateTime zdt = currentInstant.atZone(zone);
+        ZonedDateTime nextMonthStart = zdt.plusMonths(1)
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
+        this.currentInstant = nextMonthStart.toInstant();
     }
 }
