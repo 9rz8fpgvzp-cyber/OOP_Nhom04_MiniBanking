@@ -87,17 +87,23 @@ public class PinService {
         return Optional.of(authenticatedAccountNumber);
     }
 
-    public synchronized void requireAuthenticated(String accountNumber) {
-        PinCredential credential = credentials.get(accountNumber);
 
-        if (credential != null && credential.isLocked()) {
-            throw new AccountLockedException("Tài khoản đã bị khóa.");
-        }
+public synchronized void requireAuthenticated(String accountNumber) {
+    PinCredential credential = credentials.get(accountNumber);
 
-        if (!isAuthenticated(accountNumber)) {
-            throw new AuthenticationRequiredException("Bạn cần xác thực PIN của tài khoản này.");
-        }
+    if (credential == null) {
+        throw new AuthenticationRequiredException("Tai khoan chua co thong tin xac thuc PIN.");
     }
+
+    if (credential.isLocked()) {
+        throw new AccountLockedException("Tai khoan da bi khoa.");
+    }
+
+    if (!isAuthenticated(accountNumber)) {
+        throw new AuthenticationRequiredException("Ban can xac thuc PIN cua tai khoan nay.");
+    }
+}
+
 
     public synchronized void logout() {
         authenticatedAccountNumber = null;
