@@ -88,21 +88,21 @@ public class PinService {
     }
 
 
-public synchronized void requireAuthenticated(String accountNumber) {
-    PinCredential credential = credentials.get(accountNumber);
+    public synchronized void requireAuthenticated(String accountNumber) {
+    	PinCredential credential = credentials.get(accountNumber);
 
-    if (credential == null) {
-        throw new AuthenticationRequiredException("Tai khoan chua co thong tin xac thuc PIN.");
-    }
+    	if (credential == null) {
+    		throw new AuthenticationRequiredException("Tai khoan chua co thong tin xac thuc PIN.");
+    	}
 
-    if (credential.isLocked()) {
-        throw new AccountLockedException("Tai khoan da bi khoa.");
-    }
+    	if (credential.isLocked()) {
+    		throw new AccountLockedException("Tai khoan da bi khoa.");
+    	}
 
-    if (!isAuthenticated(accountNumber)) {
-        throw new AuthenticationRequiredException("Ban can xac thuc PIN cua tai khoan nay.");
+    	if (!isAuthenticated(accountNumber)) {
+    		throw new AuthenticationRequiredException("Ban can xac thuc PIN cua tai khoan nay.");
+    	}
     }
-}
 
 
     public synchronized void logout() {
