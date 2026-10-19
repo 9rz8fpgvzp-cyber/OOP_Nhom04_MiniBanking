@@ -1,38 +1,65 @@
 package vn.edu.ptit.oop.nhom04.service;
 
+import vn.edu.ptit.oop.nhom04.model.Transaction;
+import vn.edu.ptit.oop.nhom04.model.TransactionType;
+
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class StatisticsService {
 
-    // Tính tổng số dư toàn hệ thống (dùng BigDecimal theo quy định nhóm)
-    public BigDecimal calculateTotalBalance() {
-        // TODO: Khi Người 5 xong Bank/Operations, thay bằng dữ liệu thật
-        return new BigDecimal("5200000000"); 
+    public StatisticsService() {
     }
 
-    // Đếm số lượng tài khoản theo từng loại
-    public Map<String, Integer> countAccountsByType() {
-        Map<String, Integer> counts = new HashMap<>();
-        // Dữ liệu mẫu ban đầu để vẽ biểu đồ tròn
-        counts.put("Tài khoản thanh toán", 65);
-        counts.put("Tài khoản tiết kiệm", 35);
-        return counts;
+    public BigDecimal totalDeposits(List<Transaction> transactions) {
+        if (transactions == null || transactions.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        return transactions.stream()
+                .filter(t -> t.getType() == TransactionType.DEPOSIT)
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    // Thống kê dòng tiền theo tháng (triệu VNĐ)
-    public Map<String, Double> getMonthlyCashFlow() {
-        Map<String, Double> flow = new HashMap<>();
-        flow.put("Tháng 7", 120.0);
-        flow.put("Tháng 8", 190.0);
-        flow.put("Tháng 9", 150.0);
-        flow.put("Tháng 10", 210.0);
-        return flow;
+    public BigDecimal totalWithdrawals(List<Transaction> transactions) {
+        if (transactions == null || transactions.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        return transactions.stream()
+                .filter(t -> t.getType() == TransactionType.WITHDRAW)
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    // Đếm tổng số lượng tài khoản
-    public int countTotalAccounts() {
-        return 1250;
+    public Map<LocalDate, BigDecimal> depositsByDay(List<Transaction> transactions) {
+        if (transactions == null || transactions.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<LocalDate, BigDecimal> map = new TreeMap<>();
+        for (Transaction t : transactions) {
+            if (t.getType() == TransactionType.DEPOSIT) {
+                LocalDate date = t.getTimestamp().toLocalDate();
+                map.merge(date, t.getAmount(), BigDecimal::add);
+            }
+        }
+        return map;
+    }
+
+    public Map<LocalDate, BigDecimal> withdrawalsByDay(List<Transaction> transactions) {
+        if (transactions == null || transactions.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<LocalDate, BigDecimal> map = new TreeMap<>();
+        for (Transaction t : transactions) {
+            if (t.getType() == TransactionType.WITHDRAW) {
+                LocalDate date = t.getTimestamp().toLocalDate();
+                map.merge(date, t.getAmount(), BigDecimal::add);
+            }
+        }
+        return map;
     }
 }
