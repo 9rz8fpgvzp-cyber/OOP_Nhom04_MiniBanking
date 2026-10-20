@@ -149,3 +149,40 @@ public class ChartHelper {
     }
 }
 
+
+
+// 
+public static void main(String[] args) {
+SwingUtilities.invokeLater(() -> {
+    JFrame frame = new JFrame("Kiểm Thử Biểu Đồ - Người 9");
+    frame.setSize(1100, 550);
+    frame.setLocationRelativeTo(null);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLayout(new GridLayout(1, 2, 12, 12));
+
+    // Dữ liệu giả lập test thử
+    vn.edu.ptit.oop.nhom04.model.Account sampleAcc = 
+        new vn.edu.ptit.oop.nhom04.model.Account(new java.math.BigDecimal("10000000"), java.time.LocalDateTime.now().minusDays(10));
+    
+    java.util.List<vn.edu.ptit.oop.nhom04.model.Transaction> list = new java.util.ArrayList<>();
+    list.add(new vn.edu.ptit.oop.nhom04.model.Transaction(
+        vn.edu.ptit.oop.nhom04.model.TransactionType.DEPOSIT, 
+        new java.math.BigDecimal("5000000"), 
+        java.time.LocalDateTime.now().minusDays(5), 
+        new java.math.BigDecimal("15000000")));
+    list.add(new vn.edu.ptit.oop.nhom04.model.Transaction(
+        vn.edu.ptit.oop.nhom04.model.TransactionType.WITHDRAW, 
+        new java.math.BigDecimal("3000000"), 
+        java.time.LocalDateTime.now().minusDays(2), 
+        new java.math.BigDecimal("12000000")));
+
+    vn.edu.ptit.oop.nhom04.service.StatisticsService stats = new vn.edu.ptit.oop.nhom04.service.StatisticsService();
+    ChartHelper helper = new ChartHelper(stats);
+
+    frame.add(helper.createBalanceChart(sampleAcc, list));
+    frame.add(helper.createDepositWithdrawalChart(list));
+    frame.setVisible(true);
+});
+}
+
+} // 
