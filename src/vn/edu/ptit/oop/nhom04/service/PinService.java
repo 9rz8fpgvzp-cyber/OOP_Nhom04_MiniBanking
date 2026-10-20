@@ -89,11 +89,7 @@ public class PinService {
 
 
     public synchronized void requireAuthenticated(String accountNumber) {
-    	PinCredential credential = credentials.get(accountNumber);
-
-    	if (credential == null) {
-    		throw new AuthenticationRequiredException("Tai khoan chua co thong tin xac thuc PIN.");
-    	}
+        PinCredential credential = getCredential(accountNumber);
 
     	if (credential.isLocked()) {
     		throw new AccountLockedException("Tai khoan da bi khoa.");
