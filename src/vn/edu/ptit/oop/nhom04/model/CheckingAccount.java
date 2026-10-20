@@ -30,7 +30,7 @@ public class CheckingAccount extends Account {
      * Khả dụng = balance + overdraftLimit (Cho phép số dư tài khoản chi tiêu âm trong hạn mức)
      */
     public BigDecimal getAvailableBalance() {
-        return this.balance.add(this.overdraftLimit);
+        return getBalance().add(this.overdraftLimit);
     }
 
     @Override
