@@ -33,8 +33,8 @@ public class ChartHelper {
     private static final Color COLOR_TEAL     = Color.decode("#3B7B7A");
     private static final Color COLOR_CHARCOAL = Color.decode("#414643");
 
-    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM");
-    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("dd/MM HH:mm");
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public ChartHelper(StatisticsService statistics) {
         this.statistics = statistics;
@@ -149,27 +149,3 @@ public class ChartHelper {
     }
 }
 
-
-//--- HÀM MAIN TẠM THỜI ĐỂ TỰ CHẠY TEST ĐỘC LẬP ---
-public static void main(String[] args) {
-    SwingUtilities.invokeLater(() -> {
-        JFrame frame = new JFrame("Test Biểu Đồ - Người 9");
-        frame.setSize(1000, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(1, 2, 10, 10));
-
-        // Khởi tạo service và helper
-        StatisticsService stats = new StatisticsService();
-        ChartHelper helper = new ChartHelper(stats);
-
-        // Dùng dữ liệu thật từ model nhóm bạn hoặc truyền null để test hiển thị biểu đồ rỗng
-        // (Khi nhóm bạn ráp xong model Account/Transaction thì truyền danh sách mẫu vào đây)
-        JPanel pnlBalance = helper.createBalanceChart(null, java.util.Collections.emptyList());
-        JPanel pnlBar = helper.createDepositWithdrawalChart(java.util.Collections.emptyList());
-
-        frame.add(pnlBalance);
-        frame.add(pnlBar);
-        frame.setVisible(true);
-    });
-}
