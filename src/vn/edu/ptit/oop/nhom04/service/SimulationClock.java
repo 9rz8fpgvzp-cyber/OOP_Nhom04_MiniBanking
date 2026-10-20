@@ -48,13 +48,17 @@ public final class SimulationClock extends Clock {
         }
     }
 
-    // Cộng thêm 1 tháng
+    // Cộng thêm cho đến ngày đầu tháng kế tiếp
     public void advanceToNextMonth() {
         synchronized (state) {
-            state.instant = state.instant
-                    .atZone(zone)
-                    .plusMonths(1)
-                    .toInstant();
+            LocalDate first = YearMonth
+                .from(state.instant.atZone(zone))
+                .plusMonths(1)
+                .atDay(1);
+            
+            state.instant = state.first
+                .atStartOfDay(zone)
+                .toInstant();
         }
     }
 }
