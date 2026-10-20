@@ -18,7 +18,6 @@ import vn.edu.ptit.oop.nhom04.model.Transaction;
 import vn.edu.ptit.oop.nhom04.service.BankingOperations;
 import vn.edu.ptit.oop.nhom04.util.CsvStatementExporter;
 
-/** Xuất sao kê CSV cho tài khoản đang chọn. Quyền truy cập do Bank kiểm tra. */
 public class CsvExportAction extends AbstractAction {
     private static final long serialVersionUID = 1L;
     private static final String TITLE = "Xuất sao kê CSV";
