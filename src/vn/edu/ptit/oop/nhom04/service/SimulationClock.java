@@ -56,7 +56,7 @@ public final class SimulationClock extends Clock {
                 .plusMonths(1)
                 .atDay(1);
             
-            state.instant = state.first
+            state.instant = first
                 .atStartOfDay(zone)
                 .toInstant();
         }
