@@ -82,7 +82,7 @@ public class SavingsAccount extends Account implements InterestBearing {
         }
 
         // Kiểm tra biên số dư khả dụng gốc
-        if (this.balance.compareTo(amount) < 0) {
+        if (getBalance().compareTo(amount) < 0) {
             throw new InsufficientFundsException("Số dư tài khoản tiết kiệm không đủ để thực hiện giao dịch");
         }
     }
@@ -93,11 +93,11 @@ public class SavingsAccount extends Account implements InterestBearing {
      */
     @Override
     public BigDecimal calculateMonthlyInterest() {
-        if (this.balance.compareTo(BigDecimal.ZERO) <= 0) {
+        if (getBalance().compareTo(BigDecimal.ZERO) <= 0) {
             return BigDecimal.ZERO.setScale(0, RoundingMode.HALF_UP);
         }
         
-        return this.balance.multiply(this.annualInterestRate)
+        return getBalance().multiply(this.annualInterestRate)
                 .divide(BigDecimal.valueOf(12), 0, RoundingMode.HALF_UP);
     }
 }
