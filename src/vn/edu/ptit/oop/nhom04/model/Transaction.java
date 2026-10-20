@@ -27,10 +27,16 @@ public final class Transaction {
                 || timestamp == null || balanceAfter == null || description == null) {
             throw new IllegalArgumentException("Dữ liệu giao dịch không được để trống.");
         }
+        
         if (amount == null || amount.signum() <= 0) {
             throw new IllegalArgumentException("Số tiền giao dịch phải lớn hơn 0.");
         }
+        if (amount.remainder(BigDecimal.ONE).signum() != 0) {
+            throw new IllegalArgumentException("Số tiền phải là số nguyên đồng, không có phần lẻ.");
+        }
         boolean isTransfer = (type == TransactionType.TRANSFER);
+        
+        
         if (isTransfer && direction == TransactionDirection.NONE) {
             throw new IllegalArgumentException("Chuyển khoản phải có chiều IN hoặc OUT.");
         }
@@ -43,8 +49,8 @@ public final class Transaction {
         this.accountType = accountType;
         this.type = type;
         this.direction = direction;
-        this.amount = amount;          // BigDecimal bất biến
-        this.timestamp = timestamp;    // LocalDateTime bất biến
+        this.amount = amount;          
+        this.timestamp = timestamp;    
         this.balanceAfter = balanceAfter;
         this.description = description;
     }
