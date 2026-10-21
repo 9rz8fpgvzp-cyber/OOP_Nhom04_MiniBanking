@@ -1,39 +1,64 @@
-
 package vn.edu.ptit.oop.nhom04.service;
 
-import java.time.YearMonth;
+import java.time.*;
 import java.util.Objects;
 
-public class SimulationClock {
+public final class SimulationClock extends Clock {
 
-    // Tháng và năm đang được mô phỏng
-    private YearMonth currentMonth;
+    private final State state;
+    private final ZoneId zone;
 
-    // Khởi tạo thời gian mô phỏng
-    public SimulationClock(YearMonth startMonth) {
-        this.currentMonth = Objects.requireNonNull(
-            startMonth,
-            "Thang bat dau khong duoc null"
-        );
+    private static final class State {
+        private Instant instant;
+
+        State(Instant instant) {
+            this.instant = instant;
+        }
     }
 
-    // Lấy tháng/năm hiện tại
-    public YearMonth getCurrentMonth() {
-        return currentMonth;
+    // Tạo đồng hồ với thời gian thiết bị
+    public SimulationClock() {
+        this(Instant.now(), ZoneId.systemDefault());
     }
 
-    // Lấy số tháng hiện tại
-    public int getMonth() {
-        return currentMonth.getMonthValue();
+    // Tạo đồng hồ với thời gian tùy chỉnh
+    public SimulationClock(Instant instant, ZoneId zone) {
+        this(new State(Objects.requireNonNull(instant)), zone);
     }
 
-    // Lấy năm hiện tại
-    public int getYear() {
-        return currentMonth.getYear();
+    private SimulationClock(State state, ZoneId zone) {
+        this.state = state;
+        this.zone = Objects.requireNonNull(zone);
     }
 
-    // Chuyển sang tháng tiếp theo
-    public void nextMonth() {
-        currentMonth = currentMonth.plusMonths(1);
+    @Override
+    public ZoneId getZone() {
+        return zone;
+    }
+
+    @Override
+    public Clock withZone(ZoneId zone) {
+        return new SimulationClock(state, zone);
+    }
+
+    @Override
+    public Instant instant() {
+        synchronized (state) {
+            return state.instant;
+        }
+    }
+
+    // Cộng thêm cho đến ngày đầu tháng kế tiếp
+    public void advanceToNextMonth() {
+        synchronized (state) {
+            LocalDate first = YearMonth
+                .from(state.instant.atZone(zone))
+                .plusMonths(1)
+                .atDay(1);
+            
+            state.instant = first
+                .atStartOfDay(zone)
+                .toInstant();
+        }
     }
 }
