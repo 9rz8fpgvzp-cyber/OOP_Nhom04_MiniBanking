@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import vn.edu.ptit.oop.nhom04.model.Account;
 import vn.edu.ptit.oop.nhom04.model.CheckingAccount;
 import vn.edu.ptit.oop.nhom04.model.Customer;
@@ -130,13 +132,25 @@ public final class DemoDataFactory {
      * @param accounts   Danh sách tài khoản cần đăng ký PIN
      */
     public static void registerDemoPins(PinService pinService, List<Account> accounts) {
-        if (pinService == null || accounts == null) {
-            return;
+        Objects.requireNonNull(pinService, "Dịch vụ PIN không được null.");
+        Objects.requireNonNull(accounts, "Danh sách tài khoản không được null.");
+        List<Account> snapshot = List.copyOf(accounts);
+
+        // Kiểm tra cả danh sách trước khi đăng ký, tránh làm dở khi dữ liệu mẫu sai.
+        Set<String> accountNumbers = new HashSet<>();
+        for (Account account : snapshot) {
+            String accNum = account.getAccountNumber();
+            if (!DEMO_PIN_MAP.containsKey(accNum)) {
+                throw new IllegalArgumentException("Không có PIN mẫu cho tài khoản: " + accNum);
+            }
+            if (!accountNumbers.add(accNum)) {
+                throw new IllegalArgumentException("Trùng số tài khoản mẫu: " + accNum);
+            }
         }
 
-        for (Account account : accounts) {
+        for (Account account : snapshot) {
             String accNum = account.getAccountNumber();
-            String pinStr = DEMO_PIN_MAP.getOrDefault(accNum, "123456");
+            String pinStr = DEMO_PIN_MAP.get(accNum);
             char[] pinChars = pinStr.toCharArray();
             try {
                 pinService.registerPin(accNum, pinChars);
