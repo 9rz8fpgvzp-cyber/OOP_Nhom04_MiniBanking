@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.time.Duration;
+import java.time.Instant;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -19,7 +21,7 @@ public final class PinCredential {
     private final byte[] pinHash;
 
     private int failedAttempts = 0;
-    private boolean locked = false;
+    private Instant lockedUntil;
 
     public PinCredential(char[] pin) {
         if (!isValidPin(pin)) {
@@ -61,7 +63,7 @@ public final class PinCredential {
     }
 
     public boolean matches(char[] inputPin) {
-        if (locked || !isValidPin(inputPin)) {
+        if (!isValidPin(inputPin)) {
             return false;
         }
 
@@ -74,29 +76,60 @@ public final class PinCredential {
         }
     }
 
-    public void recordFailedAttempt() {
-        if (locked) {
+    public void recordFailedAttempt(Instant now) {
+        if (isLocked(now)) {
             return;
         }
 
         failedAttempts++;
 
         if (failedAttempts >= MAX_ATTEMPTS) {
-            locked = true;
+            lockedUntil = now.plusSeconds(30);
         }
     }
 
-    public void resetFailedAttempts() {
-        if (!locked) {
-            failedAttempts = 0;
+    public void resetFailedAttempts(Instant now) {
+        if (isLocked(now)) {
+            return;
         }
+
+        failedAttempts = 0;
     }
 
-    public int getRemainingAttempts() {
-        return locked ? 0 : MAX_ATTEMPTS - failedAttempts;
+    public int getRemainingAttempts(Instant now) {
+        if (isLocked(now)) {
+            return 0;
+        }
+
+        return MAX_ATTEMPTS - failedAttempts;
     }
 
-    public boolean isLocked() {
-        return locked;
+    public boolean isLocked(Instant now) {
+        if (lockedUntil == null) {
+            return false;
+        }
+
+        if (now.isBefore(lockedUntil)) {
+            return true;
+        }
+
+        lockedUntil = null;
+        failedAttempts = 0;
+        return false;
+    }
+
+    public long getRemainingLockSeconds(Instant now) {
+        if (!isLocked(now)) {
+            return 0;
+        }
+
+        Duration remaining = Duration.between(now, lockedUntil);
+        long seconds = remaining.getSeconds();
+
+        if (remaining.getNano() > 0) {
+            seconds++;
+        }
+
+        return seconds;
     }
 }
