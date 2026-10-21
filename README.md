@@ -17,9 +17,10 @@ Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng d
 
 - Đã có project Eclipse, cấu hình biên dịch Java 17 và mã hóa UTF-8.
 - Đã có `Main`, `BaseWindow`, `MainWindow`.
-- Chạy được cửa sổ MiniBank với menu File/View/Help và thanh trạng thái.
-- Các phần nghiệp vụ, dialog riêng, icon, biểu đồ và BONUS đang chờ triển khai theo phân công.
-- Chưa tích hợp JFreeChart. Bản khung hiện tại chạy được mà chưa cần thư viện này.
+- Đã nối MainWindow và BankController với dữ liệu mẫu, PIN, nạp/rút/chuyển,
+  lịch sử, CSV, mô phỏng cuối tháng và hai biểu đồ JFreeChart.
+- Khởi động không tự đăng nhập; chọn tài khoản và nhập PIN để xem chi tiết.
+- [Cách chạy, PIN mẫu và kiểm tra bản ghép](docs/DEMO.md).
 
 ### Các chức năng cần hoàn thành
 
@@ -35,7 +36,7 @@ Bài tập lớn môn Lập trình hướng đối tượng: xây dựng ứng d
 - Mô phỏng cuối tháng và cộng lãi, có interface được sử dụng thực tế.
 - UML, kiểm thử, báo cáo, slide, JAR chạy độc lập và hồ sơ nộp.
 
-Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và BONUS của thẻ MiniBank gồm PIN, khóa sau 3 lần sai, InterestBearing và xuất sao kê CSV. Tất cả chạy trên một máy; đăng ký người dùng, server, nhiều máy và lưu/phục hồi dữ liệu bằng file/database vẫn ngoài phạm vi. CSV chỉ là tệp sao kê xuất ra, không phải cơ chế lưu/phục hồi ứng dụng. Dữ liệu và tiền là giả lập; số dư, PIN và trạng thái khóa trong bộ nhớ sẽ được nạp lại từ dữ liệu mẫu khi khởi động lại. Các chức năng bonus hiện là công việc đã giao, chưa được triển khai.
+Phạm vi cập nhật ngày 16/10/2026: làm cả yêu cầu bắt buộc và BONUS của thẻ MiniBank gồm PIN, khóa sau 3 lần sai, InterestBearing và xuất sao kê CSV. Tất cả chạy trên một máy; đăng ký người dùng, server, nhiều máy và lưu/phục hồi dữ liệu bằng file/database vẫn ngoài phạm vi. CSV chỉ là tệp sao kê xuất ra, không phải cơ chế lưu/phục hồi ứng dụng. Dữ liệu và tiền là giả lập; số dư, PIN và trạng thái khóa trong bộ nhớ sẽ được nạp lại từ dữ liệu mẫu khi khởi động lại. Các chức năng PIN/khóa, xuất CSV và cộng lãi đã được nối vào bản chạy.
 
 ## 2. Phân công
 
@@ -135,7 +136,9 @@ Git không lưu thư mục rỗng. Package chưa có lớp có thể chưa xuấ
 
 Trong Eclipse mở `src → vn.edu.ptit.oop.nhom04`, chuột phải **Main.java → Run As → Java Application**.
 
-Kết quả của bản khung: một cửa sổ **MiniBank — Nhóm 04**, menu File/View/Help, dòng Sẵn sàng ở dưới. Đây là mốc xác nhận máy đã chạy được project chung.
+Kết quả: cửa sổ **MiniBank — Nhóm 04** có 6 tài khoản mẫu, vùng chi tiết,
+tab Lịch sử/Biểu đồ và các nút nghiệp vụ. Chọn tài khoản, nhập PIN trong
+[hướng dẫn demo](docs/DEMO.md) để bắt đầu; trước PIN, thông tin tài khoản để trống.
 
 Nếu Eclipse không nhận Java, mở **Window → Preferences → Java → Installed JREs**, thêm JDK trên máy bằng Standard VM rồi chọn làm mặc định. Dùng JDK 17 trở lên. Giữ **Properties → Java Compiler** của project ở mức **17**, `--release` bật, và **Properties → Resource → Text file encoding** là **UTF-8**.
 
@@ -174,7 +177,9 @@ Mọi đường dẫn Java bên dưới tính từ `src/vn/edu/ptit/oop/nhom04/`
 | 8 | `model/PinCredential.java`, `service/PinService.java`, `exception/AccountLockedException.java`, `exception/AuthenticationRequiredException.java`, `ui/dialogs/LoginDialog.java` | PIN và khóa tài khoản trọn luồng |
 | 9 | `util/ChartHelper.java`, `service/StatisticsService.java` | Biểu đồ, thống kê và tổng hợp slide |
 
-Danh sách trên là **vị trí file đã thống nhất để bắt đầu**, không có nghĩa các chức năng đã được cài đặt. Hiện các file Java đã có vẫn là Main, BaseWindow và MainWindow. Người phụ trách tạo file của mình trên nhánh riêng; các interface, enum và exception được tạo sớm khi phần khác cần dùng. Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.
+Danh sách trên là **vị trí file đã thống nhất**. Các phần Java đã được ghép theo API v1;
+thay đổi tiếp theo vẫn làm trên nhánh riêng và kiểm tra ảnh hưởng đến bản chạy.
+Không tạo một lớp cùng tên ở package khác để tạm thay thế lớp của bạn trong nhóm.
 
 Git không lưu thư mục rỗng. Các thư mục mới có README giải thích người phụ trách và tên file cần tạo, nhờ đó chúng xuất hiện trên GitHub ngay cả khi chưa có Java. Thư mục `repository` chưa cần lớp vì bản tuần này dùng bộ nhớ; không tạo lớp chỉ để lấp thư mục.
 
@@ -199,9 +204,10 @@ Dùng **BigDecimal** cho tiền; các chức năng dùng chung một đồng h�
 
 ### Thư viện biểu đồ
 
-Nhóm dự kiến dùng **JFreeChart 1.5.4**, theo ví dụ trong tài liệu môn học. Người 9 thống nhất và bàn giao cấu hình thư viện với người 1 trước khi ghép code biểu đồ. Cần ghi bổ sung cách cài/chạy tại đây khi thư viện đã được tích hợp.
-
-Nếu dùng JAR, ưu tiên file trong thư mục `lib` của repository và **Build Path → Add JARs** để cấu hình không chứa đường dẫn riêng của một máy. `.gitignore` hiện bỏ qua `*.jar`, nên cần thêm ngoại lệ cho đúng JAR thư viện nếu nhóm chọn đưa nó vào Git. Chỉ đưa thư viện cần thiết vào Git; file JAR ứng dụng nộp đặt theo gói sản phẩm cuối.
+Đã tích hợp **JFreeChart 1.5.4** tại `lib/jfreechart-1.5.4.jar`, được Git theo dõi
+và khai báo bằng đường dẫn tương đối trong `.classpath`. Eclipse tự nhận thư viện
+sau import/refresh; khi chạy terminal cần `-cp "bin:lib/*"` trên Linux.
+Xem lệnh biên dịch/chạy đầy đủ trong [hướng dẫn demo](docs/DEMO.md).
 
 ## 5. Quy trình GitHub cho mỗi nhiệm vụ
 

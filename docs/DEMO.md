@@ -28,6 +28,10 @@ khởi tạo dữ liệu; không đưa PIN lên danh sách tài khoản, panel c
 
 ## Khởi tạo khi ghép ứng dụng
 
+`Main` đã thực hiện các bước khởi tạo dưới đây trên Swing EDT và gọi
+`BankController.start()`. `MainWindow` giữ bố cục, controller gọi nghiệp vụ qua
+`BankingOperations`, dùng chung `PinService` và đồng hồ mô phỏng.
+
 ```java
 List<Account> accounts = DemoDataFactory.createAccounts(clock);
 PinService pins = new PinService();
@@ -46,6 +50,52 @@ SimulationClock clock = new SimulationClock(
 Mốc trên tương ứng 09:00 ngày 21/10/2026 tại Việt Nam. Gọi factory và đăng ký
 PIN một lần trước khi mở UI. Chưa có tài khoản nào được tự xác thực; các thao tác
 của người dùng sau đó phải qua Bank.
+
+## Chạy ứng dụng đã ghép
+
+Trong Eclipse: mở `Main.java` → **Run As → Java Application**. Thư viện
+`lib/jfreechart-1.5.4.jar` đã có trong `.classpath`.
+
+Hoặc dùng terminal từ thư mục gốc dự án (Linux, Bash/Fish; cần JDK 17 trở lên):
+
+```sh
+mkdir -p bin
+rg --files src -g '*.java' > /tmp/minibank-sources.txt
+javac --release 17 -encoding UTF-8 -cp "lib/*" -d bin @/tmp/minibank-sources.txt
+java -cp "bin:lib/*" vn.edu.ptit.oop.nhom04.Main
+```
+
+1. Chọn `100001`, nhập PIN `001234`. Chỉ sau PIN đúng mới hiện chi tiết/lịch sử.
+2. Thử nạp tiền; bảng lịch sử, số dư và biểu đồ được cập nhật sau thành công.
+3. Thử rút vượt số dư: lỗi giữ nguyên dữ liệu. Chuyển khoản chọn đích trong dialog;
+   nhập số tiền nguyên đồng, ví dụ `100000`, không gõ dấu phân cách hàng nghìn.
+4. Chọn tab **Biểu đồ** để xem biến động số dư và tổng nạp/rút theo ngày.
+5. **Xuất CSV** qua toolbar hoặc menu **Tệp**, chọn vị trí lưu; xác nhận nếu ghi đè.
+6. **Cuối tháng** cộng lãi toàn hệ thống và chuyển đồng hồ đến ngày 1 tháng sau.
+   Nút này dùng được cả khi chưa đăng nhập. Nếu lỗi một phần, dữ liệu đã thành công
+   vẫn được làm mới, kỳ chưa chuyển để có thể thử lại mà không cộng trùng.
+7. Chọn tài khoản khác sẽ xóa quyền/nội dung cũ trước khi hỏi PIN. Hủy hoặc đăng xuất
+   để trống chi tiết, lịch sử và biểu đồ. Nhập sai 3 lần khóa tài khoản trong phiên chạy.
+
+Nếu cập nhật giao diện lỗi sau giao dịch, thông báo yêu cầu **không nhập lại giao dịch**;
+dùng **Xem → Làm mới** hoặc đăng xuất. Lỗi hiển thị không hoàn tác giao dịch tại Bank.
+Khởi động lại ứng dụng nạp lại toàn bộ dữ liệu mẫu, không giữ thay đổi của phiên trước.
+
+## Kiểm tra controller và bản ghép
+
+Cần màn hình đồ họa vì bài kiểm tra mở dialog Swing thật rồi tự đóng. Chạy từ
+thư mục dự án, sau khi biên dịch ứng dụng như trên:
+
+```sh
+javac --release 17 -encoding UTF-8 -cp "bin:lib/*" -d bin tests/vn/edu/ptit/oop/nhom04/ui/BankControllerTest.java
+java -cp "bin:lib/*" vn.edu.ptit.oop.nhom04.ui.BankControllerTest
+```
+
+Kiểm tra phiên PIN, hủy/đổi/khóa tài khoản, gắn menu/toolbar CSV, nạp/rút/chuyển qua
+Bank thật, callback refresh, lỗi biểu đồ sau giao dịch, cuối tháng thành công/một phần
+và khởi động bằng `Main`. Phần điều phối dùng dialog thay thế để gây lỗi có kiểm soát;
+phần kiểm tra UI mở LoginDialog, TransactionDialog và JFileChooser thật, xuất CSV thật.
+Ảnh bản chạy được lưu tại `/tmp/minibank-main-window.png` và `/tmp/minibank-main-charts.png`.
 
 ## Kiểm tra dữ liệu mẫu
 
