@@ -1,8 +1,11 @@
 package vn.edu.ptit.oop.nhom04.ui;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,6 +22,9 @@ public class TransactionTableModel extends AbstractTableModel {
             {"Thời gian", "Loại", "Chiều", "Số tiền (VND)", "Số dư sau (VND)", "Mô tả"};
     private static final DateTimeFormatter TIME_FORMAT =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private static final DateTimeFormatter MONTH_FORMAT =
+            DateTimeFormatter.ofPattern("MM/yyyy");
+    private static final String INTEREST_PREFIX = "INTEREST:";
 
     private List<Transaction> transactions = List.of();
 
@@ -69,7 +75,7 @@ public class TransactionTableModel extends AbstractTableModel {
             case 2: return directionLabel(t.getDirection());
             case 3: return formatMoney(t.getAmount());
             case 4: return formatMoney(t.getBalanceAfter());
-            case 5: return t.getDescription();
+            case 5: return descriptionLabel(t);
             default: return "";
         }
     }
@@ -92,7 +98,21 @@ public class TransactionTableModel extends AbstractTableModel {
         }
     }
 
-    private static String formatMoney(java.math.BigDecimal value) {
+
+    private static String descriptionLabel(Transaction t) {
+        String description = t.getDescription();
+        if (t.getType() == TransactionType.INTEREST && description.startsWith(INTEREST_PREFIX)) {
+            try {
+                YearMonth period = YearMonth.parse(description.substring(INTEREST_PREFIX.length()));
+                return "Cộng lãi tháng " + period.format(MONTH_FORMAT);
+            } catch (DateTimeParseException e) {
+                return description; 
+            }
+        }
+        return description;
+    }
+
+    private static String formatMoney(BigDecimal value) {
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(
                 Locale.forLanguageTag("vi-VN"));
         return new DecimalFormat("#,##0", symbols).format(value);
