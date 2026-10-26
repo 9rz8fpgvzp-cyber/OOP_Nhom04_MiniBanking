@@ -1,134 +1,142 @@
 package vn.edu.ptit.oop.nhom04.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 import vn.edu.ptit.oop.nhom04.exception.AccountNotFoundException;
+import vn.edu.ptit.oop.nhom04.exception.AuthenticationRequiredException;
 import vn.edu.ptit.oop.nhom04.exception.InvalidAmountException;
 import vn.edu.ptit.oop.nhom04.exception.InvalidTransferException;
 import vn.edu.ptit.oop.nhom04.model.Account;
 import vn.edu.ptit.oop.nhom04.model.AccountSummary;
+import vn.edu.ptit.oop.nhom04.model.Customer;
 import vn.edu.ptit.oop.nhom04.model.Transaction;
+import vn.edu.ptit.oop.nhom04.repository.AccountRepository;
 
 public class Bank implements BankingOperations {
-    private final Map<String, Account> accounts = new LinkedHashMap<>();
+    private final AccountRepository repository;
     private final PinService pins;
     private final SimulationClock clock;
     private final TransferService transfers;
     private final MonthlyInterestService interestService;
 
-    public Bank(List<Account> accounts, PinService pins, SimulationClock clock,
-            TransferService transfers, MonthlyInterestService interestService) {
-        if (accounts == null || pins == null || clock == null || transfers == null || interestService == null) {
-            throw new IllegalArgumentException("Các tham số khởi tạo Bank không được null");
-        }
-        for (Account acc : accounts) {
-            if (acc == null) {
-                throw new IllegalArgumentException("Tài khoản trong danh sách không được null");
-            }
-            if (this.accounts.containsKey(acc.getAccountNumber())) {
-                throw new IllegalArgumentException("Trùng số tài khoản: " + acc.getAccountNumber());
-            }
-            this.accounts.put(acc.getAccountNumber(), acc);
-        }
-        this.pins = pins;
-        this.clock = clock;
-        this.transfers = transfers;
-        this.interestService = interestService;
+    public Bank(AccountRepository repository, PinService pins, SimulationClock clock,
+                TransferService transfers, MonthlyInterestService interestService) {
+        this.repository = Objects.requireNonNull(repository, "repository");
+        this.pins = Objects.requireNonNull(pins, "pins");
+        this.clock = Objects.requireNonNull(clock, "clock");
+        this.transfers = Objects.requireNonNull(transfers, "transfers");
+        this.interestService = Objects.requireNonNull(interestService, "interestService");
     }
 
-    private void validateAmount(BigDecimal amount) {
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0 || amount.stripTrailingZeros().scale() > 0) {
-            throw new InvalidAmountException("Số tiền giao dịch phải là số nguyên đồng lớn hơn 0");
-        }
-    }
-
-    private Account findAccountOrThrow(String accountNumber) {
-        if (accountNumber == null || !accounts.containsKey(accountNumber)) {
-            throw new AccountNotFoundException("Không tìm thấy tài khoản: " + accountNumber);
-        }
-        return accounts.get(accountNumber);
-    }
-
-    private LocalDateTime currentSimulationTime() {
+    private LocalDateTime now() {
         return LocalDateTime.ofInstant(clock.instant(), clock.getZone());
+    }
+
+    private static String normalize(String code) {
+        return code == null ? "" : code.trim();
+    }
+
+    private static void validateAmount(BigDecimal amount) {
+        if (amount == null || amount.signum() <= 0) {
+            throw new InvalidAmountException("Số tiền phải lớn hơn 0.");
+        }
+        if (amount.stripTrailingZeros().scale() > 0) {
+            throw new InvalidAmountException("Số tiền phải là số đồng nguyên, không có phần lẻ.");
+        }
+    }
+
+    private Optional<String> activeCustomerId() {
+        Optional<String> id = pins.getAuthenticatedCustomerId();
+        if (id.isEmpty() || pins.isLocked(id.get())) {
+            return Optional.empty();
+        }
+        return id;
+    }
+
+    private Account find(String accountNumber) {
+        return repository.findByNumber(normalize(accountNumber))
+                .orElseThrow(() -> new AccountNotFoundException("Không tìm thấy tài khoản."));
+    }
+
+    /** Kiểm tra quyền TRƯỚC khi trả dữ liệu hoặc đổi model. */
+    private Account authorize(String accountNumber) {
+        String sessionId = pins.getAuthenticatedCustomerId()
+                .orElseThrow(() -> new AuthenticationRequiredException("Vui lòng đăng nhập."));
+        Account account = find(accountNumber);
+        String ownerId = account.getOwner().getCustomerId();
+        if (!ownerId.equals(sessionId)) {
+            throw new AuthenticationRequiredException("Bạn không có quyền thao tác tài khoản này.");
+        }
+        pins.requireAuthenticated(ownerId);
+        return account;
+    }
+
+    @Override
+    public Optional<Customer> getCurrentCustomer() {
+        return activeCustomerId().flatMap(id ->
+                repository.findByCustomerId(id).stream().findFirst().map(Account::getOwner));
     }
 
     @Override
     public List<AccountSummary> listAccounts() {
-        List<AccountSummary> summaries = new ArrayList<>();
-        for (Account acc : accounts.values()) {
-            summaries.add(new AccountSummary(acc.getAccountNumber(), acc.getType()));
+        Optional<String> id = activeCustomerId();
+        if (id.isEmpty()) {
+            return List.of();
         }
-        return Collections.unmodifiableList(summaries);
+        return repository.findByCustomerId(id.get()).stream()
+                .map(a -> new AccountSummary(a.getAccountNumber(), a.getType()))
+                .toList();
     }
 
     @Override
-    public Account getAccount(String accountNumber) {
-        pins.requireAuthenticated(accountNumber);
-        return findAccountOrThrow(accountNumber);
+    public synchronized Account getAccount(String accountNumber) {
+        return authorize(accountNumber);
     }
 
     @Override
-    public List<Transaction> getTransactions(String accountNumber) {
-        pins.requireAuthenticated(accountNumber);
-        Account acc = findAccountOrThrow(accountNumber);
-        return acc.getTransactions();
+    public synchronized List<Transaction> getTransactions(String accountNumber) {
+        return List.copyOf(authorize(accountNumber).getTransactions());
     }
 
     @Override
     public synchronized Transaction deposit(String accountNumber, BigDecimal amount) {
-        pins.requireAuthenticated(accountNumber);
+        Account account = authorize(accountNumber);
         validateAmount(amount);
-        Account acc = findAccountOrThrow(accountNumber);
-        LocalDateTime time = currentSimulationTime();
-        return acc.deposit(amount, time);
+        return account.deposit(amount, now());
     }
 
     @Override
     public synchronized Transaction withdraw(String accountNumber, BigDecimal amount) {
-        pins.requireAuthenticated(accountNumber);
+        Account account = authorize(accountNumber);
         validateAmount(amount);
-        Account acc = findAccountOrThrow(accountNumber);
-        LocalDateTime time = currentSimulationTime();
-        return acc.withdraw(amount, time);
+        return account.withdraw(amount, now());
     }
 
     @Override
-    public synchronized List<Transaction> transfer(String sourceNumber, String targetNumber, BigDecimal amount) {
-        if (sourceNumber == null || targetNumber == null) {
-            throw new IllegalArgumentException("Số tài khoản không được null");
-        }
-        if (sourceNumber.equals(targetNumber)) {
-            throw new InvalidTransferException("Tài khoản nguồn và đích không được trùng nhau");
-        }
-        pins.requireAuthenticated(sourceNumber);
+    public synchronized List<Transaction> transfer(String sourceNumber, String targetNumber,
+                                                   BigDecimal amount) {
+        Account source = authorize(sourceNumber);
         validateAmount(amount);
-
-        Account source = findAccountOrThrow(sourceNumber);
-        Account target = findAccountOrThrow(targetNumber);
-        LocalDateTime time = currentSimulationTime();
-
-        return transfers.transfer(source, target, amount, time);
+        Account target = find(targetNumber);
+        if (source.getAccountNumber().equals(target.getAccountNumber())) {
+            throw new InvalidTransferException("Không thể chuyển cho chính tài khoản nguồn.");
+        }
+        return transfers.transfer(source, target, amount, now());
     }
 
+    /** Tác vụ hệ thống: không cần PIN, xử lý mọi tài khoản trong repository. */
     @Override
     public synchronized List<Transaction> simulateMonthEnd() {
-        LocalDateTime now = currentSimulationTime();
-        YearMonth closingMonth = YearMonth.from(now);
-        LocalDate lastDay = closingMonth.atEndOfMonth();
-        LocalDateTime closingTime = lastDay.atTime(23, 59, 59);
-
-        List<Transaction> interestTransactions = interestService.applyMonthEnd(
-                new ArrayList<>(accounts.values()), closingMonth, closingTime);
-
+        YearMonth closingMonth = YearMonth.from(now());
+        LocalDateTime closingTime = closingMonth.atEndOfMonth().atTime(23, 59, 59);
+        List<Transaction> result =
+                interestService.applyMonthEnd(repository.findAll(), closingMonth, closingTime);
         clock.advanceToNextMonth();
-        return interestTransactions;
+        return List.copyOf(result);
     }
 }
