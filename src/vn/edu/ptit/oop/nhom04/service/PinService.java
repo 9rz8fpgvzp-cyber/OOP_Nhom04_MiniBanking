@@ -1,7 +1,6 @@
 package vn.edu.ptit.oop.nhom04.service;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +29,8 @@ public class PinService {
 
     public synchronized void registerPin(String customerId, char[] pin) {
         try {
+            customerId = normalizeCustomerId(customerId);
+
             if (customerId == null || customerId.isBlank()) {
                 throw new IllegalArgumentException("Mã khách hàng không hợp lệ.");
             }
@@ -38,7 +39,7 @@ public class PinService {
                 throw new IllegalArgumentException("Khách hàng đã đăng ký PIN, không thể ghi đè.");
             }
 
-            PinCredential credential = new PinCredential(pin);
+            PinCredential credential = new PinCredential(pin, authenticationClock);
             credentials.put(customerId, credential);
         } finally {
             clearPin(pin);
@@ -49,21 +50,19 @@ public class PinService {
         logout();
 
         try {
+            customerId = normalizeCustomerId(customerId);
             PinCredential credential = getCredential(customerId);
-            Instant now = authenticationClock.instant();
 
-            checkUnlocked(credential, now);
+            checkUnlocked(credential);
 
             if (credential.matches(pin)) {
-                credential.resetFailedAttempts(now);
+                credential.resetFailedAttempts();
                 authenticatedCustomerId = customerId;
                 return true;
             }
 
-            now = authenticationClock.instant();
-            credential.recordFailedAttempt(now);
-
-            checkUnlocked(credential, now);
+            credential.recordFailedAttempt();
+            checkUnlocked(credential);
             return false;
         } finally {
             clearPin(pin);
@@ -72,26 +71,22 @@ public class PinService {
 
     public synchronized int getRemainingAttempts(String customerId) {
         PinCredential credential = getCredential(customerId);
-        Instant now = authenticationClock.instant();
-
-        return credential.getRemainingAttempts(now);
+        return credential.getRemainingAttempts();
     }
 
     public synchronized long getRemainingLockSeconds(String customerId) {
         PinCredential credential = getCredential(customerId);
-        Instant now = authenticationClock.instant();
-
-        return credential.getRemainingLockSeconds(now);
+        return credential.getRemainingLockSeconds();
     }
 
     public synchronized boolean isLocked(String customerId) {
         PinCredential credential = getCredential(customerId);
-        Instant now = authenticationClock.instant();
-
-        return credential.isLocked(now);
+        return credential.isLocked();
     }
 
     public synchronized boolean isAuthenticated(String customerId) {
+        customerId = normalizeCustomerId(customerId);
+
         if (customerId == null) {
             return false;
         }
@@ -106,7 +101,7 @@ public class PinService {
             return false;
         }
 
-        return !credential.isLocked(authenticationClock.instant());
+        return !credential.isLocked();
     }
 
     public synchronized Optional<String> getAuthenticatedCustomerId() {
@@ -118,13 +113,13 @@ public class PinService {
     }
 
     public synchronized void requireAuthenticated(String customerId) {
+        customerId = normalizeCustomerId(customerId);
         PinCredential credential = getCredential(customerId);
-        Instant now = authenticationClock.instant();
 
-        checkUnlocked(credential, now);
+        checkUnlocked(credential);
 
         if (!customerId.equals(authenticatedCustomerId)) {
-            throw new AuthenticationRequiredException( "Bạn cần đăng nhập khách hàng này.");
+            throw new AuthenticationRequiredException("Bạn cần đăng nhập khách hàng này.");
         }
     }
 
@@ -133,6 +128,7 @@ public class PinService {
     }
 
     private PinCredential getCredential(String customerId) {
+        customerId = normalizeCustomerId(customerId);
         PinCredential credential = credentials.get(customerId);
 
         if (credential == null) {
@@ -142,12 +138,20 @@ public class PinService {
         return credential;
     }
 
-    private void checkUnlocked(PinCredential credential, Instant now) {
-        long seconds = credential.getRemainingLockSeconds(now);
+    private void checkUnlocked(PinCredential credential) {
+        long seconds = credential.getRemainingLockSeconds();
 
         if (seconds > 0) {
-            throw new AccountLockedException("Đăng nhập khách hàng bị khóa. Vui lòng thử lại sau "+ seconds + " giây.");
+            throw new AccountLockedException("Đăng nhập khách hàng bị khóa. Vui lòng thử lại sau " + seconds + " giây.");
         }
+    }
+
+    private static String normalizeCustomerId(String customerId) {
+        if (customerId == null) {
+            return null;
+        }
+
+        return customerId.trim();
     }
 
     private static void clearPin(char[] pin) {
