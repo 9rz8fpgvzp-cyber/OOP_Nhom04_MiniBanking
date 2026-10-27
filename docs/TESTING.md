@@ -1,6 +1,7 @@
 # Kiểm thử tích hợp API v2
 
 Đã chạy trên nhánh tích hợp ngày **27/10/2026**, JDK tương thích Java 17, UTF-8.
+Đã chạy lại toàn bộ sau khi ghép main `13d8f73` (PR #47) và bản sửa PIN `6ba8fb9` (PR #46).
 Các ca nghiệp vụ dùng dữ liệu giả và Clock cố định/điều khiển được. Các ca Swing cần màn hình đồ họa.
 
 ```bash
