@@ -3,12 +3,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import vn.edu.ptit.oop.nhom04.exception.AccountNotMaturedException;
 import vn.edu.ptit.oop.nhom04.exception.InsufficientFundsException;
 import vn.edu.ptit.oop.nhom04.exception.InvalidAmountException;
 
 public class FixedTermAccount extends Account implements InterestBearing {
+    private static final DateTimeFormatter MATURITY_DATE_FORMAT =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     private final BigDecimal annualInterestRate;
     private final LocalDate maturityDate;
 
@@ -16,12 +20,16 @@ public class FixedTermAccount extends Account implements InterestBearing {
                             BigDecimal openingBalance, LocalDateTime openedAt,
                             BigDecimal annualInterestRate, LocalDate maturityDate) {
         super(number, owner, openingBalance, openedAt);
-        if (annualInterestRate == null || annualInterestRate.signum() < 0) {
-            throw new IllegalArgumentException("Lai suat lon hon 0 va khong rong");
+        if (annualInterestRate == null) {
+            throw new IllegalArgumentException("Lãi suất năm không được để trống");
         }
-        this.maturityDate = Objects.requireNonNull(maturityDate, "Ngay dao han khong duoc rong");
+        if (annualInterestRate.signum() < 0) {
+            throw new IllegalArgumentException("Lãi suất năm không được âm");
+        }
+        this.maturityDate = Objects.requireNonNull(
+                maturityDate, "Ngày đáo hạn không được để trống");
         if (maturityDate.isBefore(openedAt.toLocalDate())) {
-            throw new IllegalArgumentException("Ngay dao han sau phai sau ngay mo");
+            throw new IllegalArgumentException("Ngày đáo hạn không được trước ngày mở tài khoản");
         }
         this.annualInterestRate = annualInterestRate;
     }
@@ -39,31 +47,33 @@ public class FixedTermAccount extends Account implements InterestBearing {
         return maturityDate;
     }
 
-    //Kiểm tra điều kiện rút
+    /* Dùng chung để kiểm tra rút tiền và chuyển tiền ra khỏi tài khoản. */
     @Override
     protected void validateWithdrawal(BigDecimal amount, LocalDate date) {
         validatePositiveWholeAmount(amount);
-        Objects.requireNonNull(date, "Ngay giao khong duoc trong");
+        Objects.requireNonNull(date, "Ngày giao dịch không được để trống");
 
         if (date.isBefore(maturityDate)) {
             throw new AccountNotMaturedException(
-                    "Chi duoc ruts tu ngay " + maturityDate);
+                    "Tài khoản chưa đáo hạn. Chỉ được rút hoặc chuyển tiền từ ngày "
+                    + maturityDate.format(MATURITY_DATE_FORMAT));
         }
         if (getBalance().compareTo(amount) < 0) {
-            throw new InsufficientFundsException("So du khong du");
+            throw new InsufficientFundsException("Số dư không đủ để thực hiện giao dịch");
         }
     }
 
     @Override
     public Transaction withdraw(BigDecimal amount, LocalDateTime time) {
         validatePositiveWholeAmount(amount);
-        Objects.requireNonNull(time, "Thoi gian giao dich khong duoc de trong");
+        Objects.requireNonNull(time, "Thời gian giao dịch không được để trống");
         validateWithdrawal(amount, time.toLocalDate());
         //Thực hiện rút tiền
         return withdrawAfterValidation(amount, time);
     }
 
-    //Tính lãi
+    /*Tính lãi
+    Lãi tháng = số dư hiện tại × lãi suất năm / 12*/
     @Override
     public BigDecimal calculateMonthlyInterest() {
         if (getBalance().signum() <= 0) {
@@ -75,10 +85,10 @@ public class FixedTermAccount extends Account implements InterestBearing {
 
     private static void validatePositiveWholeAmount(BigDecimal amount) {
         if (amount == null || amount.signum() <= 0) {
-            throw new InvalidAmountException("So tien phai lon hon 0");
+            throw new InvalidAmountException("Số tiền giao dịch phải lớn hơn 0");
         }
         if (amount.stripTrailingZeros().scale() > 0) {
-            throw new InvalidAmountException("Phai la so nguyen");
+            throw new InvalidAmountException("Số tiền giao dịch phải là số nguyên đồng");
         }
     }
 }
