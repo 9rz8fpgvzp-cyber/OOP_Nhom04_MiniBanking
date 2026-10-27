@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import vn.edu.ptit.oop.nhom04.exception.AccountLockedException;
 import vn.edu.ptit.oop.nhom04.exception.AccountNotFoundException;
 import vn.edu.ptit.oop.nhom04.exception.AuthenticationRequiredException;
 import vn.edu.ptit.oop.nhom04.exception.InvalidAmountException;
@@ -65,14 +66,22 @@ public class Bank implements BankingOperations {
 
     /** Kiểm tra quyền TRƯỚC khi trả dữ liệu hoặc đổi model. */
     private Account authorize(String accountNumber) {
-        String sessionId = pins.getAuthenticatedCustomerId()
-                .orElseThrow(() -> new AuthenticationRequiredException("Vui lòng đăng nhập."));
         Account account = find(accountNumber);
         String ownerId = account.getOwner().getCustomerId();
-        if (!ownerId.equals(sessionId)) {
+        Optional<String> session = pins.getAuthenticatedCustomerId();
+
+        if (session.isEmpty()) {
+            // Không có phiên: phân biệt chủ STK đang bị khóa với chưa đăng nhập
+            if (pins.isLocked(ownerId)) {
+                throw new AccountLockedException("Tài khoản đang bị khóa. Vui lòng thử lại sau.");
+            }
+            throw new AuthenticationRequiredException("Vui lòng đăng nhập.");
+        }
+        if (!ownerId.equals(session.get())) {
+            // Phiên của người khác: không lộ trạng thái khóa hay dữ liệu của chủ STK
             throw new AuthenticationRequiredException("Bạn không có quyền thao tác tài khoản này.");
         }
-        pins.requireAuthenticated(ownerId);
+        pins.requireAuthenticated(ownerId); // phiên đúng chủ nhưng bị khóa -> AccountLockedException
         return account;
     }
 

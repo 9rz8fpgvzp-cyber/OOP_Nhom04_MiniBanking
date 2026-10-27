@@ -100,6 +100,28 @@ public class BankV2Test {
         System.out.println("5. Cuoi thang khong can PIN cua KH002 (dang khoa):");
         check("simulateMonthEnd chay duoc", !bank.simulateMonthEnd().isEmpty());
 
+                System.out.println("6. Chu STK bi khoa (khong con phien):");
+        pins.logout();
+        for (int i = 0; i < 3; i++) {
+            try { pins.authenticate("KH001", "000000".toCharArray()); }
+            catch (AccountLockedException ignored) { }
+        }
+        check("KH001 da bi khoa", pins.isLocked("KH001"));
+        check("khong con phien", pins.getAuthenticatedCustomerId().isEmpty());
+        BigDecimal balLocked = accA.getBalance();
+        int histLocked = accA.getTransactions().size();
+        check("rut tu STK cua chu bi khoa -> AccountLocked", throwsEx(AccountLockedException.class,
+                () -> bank.withdraw("100001", vnd(1000))));
+        check("nap vao STK cua chu bi khoa qua Bank -> AccountLocked", throwsEx(AccountLockedException.class,
+                () -> bank.deposit("100001", vnd(1000))));
+        check("chuyen tu STK cua chu bi khoa -> AccountLocked", throwsEx(AccountLockedException.class,
+                () -> bank.transfer("100001", "200001", vnd(1000))));
+        check("xem STK cua chu bi khoa -> AccountLocked", throwsEx(AccountLockedException.class,
+                () -> bank.getAccount("100001")));
+        check("so du/lich su khong doi khi bi khoa",
+                accA.getBalance().compareTo(balLocked) == 0 && accA.getTransactions().size() == histLocked);
+        check("STK khong ton tai -> AccountNotFound", throwsEx(AccountNotFoundException.class,
+                () -> bank.getAccount("999999")));
         System.out.println("\nKET QUA: " + pass + " dat, " + fail + " loi");
     }
 }
