@@ -62,14 +62,6 @@ public class MainWindow extends BaseWindow {
 
     @Override
     protected void initUI() {
-<<<<<<< HEAD
-        JLabel titleLabel = new JLabel("MiniBank — Nhóm 04",
-                SwingConstants.CENTER);
-        titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
-        add(titleLabel, BorderLayout.CENTER);
-        setStatus("Sẵn sàng");
-        
-=======
         setMinimumSize(new Dimension(900, 600));
         depositAction = action("Nạp tiền", () -> controller.openTransaction(TransactionType.DEPOSIT));
         withdrawAction = action("Rút tiền", () -> controller.openTransaction(TransactionType.WITHDRAW));
@@ -262,6 +254,5 @@ public class MainWindow extends BaseWindow {
                 SwingConstants.CENTER));
         chartContainer.revalidate();
         chartContainer.repaint();
->>>>>>> main
     }
 }

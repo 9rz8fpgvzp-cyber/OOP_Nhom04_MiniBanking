@@ -29,6 +29,7 @@ public class AccountDetailsPanel extends JPanel {
 
     private static final NumberFormat CURRENCY_FORMATTER = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("MM/yyyy");
 
     public AccountDetailsPanel() {
         setLayout(new GridLayout(8, 1, 5, 5));
@@ -52,11 +53,14 @@ public class AccountDetailsPanel extends JPanel {
      */
     public void setCustomer(Customer customer) {
         if (customer == null) {
-            clear();
+            lblCustomerId.setText("Mã KH: --");
+            lblCustomerName.setText("Họ tên: --");
+            lblCustomerPhone.setText("Số điện thoại: --");
             return;
         }
 
-        String id = customer.getId();
+        // Đã đổi getId() thành getCustomerId() theo yêu cầu của Doanh
+        String id = customer.getCustomerId(); 
         String name = customer.getFullName();
         String phone = customer.getPhoneNumber();
 
@@ -74,6 +78,9 @@ public class AccountDetailsPanel extends JPanel {
             return;
         }
 
+        // Tự động cập nhật thông tin chủ sở hữu (Customer) theo API v2 mục 8
+        setCustomer(account.getOwner());
+
         lblAccNum.setText("Số TK: " + account.getAccountNumber());
         lblType.setText("Loại TK: " + getAccountTypeNameVi(account.getType()));
         lblBalance.setText("Số dư: " + CURRENCY_FORMATTER.format(account.getBalance()));
@@ -81,8 +88,12 @@ public class AccountDetailsPanel extends JPanel {
         if (account instanceof SavingsAccount) {
             SavingsAccount savings = (SavingsAccount) account;
             lblExtra1.setText("Lãi suất: " + savings.getAnnualInterestRate().multiply(new BigDecimal("100")) + "%/năm");
-            lblExtra2.setText("Lượt rút còn lại (" + (currentMonth != null ? currentMonth : "") + "): " 
+            
+            // Định dạng tháng rút tiền theo mẫu MM/yyyy (vd: 10/2026) theo yêu cầu của Doanh
+            String formattedMonth = (currentMonth != null) ? currentMonth.format(MONTH_FORMATTER) : "--";
+            lblExtra2.setText("Lượt rút còn lại (" + formattedMonth + "): " 
                               + (currentMonth != null ? savings.getRemainingWithdrawals(currentMonth) : "--"));
+            
             lblExtra1.setVisible(true);
             lblExtra2.setVisible(true);
         } else if (account instanceof CheckingAccount) {
