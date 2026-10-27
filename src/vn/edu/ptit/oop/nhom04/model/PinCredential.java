@@ -1,12 +1,12 @@
 package vn.edu.ptit.oop.nhom04.model;
 
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.Clock;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.crypto.SecretKeyFactory;
@@ -31,14 +31,14 @@ public final class PinCredential {
     }
 
     public PinCredential(char[] pin, Clock authenticationClock) {
-        this.authenticationClock = Objects.requireNonNull(authenticationClock, "Đồng hồ xác thực không được null.");
+        this.authenticationClock = Objects.requireNonNull(authenticationClock);
+
         if (!isValidPin(pin)) {
             throw new IllegalArgumentException("PIN phải gồm đúng 6 chữ số.");
         }
 
         salt = new byte[SALT_LENGTH];
         new SecureRandom().nextBytes(salt);
-
         pinHash = hashPin(pin, salt);
     }
 
@@ -52,6 +52,7 @@ public final class PinCredential {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -60,18 +61,22 @@ public final class PinCredential {
 
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-
             return factory.generateSecret(spec).getEncoded();
 
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("Không thể xử lý PIN.", e);
+
         } finally {
             spec.clearPassword();
         }
     }
 
     public boolean matches(char[] inputPin) {
-        if (isLocked() || !isValidPin(inputPin)) {
+        if (isLocked()) {
+            return false;
+        }
+
+        if (!isValidPin(inputPin)) {
             return false;
         }
 
@@ -86,6 +91,7 @@ public final class PinCredential {
 
     public void recordFailedAttempt() {
         Instant now = authenticationClock.instant();
+
         if (isLockedAt(now)) {
             return;
         }
@@ -114,7 +120,25 @@ public final class PinCredential {
     }
 
     public boolean isLocked() {
-        return isLockedAt(authenticationClock.instant());
+        Instant now = authenticationClock.instant();
+        return isLockedAt(now);
+    }
+
+    public long getRemainingLockSeconds() {
+        Instant now = authenticationClock.instant();
+
+        if (!isLockedAt(now)) {
+            return 0;
+        }
+
+        Duration remaining = Duration.between(now, lockedUntil);
+        long seconds = remaining.getSeconds();
+
+        if (remaining.getNano() > 0) {
+            seconds++;
+        }
+
+        return seconds;
     }
 
     private boolean isLockedAt(Instant now) {
@@ -129,21 +153,5 @@ public final class PinCredential {
         lockedUntil = null;
         failedAttempts = 0;
         return false;
-    }
-
-    public long getRemainingLockSeconds() {
-        Instant now = authenticationClock.instant();
-        if (!isLockedAt(now)) {
-            return 0;
-        }
-
-        Duration remaining = Duration.between(now, lockedUntil);
-        long seconds = remaining.getSeconds();
-
-        if (remaining.getNano() > 0) {
-            seconds++;
-        }
-
-        return seconds;
     }
 }

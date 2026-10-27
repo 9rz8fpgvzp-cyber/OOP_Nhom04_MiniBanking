@@ -29,7 +29,8 @@ public class PinService {
 
     public synchronized void registerPin(String customerId, char[] pin) {
         try {
-            customerId = normalize(customerId);
+            customerId = normalizeCustomerId(customerId);
+
             if (customerId == null || customerId.isBlank()) {
                 throw new IllegalArgumentException("Mã khách hàng không hợp lệ.");
             }
@@ -49,7 +50,7 @@ public class PinService {
         logout();
 
         try {
-            customerId = normalize(customerId);
+            customerId = normalizeCustomerId(customerId);
             PinCredential credential = getCredential(customerId);
 
             checkUnlocked(credential);
@@ -61,7 +62,6 @@ public class PinService {
             }
 
             credential.recordFailedAttempt();
-
             checkUnlocked(credential);
             return false;
         } finally {
@@ -85,7 +85,8 @@ public class PinService {
     }
 
     public synchronized boolean isAuthenticated(String customerId) {
-        customerId = normalize(customerId);
+        customerId = normalizeCustomerId(customerId);
+
         if (customerId == null) {
             return false;
         }
@@ -112,13 +113,13 @@ public class PinService {
     }
 
     public synchronized void requireAuthenticated(String customerId) {
-        customerId = normalize(customerId);
+        customerId = normalizeCustomerId(customerId);
         PinCredential credential = getCredential(customerId);
 
         checkUnlocked(credential);
 
         if (!customerId.equals(authenticatedCustomerId)) {
-            throw new AuthenticationRequiredException( "Bạn cần đăng nhập khách hàng này.");
+            throw new AuthenticationRequiredException("Bạn cần đăng nhập khách hàng này.");
         }
     }
 
@@ -127,7 +128,8 @@ public class PinService {
     }
 
     private PinCredential getCredential(String customerId) {
-        PinCredential credential = credentials.get(normalize(customerId));
+        customerId = normalizeCustomerId(customerId);
+        PinCredential credential = credentials.get(customerId);
 
         if (credential == null) {
             throw new AccountNotFoundException("Không tìm thấy khách hàng: " + customerId);
@@ -140,17 +142,21 @@ public class PinService {
         long seconds = credential.getRemainingLockSeconds();
 
         if (seconds > 0) {
-            throw new AccountLockedException("Đăng nhập khách hàng bị khóa. Vui lòng thử lại sau "+ seconds + " giây.");
+            throw new AccountLockedException("Đăng nhập khách hàng bị khóa. Vui lòng thử lại sau " + seconds + " giây.");
         }
+    }
+
+    private static String normalizeCustomerId(String customerId) {
+        if (customerId == null) {
+            return null;
+        }
+
+        return customerId.trim();
     }
 
     private static void clearPin(char[] pin) {
         if (pin != null) {
             Arrays.fill(pin, '\0');
         }
-    }
-
-    private static String normalize(String customerId) {
-        return customerId == null ? null : customerId.trim();
     }
 }
