@@ -29,6 +29,7 @@ public class AccountDetailsPanel extends JPanel {
 
     private static final NumberFormat CURRENCY_FORMATTER = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("MM/yyyy");
 
     public AccountDetailsPanel() {
         setLayout(new GridLayout(8, 1, 5, 5));
@@ -56,7 +57,7 @@ public class AccountDetailsPanel extends JPanel {
             return;
         }
 
-        String id = customer.getCustomerId();
+        String id = customer.getCustomerId(); 
         String name = customer.getFullName();
         String phone = customer.getPhoneNumber();
 
@@ -74,7 +75,9 @@ public class AccountDetailsPanel extends JPanel {
             return;
         }
 
+        // Tự động cập nhật thông tin chủ sở hữu (Customer) theo API v2 mục 8
         setCustomer(account.getOwner());
+
         lblAccNum.setText("Số TK: " + account.getAccountNumber());
         lblType.setText("Loại TK: " + getAccountTypeNameVi(account.getType()));
         lblBalance.setText("Số dư: " + CURRENCY_FORMATTER.format(account.getBalance()));
@@ -82,9 +85,11 @@ public class AccountDetailsPanel extends JPanel {
         if (account instanceof SavingsAccount) {
             SavingsAccount savings = (SavingsAccount) account;
             lblExtra1.setText("Lãi suất: " + savings.getAnnualInterestRate().multiply(new BigDecimal("100")) + "%/năm");
-            lblExtra2.setText("Lượt rút còn lại (" + (currentMonth != null
-                    ? currentMonth.format(DateTimeFormatter.ofPattern("MM/yyyy")) : "") + "): "
+            
+            String formattedMonth = (currentMonth != null) ? currentMonth.format(MONTH_FORMATTER) : "--";
+            lblExtra2.setText("Lượt rút còn lại (" + formattedMonth + "): " 
                               + (currentMonth != null ? savings.getRemainingWithdrawals(currentMonth) : "--"));
+            
             lblExtra1.setVisible(true);
             lblExtra2.setVisible(true);
         } else if (account instanceof CheckingAccount) {
@@ -96,7 +101,7 @@ public class AccountDetailsPanel extends JPanel {
         } else if (account instanceof FixedTermAccount) {
             FixedTermAccount fixedTerm = (FixedTermAccount) account;
             lblExtra1.setText("Lãi suất: " + fixedTerm.getAnnualInterestRate().multiply(new BigDecimal("100")) + "%/năm");
-
+            
             String formattedDate = "--";
             if (fixedTerm.getMaturityDate() != null) {
                 formattedDate = fixedTerm.getMaturityDate().format(DATE_FORMATTER);
