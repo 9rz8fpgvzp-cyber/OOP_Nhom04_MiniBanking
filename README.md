@@ -136,9 +136,12 @@ Git không lưu thư mục rỗng. Package chưa có lớp có thể chưa xuấ
 
 Trong Eclipse mở `src → vn.edu.ptit.oop.nhom04`, chuột phải **Main.java → Run As → Java Application**.
 
-Kết quả: cửa sổ **MiniBank — Nhóm 04** có 6 tài khoản mẫu, vùng chi tiết,
-tab Lịch sử/Biểu đồ và các nút nghiệp vụ. Chọn tài khoản, nhập PIN trong
-[hướng dẫn demo](docs/DEMO.md) để bắt đầu; trước PIN, thông tin tài khoản để trống.
+Kết quả: dialog đăng nhập **mã khách hàng + PIN** mở trước khi hiển thị dữ liệu.
+Đăng nhập theo [hướng dẫn demo v2](docs/DEMO.md); sau đó chỉ thấy STK của chính khách hàng.
+Đổi STK cùng chủ không hỏi lại PIN; sai ba lần khóa đăng nhập 30 giây thực.
+Hủy dialog để về màn hình chào. Có thể build/chạy độc lập bằng `./scripts/build.sh`
+và `java -jar dist/MiniBank.jar`; khi chia sẻ giữ cả thư mục `dist/lib`.
+Kiểm thử: `./scripts/test.sh --gui` ([chi tiết](docs/TESTING.md)).
 
 Nếu Eclipse không nhận Java, mở **Window → Preferences → Java → Installed JREs**, thêm JDK trên máy bằng Standard VM rồi chọn làm mặc định. Dùng JDK 17 trở lên. Giữ **Properties → Java Compiler** của project ở mức **17**, `--release` bật, và **Properties → Resource → Text file encoding** là **UTF-8**.
 
@@ -152,13 +155,13 @@ Package gốc: `vn.edu.ptit.oop.nhom04`.
 | `common` | BaseWindow theo mẫu của thầy |
 | `model` | Customer, Account, các loại tài khoản, Transaction, enum |
 | `service` | Bank, TransferService, MonthlyInterestService, StatisticsService, interface nghiệp vụ |
-| `repository` | Dành cho lớp lưu trữ nếu phạm vi thay đổi; hiện chưa triển khai |
+| `repository` | AccountRepository và InMemoryAccountRepository: Map trong RAM, dùng bởi Bank |
 | `exception` | Ngoại lệ tự định nghĩa |
 | `ui` | MainWindow, BankController, renderer và TableModel theo thống nhất của nhóm |
 | `ui.panels` | AccountDetailsPanel và panel con |
 | `ui.dialogs` | TransactionDialog, AboutDialog (người 7); LoginDialog (người 8) |
 | `util` | ChartHelper, DemoDataFactory và tiện ích |
-| `src/resources/icons` | Icon khi tích hợp; nạp qua `/resources/icons/...` |
+| `src/resources/icons` | PNG 16×16 cho toolbar và app.png; nạp qua `/resources/icons/...` |
 | `docs` | UML, ảnh, kiểm thử và tài liệu khi bổ sung |
 
 ### File cụ thể cho từng nhiệm vụ

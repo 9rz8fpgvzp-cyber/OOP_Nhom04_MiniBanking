@@ -123,5 +123,6 @@ public class BankV2Test {
         check("STK khong ton tai -> AccountNotFound", throwsEx(AccountNotFoundException.class,
                 () -> bank.getAccount("999999")));
         System.out.println("\nKET QUA: " + pass + " dat, " + fail + " loi");
+        if (fail > 0) { throw new AssertionError(fail + " ca kiểm thử Bank v2 thất bại"); }
     }
 }

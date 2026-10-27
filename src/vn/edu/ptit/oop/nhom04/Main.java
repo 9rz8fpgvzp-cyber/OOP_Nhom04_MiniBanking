@@ -1,11 +1,13 @@
 package vn.edu.ptit.oop.nhom04;
 
 import java.time.Instant;
+import java.time.Clock;
 import java.time.ZoneId;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 import vn.edu.ptit.oop.nhom04.model.Account;
+import vn.edu.ptit.oop.nhom04.repository.InMemoryAccountRepository;
 import vn.edu.ptit.oop.nhom04.service.Bank;
 import vn.edu.ptit.oop.nhom04.service.MonthlyInterestService;
 import vn.edu.ptit.oop.nhom04.service.PinService;
@@ -22,16 +24,16 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             SimulationClock clock = new SimulationClock(
                     Instant.parse("2026-10-21T02:00:00Z"), ZoneId.of("Asia/Ho_Chi_Minh"));
-            PinService pins = new PinService();
+            PinService pins = new PinService(Clock.systemUTC());
             List<Account> accounts = DemoDataFactory.createAccounts(clock);
             DemoDataFactory.registerDemoPins(pins, accounts);
-            Bank bank = new Bank(accounts, pins, clock,
+            Bank bank = new Bank(new InMemoryAccountRepository(accounts), pins, clock,
                     new TransferService(), new MonthlyInterestService());
             MainWindow window = new MainWindow();
             BankController controller = new BankController(window, bank, pins, clock,
                     new ChartHelper(new StatisticsService()));
-            controller.start();
             window.setVisible(true);
+            controller.start();
         });
     }
 }

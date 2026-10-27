@@ -2,7 +2,7 @@
 
 Tài liệu quy định package, tên lớp, constructor, phương thức và kiểu dữ liệu dùng chung. Mỗi người triển khai phần mình theo các chữ ký dưới đây. Nếu cần đổi API, trao đổi với người dùng phương thức đó và cập nhật tài liệu trước khi ghép code.
 
-**Trạng thái:** đây là hợp đồng mới đã thống nhất để sửa ứng dụng. Lần cập nhật này chỉ sửa tài liệu; mã Java trên `main` vẫn có thể đang theo v1 cho đến khi các phần được triển khai và kiểm thử cùng nhau.
+**Trạng thái:** luồng v2 được triển khai trong bản tích hợp. Nguồn code thành viên và các phần ghép xem [INTEGRATION_V2.md](INTEGRATION_V2.md); kết quả kiểm thử thực tế xem [TESTING.md](TESTING.md).
 
 **Luồng v2:** nhập mã khách hàng (user) + PIN → chỉ thấy STK của khách hàng đó → chọn STK để xem/giao dịch; đổi STK cùng chủ không hỏi lại PIN. Sai PIN 3 lần liên tiếp khóa đăng nhập **khách hàng trong 30 giây**. Đăng xuất xóa phiên và quay lại đăng nhập. Dữ liệu vẫn ở bộ nhớ; mở lại ứng dụng nạp lại dữ liệu mẫu.
 
@@ -444,7 +444,7 @@ SwingUtilities.invokeLater(() -> {
 });
 ```
 
-Ví dụ bỏ import cho dễ đọc. Mốc thời gian mô phỏng là dữ liệu demo, độc lập đồng hồ xác thực. Chưa thay Main bằng ví dụ này khi các chữ ký v2 chưa được triển khai cùng nhau.
+Ví dụ bỏ import cho dễ đọc. Mốc thời gian mô phỏng là dữ liệu demo, độc lập đồng hồ xác thực. Main hiện sử dụng cách nối v2 này.
 
 ## 12. Exception và file bổ sung cần tạo
 

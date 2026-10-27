@@ -2,8 +2,11 @@ package vn.edu.ptit.oop.nhom04.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
@@ -24,10 +27,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.KeyStroke;
 
 import vn.edu.ptit.oop.nhom04.common.BaseWindow;
 import vn.edu.ptit.oop.nhom04.model.Account;
 import vn.edu.ptit.oop.nhom04.model.AccountSummary;
+import vn.edu.ptit.oop.nhom04.model.Customer;
 import vn.edu.ptit.oop.nhom04.model.Transaction;
 import vn.edu.ptit.oop.nhom04.model.TransactionType;
 import vn.edu.ptit.oop.nhom04.ui.dialogs.AboutDialog;
@@ -46,6 +51,7 @@ public class MainWindow extends BaseWindow {
     private JPanel chartContainer;
     private JTabbedPane tabs;
     private Action depositAction;
+    private Action loginAction;
     private Action withdrawAction;
     private Action transferAction;
     private Action logoutAction;
@@ -55,14 +61,18 @@ public class MainWindow extends BaseWindow {
     private JButton csvButton;
     private JMenuItem csvMenuItem;
     private boolean updatingSelection;
+    private boolean customerShown;
+    private JPanel contentCards;
+    private CardLayout contentLayout;
 
     public MainWindow() {
-        super("MiniBank — Nhóm 04", 1100, 700);
+        super("MiniBank — Nhóm 04", 1200, 800);
     }
 
     @Override
     protected void initUI() {
         setMinimumSize(new Dimension(900, 600));
+        loginAction = action("Đăng nhập", () -> controller.login());
         depositAction = action("Nạp tiền", () -> controller.openTransaction(TransactionType.DEPOSIT));
         withdrawAction = action("Rút tiền", () -> controller.openTransaction(TransactionType.WITHDRAW));
         transferAction = action("Chuyển khoản", () -> controller.openTransaction(TransactionType.TRANSFER));
@@ -72,6 +82,18 @@ public class MainWindow extends BaseWindow {
         monthEndAction.putValue(Action.SHORT_DESCRIPTION,
                 "Cộng lãi toàn hệ thống và chuyển sang ngày 1 tháng kế tiếp");
 
+        icon(loginAction, "login");
+        icon(depositAction, "deposit");
+        icon(withdrawAction, "withdraw");
+        icon(transferAction, "transfer");
+        icon(logoutAction, "logout");
+        icon(monthEndAction, "month");
+        icon(refreshAction, "refresh");
+        loginAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK));
+        logoutAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        refreshAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+
+        toolBar.add(new JButton(loginAction));
         toolBar.add(new JButton(depositAction));
         toolBar.add(new JButton(withdrawAction));
         toolBar.add(new JButton(transferAction));
@@ -84,19 +106,24 @@ public class MainWindow extends BaseWindow {
 
         fileMenu.setText("Tệp");
         fileMenu.getItem(0).setText("Thoát");
-        fileMenu.insert(new JMenuItem(depositAction), 0);
-        fileMenu.insert(new JMenuItem(withdrawAction), 1);
-        fileMenu.insert(new JMenuItem(transferAction), 2);
+        fileMenu.setMnemonic(KeyEvent.VK_T);
+        fileMenu.insert(new JMenuItem(loginAction), 0);
+        fileMenu.insert(new JMenuItem(depositAction), 1);
+        fileMenu.insert(new JMenuItem(withdrawAction), 2);
+        fileMenu.insert(new JMenuItem(transferAction), 3);
         csvMenuItem = new JMenuItem("Xuất CSV");
         csvMenuItem.setEnabled(false);
-        fileMenu.insert(csvMenuItem, 3);
-        fileMenu.insert(new JMenuItem(logoutAction), 4);
-        fileMenu.insertSeparator(5);
+        fileMenu.insert(csvMenuItem, 4);
+        fileMenu.insert(new JMenuItem(logoutAction), 5);
+        fileMenu.insertSeparator(6);
         viewMenu.setText("Xem");
+        viewMenu.setMnemonic(KeyEvent.VK_X);
         viewMenu.add(new JMenuItem(refreshAction));
         viewMenu.add(new JMenuItem(monthEndAction));
         helpMenu.setText("Trợ giúp");
+        helpMenu.setMnemonic(KeyEvent.VK_G);
         helpMenu.getItem(0).setText("Giới thiệu...");
+        helpMenu.getItem(0).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 
         accountChoices = new DefaultListModel<>();
         accountList = new JList<>(accountChoices);
@@ -111,7 +138,7 @@ public class MainWindow extends BaseWindow {
         JPanel accountsPanel = new JPanel(new BorderLayout(5, 5));
         accountsPanel.setBorder(BorderFactory.createTitledBorder("Danh sách tài khoản"));
         accountsPanel.add(new JScrollPane(accountList), BorderLayout.CENTER);
-        accountsPanel.add(new JLabel("Chọn tài khoản để nhập PIN"), BorderLayout.SOUTH);
+        accountsPanel.add(new JLabel("Chọn tài khoản để xem chi tiết"), BorderLayout.SOUTH);
         accountsPanel.setMinimumSize(new Dimension(220, 100));
 
         detailsPanel = new AccountDetailsPanel();
@@ -132,16 +159,26 @@ public class MainWindow extends BaseWindow {
 
         JSplitPane rightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, detailsPanel, tabs);
         rightSplit.setResizeWeight(0.35);
-        rightSplit.setDividerLocation(220);
+        rightSplit.setDividerLocation(285);
         rightSplit.setMinimumSize(new Dimension(450, 300));
         JSplitPane mainSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, accountsPanel, rightSplit);
         mainSplit.setResizeWeight(0.25);
-        mainSplit.setDividerLocation(260);
+        mainSplit.setDividerLocation(340);
         JPanel content = new JPanel(new BorderLayout());
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         content.add(mainSplit, BorderLayout.CENTER);
-        add(content, BorderLayout.CENTER);
-        clearAccountContent();
+        contentLayout = new CardLayout();
+        contentCards = new JPanel(contentLayout);
+        JPanel welcome = new JPanel(new java.awt.GridBagLayout());
+        JPanel greeting = new JPanel(new GridLayout(3, 1, 10, 15));
+        greeting.add(new JLabel("Chào mừng đến với MiniBank — Nhóm 04", SwingConstants.CENTER));
+        greeting.add(new JLabel("Đăng nhập để xem tài khoản của bạn", SwingConstants.CENTER));
+        greeting.add(new JButton(loginAction));
+        welcome.add(greeting);
+        contentCards.add(welcome, "welcome");
+        contentCards.add(content, "accounts");
+        add(contentCards, BorderLayout.CENTER);
+        clearCustomerContent();
         showStatus("Sẵn sàng");
     }
 
@@ -161,9 +198,13 @@ public class MainWindow extends BaseWindow {
         return action;
     }
 
+    private void icon(Action action, String name) {
+        action.putValue(Action.SMALL_ICON, loadImageIcon("/resources/icons/" + name + ".png"));
+    }
+
     public void bindController(BankController controller) {
         this.controller = Objects.requireNonNull(controller, "controller");
-        monthEndAction.setEnabled(true);
+        loginAction.setEnabled(true);
     }
 
     public void setAccountChoices(List<AccountSummary> accounts) {
@@ -186,6 +227,16 @@ public class MainWindow extends BaseWindow {
         detailsPanel.setAccount(account, currentMonth);
     }
 
+    public void showCustomer(Customer customer) {
+        detailsPanel.setCustomer(Objects.requireNonNull(customer, "customer"));
+        customerShown = true;
+        contentLayout.show(contentCards, "accounts");
+        loginAction.setEnabled(false);
+        logoutAction.setEnabled(true);
+        refreshAction.setEnabled(true);
+        monthEndAction.setEnabled(true);
+    }
+
     public void showTransactions(List<Transaction> transactions) {
         historyModel.setTransactions(transactions);
     }
@@ -199,11 +250,23 @@ public class MainWindow extends BaseWindow {
     }
 
     public void clearAccountContent() {
-        detailsPanel.clear();
+        detailsPanel.clearAccount();
         historyModel.clear();
         clearCharts();
         tabs.setSelectedIndex(0);
         setAccountActionsEnabled(false);
+    }
+
+    public void clearCustomerContent() {
+        customerShown = false;
+        setAccountChoices(List.of());
+        detailsPanel.clear();
+        clearAccountContent();
+        logoutAction.setEnabled(false);
+        refreshAction.setEnabled(false);
+        monthEndAction.setEnabled(false);
+        loginAction.setEnabled(controller != null);
+        contentLayout.show(contentCards, "welcome");
     }
 
     public void showStatus(String message) {
@@ -217,6 +280,8 @@ public class MainWindow extends BaseWindow {
 
     void setCsvExportAction(Action action) {
         csvAction = Objects.requireNonNull(action, "csvAction");
+        icon(csvAction, "csv");
+        csvAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
         csvAction.setEnabled(false);
         csvButton.setAction(csvAction);
         csvButton.setText("Xuất CSV");
@@ -227,8 +292,6 @@ public class MainWindow extends BaseWindow {
         depositAction.setEnabled(enabled);
         withdrawAction.setEnabled(enabled);
         transferAction.setEnabled(enabled);
-        logoutAction.setEnabled(enabled);
-        refreshAction.setEnabled(enabled);
         if (csvAction != null) {
             csvAction.setEnabled(enabled);
         }
@@ -244,13 +307,13 @@ public class MainWindow extends BaseWindow {
     }
 
     void enableSessionRecovery() {
-        refreshAction.setEnabled(true);
-        logoutAction.setEnabled(true);
+        refreshAction.setEnabled(customerShown);
+        logoutAction.setEnabled(customerShown);
     }
 
     void clearCharts() {
         chartContainer.removeAll();
-        chartContainer.add(new JLabel("Chọn và xác thực tài khoản để xem biểu đồ",
+        chartContainer.add(new JLabel("Chọn tài khoản để xem biểu đồ",
                 SwingConstants.CENTER));
         chartContainer.revalidate();
         chartContainer.repaint();

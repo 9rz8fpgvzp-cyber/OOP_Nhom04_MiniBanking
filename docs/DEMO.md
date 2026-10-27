@@ -1,110 +1,83 @@
-# Dữ liệu mẫu MiniBank
+# Chạy và demo MiniBank — API v2
 
-`DemoDataFactory` tạo 6 tài khoản cho 3 khách hàng giả lập, đủ Savings,
-Checking và FixedTerm. Dữ liệu được nạp lại mỗi lần khởi động ứng dụng.
+Yêu cầu JDK 17 trở lên. Dữ liệu/PIN bên dưới hoàn toàn giả lập, chỉ dùng cho bài tập.
+Đồng hồ mô phỏng khởi đầu **21/10/2026 09:00 (Asia/Ho_Chi_Minh)**; khóa PIN dùng đồng hồ thật,
+không đổi khi bấm Cuối tháng.
 
-## Tài khoản và PIN mẫu
+## Chạy
 
-Đây là PIN giả để thuyết trình. PIN chỉ xuất hiện trong hướng dẫn và phần
-khởi tạo dữ liệu; không đưa PIN lên danh sách tài khoản, panel chi tiết hoặc log.
+Trong Eclipse: Import project có sẵn, chạy `vn.edu.ptit.oop.nhom04.Main`.
+Thư mục `src/resources` được copy cùng nguồn để nạp icon qua classpath.
 
-| Số tài khoản | Chủ tài khoản | Loại | Số dư sau khi nạp mẫu (VND) | PIN mẫu |
+Trong terminal (Linux/macOS hoặc Git Bash có JDK):
+
+```bash
+./scripts/build.sh
+java -jar dist/MiniBank.jar
+```
+
+Khi chuyển sang máy khác, copy **cả thư mục `dist`**, giữ `lib/jfreechart-1.5.4.jar`
+cạnh `MiniBank.jar`. Không cần Eclipse để chạy. Windows có thể dùng Git Bash để build;
+JAR đã build chạy bằng lệnh `java -jar` trong PowerShell/CMD bình thường.
+
+## Đăng nhập khách hàng
+
+Mở app hiện dialog **Mã khách hàng + PIN**; Hủy/X về màn hình chào trống.
+Không nhập STK vào ô mã khách hàng. Không hiện PIN trên giao diện ứng dụng.
+
+| Mã khách hàng | Họ tên | PIN demo | STK được thấy |
+| --- | --- | --- | --- |
+| KH001 | Nguyễn Văn An | `001234` | 100001, 100002 |
+| KH002 | Trần Thị Bình | `234567` | 100003, 100004 |
+| KH003 | Lê Minh Chi | `456789` | 100005, 100006 |
+
+Đúng PIN mới hiện mã/tên/điện thoại và danh sách STK của khách hàng đó.
+Chọn STK để xem chi tiết, lịch sử, biểu đồ; đổi giữa hai STK cùng chủ không hỏi lại PIN.
+Sai liên tiếp ba lần khóa **khách hàng** 30 giây, có đếm ngược. PIN đúng trong lúc khóa vẫn
+bị từ chối. Hủy/mở lại dialog hoặc đổi user không xóa khóa. Hết khóa phải nhập PIN đúng lại.
+Đăng xuất xóa mọi nội dung riêng tư và mở lại dialog để chọn khách hàng khác.
+
+## Dữ liệu ngay sau khi mở app
+
+| STK | Chủ | Loại | Số dư VND | Điều kiện |
 | --- | --- | --- | ---: | --- |
-| 100001 | Nguyễn Văn An | Savings, lãi 6%/năm | 10.500.000 | `001234` |
-| 100002 | Nguyễn Văn An | Checking, thấu chi 2.000.000 | -500.000 | `123456` |
-| 100003 | Trần Thị Bình | Savings, lãi 5%/năm | 8.250.000 | `234567` |
-| 100004 | Trần Thị Bình | FixedTerm, lãi 7%/năm | 21.000.000 | `345678` |
-| 100005 | Lê Minh Chi | Checking, thấu chi 1.000.000 | 3.250.000 | `456789` |
-| 100006 | Lê Minh Chi | FixedTerm, lãi 6,5%/năm | 14.500.000 | `567890` |
+| 100001 | KH001 | Tiết kiệm | 11.000.000 | Lãi 6%/năm; đã rút một lần trong tháng 10/2026 |
+| 100002 | KH001 | Thanh toán | -1.500.000 | Thấu chi 5.000.000; khả dụng 3.500.000 |
+| 100003 | KH002 | Thanh toán | 6.000.000 | Thấu chi 2.000.000 |
+| 100004 | KH002 | Tiết kiệm | 12.000.000 | Lãi 6%/năm |
+| 100005 | KH003 | Tiền gửi có kỳ hạn | 50.000.000 | Lãi 8%/năm; đáo hạn 21/01/2027 |
+| 100006 | KH003 | Tiền gửi có kỳ hạn | 20.000.000 | Lãi 7%/năm; đáo hạn 21/10/2026 |
 
-- Mỗi tài khoản được mở trước thời điểm mô phỏng 3 tháng.
-- Tài khoản `100004` đáo hạn sau ngày mô phỏng hiện tại 3 tháng; chưa được rút/chuyển ra.
-- Tài khoản `100006` đã đáo hạn trước ngày mô phỏng hiện tại 7 ngày; được rút/chuyển ra nếu đủ tiền.
-- Lịch sử nằm trong 6 ngày trước thời điểm mô phỏng và được tạo bằng các phương thức
-  nạp/rút/chuyển của model. Tổng số dư sau khi nạp mẫu là **57.000.000 VND**.
-- Lượt rút Savings được tính theo tháng của lịch sử. Nếu đồng hồ khởi động vào đầu tháng,
-  một số giao dịch mẫu thuộc tháng trước và không tiêu lượt của tháng mới.
-- Khách hàng, điện thoại và tiền đều là dữ liệu giả lập.
+Tổng ban đầu **97.500.000 VND**. Ba STK 100004/100005/100006 chưa có giao dịch mẫu;
+bảng lịch sử rỗng và xuất CSV chỉ có header là hợp lệ. Biểu đồ số dư vẫn có điểm mở tài khoản.
+Mọi dữ liệu được tạo qua model, không sửa số dư trực tiếp để tạo lịch sử giả.
 
-## Khởi tạo khi ghép ứng dụng
+## Luồng demo ngắn
 
-`Main` đã thực hiện các bước khởi tạo dưới đây trên Swing EDT và gọi
-`BankController.start()`. `MainWindow` giữ bố cục, controller gọi nghiệp vụ qua
-`BankingOperations`, dùng chung `PinService` và đồng hồ mô phỏng.
+1. Đăng nhập `KH001` / `001234`; kiểm tra chỉ có hai STK của An và đủ thông tin khách hàng.
+2. Chọn `100001`, nạp `100000`: số dư tăng từ 11.000.000 lên 11.100.000,
+   thêm một bản ghi, biểu đồ cập nhật. Nhập số nguyên đồng, không gõ dấu phân cách hàng nghìn.
+3. Thử số tiền `abc`, `0`, `-100`, `1000.5`: bị từ chối, số dư không đổi.
+4. Đổi `100002` không nhập PIN lại. Chuyển `100000` đến `100003` (khác chủ, không nằm trong danh sách).
+   Nguồn giảm còn -1.600.000, đích tăng lên 6.100.000; mỗi bên một bản ghi cùng referenceId.
+5. Chọn tab Biểu đồ: đường số dư có cả chuyển khoản; cột nạp/rút chỉ tính DEPOSIT/WITHDRAW.
+6. Xuất CSV: chọn đường dẫn, kiểm tra header + số dòng bằng lịch sử đang thấy.
+   Hủy không ghi file; có file sẵn thì hỏi ghi đè. CSV giữ enum/ISO phục vụ đọc dữ liệu.
+7. Đăng xuất, đăng nhập KH002: không còn thông tin/lịch sử của An; số dư 100003 là 6.100.000.
+8. Đăng nhập KH003: rút từ 100005 trước 21/01/2027 bị chặn bằng thông báo ngày có dấu;
+   100006 đã đáo hạn nên được rút nếu đủ số dư.
+9. Bấm Cuối tháng khi đã đăng nhập: xử lý mọi tài khoản hưởng lãi, thời gian chuyển sang
+   **01/11/2026 00:00**. Có thể bấm khi chưa chọn STK. Nếu chưa giao dịch sau khi mở app,
+   lãi tháng 10 là 565.000 VND, tổng sau lãi 98.065.000 VND.
+10. Đăng xuất, nhập sai PIN của một khách hàng ba lần: thấy khóa 30 giây; đổi sang khách hàng khác vẫn đăng nhập được.
 
-```java
-List<Account> accounts = DemoDataFactory.createAccounts(clock);
-PinService pins = new PinService();
-DemoDataFactory.registerDemoPins(pins, accounts);
-Bank bank = new Bank(accounts, pins, clock,
-        new TransferService(), new MonthlyInterestService());
+## Kiểm thử và phạm vi lưu trữ
+
+```bash
+./scripts/test.sh        # nghiệp vụ, dữ liệu mẫu, PIN, repository, quyền và khôi phục giao dịch
+./scripts/test.sh --gui  # thêm Swing/dialog/CSV thật; cần màn hình đồ họa
 ```
 
-`clock` là đồng hồ mô phỏng dùng chung. Ví dụ mốc khởi động để tập demo:
-
-```java
-SimulationClock clock = new SimulationClock(
-        Instant.parse("2026-10-21T02:00:00Z"), ZoneId.of("Asia/Ho_Chi_Minh"));
-```
-
-Mốc trên tương ứng 09:00 ngày 21/10/2026 tại Việt Nam. Gọi factory và đăng ký
-PIN một lần trước khi mở UI. Chưa có tài khoản nào được tự xác thực; các thao tác
-của người dùng sau đó phải qua Bank.
-
-## Chạy ứng dụng đã ghép
-
-Trong Eclipse: mở `Main.java` → **Run As → Java Application**. Thư viện
-`lib/jfreechart-1.5.4.jar` đã có trong `.classpath`.
-
-Hoặc dùng terminal từ thư mục gốc dự án (Linux, Bash/Fish; cần JDK 17 trở lên):
-
-```sh
-mkdir -p bin
-rg --files src -g '*.java' > /tmp/minibank-sources.txt
-javac --release 17 -encoding UTF-8 -cp "lib/*" -d bin @/tmp/minibank-sources.txt
-java -cp "bin:lib/*" vn.edu.ptit.oop.nhom04.Main
-```
-
-1. Chọn `100001`, nhập PIN `001234`. Chỉ sau PIN đúng mới hiện chi tiết/lịch sử.
-2. Thử nạp tiền; bảng lịch sử, số dư và biểu đồ được cập nhật sau thành công.
-3. Thử rút vượt số dư: lỗi giữ nguyên dữ liệu. Chuyển khoản chọn đích trong dialog;
-   nhập số tiền nguyên đồng, ví dụ `100000`, không gõ dấu phân cách hàng nghìn.
-4. Chọn tab **Biểu đồ** để xem biến động số dư và tổng nạp/rút theo ngày.
-5. **Xuất CSV** qua toolbar hoặc menu **Tệp**, chọn vị trí lưu; xác nhận nếu ghi đè.
-6. **Cuối tháng** cộng lãi toàn hệ thống và chuyển đồng hồ đến ngày 1 tháng sau.
-   Nút này dùng được cả khi chưa đăng nhập. Nếu lỗi một phần, dữ liệu đã thành công
-   vẫn được làm mới, kỳ chưa chuyển để có thể thử lại mà không cộng trùng.
-7. Chọn tài khoản khác sẽ xóa quyền/nội dung cũ trước khi hỏi PIN. Hủy hoặc đăng xuất
-   để trống chi tiết, lịch sử và biểu đồ. Nhập sai 3 lần khóa tài khoản trong phiên chạy.
-
-Nếu cập nhật giao diện lỗi sau giao dịch, thông báo yêu cầu **không nhập lại giao dịch**;
-dùng **Xem → Làm mới** hoặc đăng xuất. Lỗi hiển thị không hoàn tác giao dịch tại Bank.
-Khởi động lại ứng dụng nạp lại toàn bộ dữ liệu mẫu, không giữ thay đổi của phiên trước.
-
-## Kiểm tra controller và bản ghép
-
-Cần màn hình đồ họa vì bài kiểm tra mở dialog Swing thật rồi tự đóng. Chạy từ
-thư mục dự án, sau khi biên dịch ứng dụng như trên:
-
-```sh
-javac --release 17 -encoding UTF-8 -cp "bin:lib/*" -d bin tests/vn/edu/ptit/oop/nhom04/ui/BankControllerTest.java
-java -cp "bin:lib/*" vn.edu.ptit.oop.nhom04.ui.BankControllerTest
-```
-
-Kiểm tra phiên PIN, hủy/đổi/khóa tài khoản, gắn menu/toolbar CSV, nạp/rút/chuyển qua
-Bank thật, callback refresh, lỗi biểu đồ sau giao dịch, cuối tháng thành công/một phần
-và khởi động bằng `Main`. Phần điều phối dùng dialog thay thế để gây lỗi có kiểm soát;
-phần kiểm tra UI mở LoginDialog, TransactionDialog và JFileChooser thật, xuất CSV thật.
-Ảnh bản chạy được lưu tại `/tmp/minibank-main-window.png` và `/tmp/minibank-main-charts.png`.
-
-## Kiểm tra dữ liệu mẫu
-
-Chạy từ thư mục gốc dự án, dùng được trong Bash và Fish:
-
-```sh
-mkdir -p /tmp/minibank-demo-test
-rg --files src -g '*.java' > /tmp/minibank-demo-sources.txt
-javac --release 17 -encoding UTF-8 -cp "lib/*" -d /tmp/minibank-demo-test @/tmp/minibank-demo-sources.txt
-javac --release 17 -encoding UTF-8 -cp "/tmp/minibank-demo-test:lib/*" -d /tmp/minibank-demo-test tests/vn/edu/ptit/oop/nhom04/util/DemoDataFactoryTest.java
-java -cp "/tmp/minibank-demo-test:lib/*" vn.edu.ptit.oop.nhom04.util.DemoDataFactoryTest
-```
+Chi tiết kết quả trong [TESTING.md](TESTING.md). Test khóa dùng Clock điều khiển được,
+không chờ thật 30 giây. Mở lại ứng dụng tạo lại dữ liệu và khóa/PIN từ đầu; không có database
+hoặc lưu phiên. CSV đã xuất vẫn nằm trên ổ đĩa nhưng không được tự nhập vào app.

@@ -3,9 +3,7 @@ package vn.edu.ptit.oop.nhom04.ui.dialogs;
 import javax.swing.*;
 import java.awt.*;
 import java.math.BigDecimal;
-import java.util.List;
 
-import vn.edu.ptit.oop.nhom04.model.AccountSummary;
 import vn.edu.ptit.oop.nhom04.model.TransactionType;
 import vn.edu.ptit.oop.nhom04.service.BankingOperations;
 
@@ -15,7 +13,7 @@ public class TransactionDialog extends JDialog {
     private final String sourceNumber;
     private final Runnable afterSuccess;
 
-    private JComboBox<String> cbTargetAccount;
+    private JTextField txtTargetAccount;
     private JTextField txtAmount;
     private JButton btnConfirm;
     private JButton btnCancel;
@@ -48,9 +46,8 @@ public class TransactionDialog extends JDialog {
 
         if (isTransfer) {
             add(new JLabel("Tài khoản đích:"));
-            cbTargetAccount = new JComboBox<String>();
-            populateTargetAccounts();
-            add(cbTargetAccount);
+            txtTargetAccount = new JTextField();
+            add(txtTargetAccount);
         }
 
         add(new JLabel("Số tiền (VND):"));
@@ -63,25 +60,14 @@ public class TransactionDialog extends JDialog {
         add(btnCancel);
 
         btnConfirm.addActionListener(e -> handleConfirm());
-        btnCancel.addActionListener(e -> dispose());
+        btnCancel.addActionListener(e -> dispose()); // Hủy chỉ đóng Dialog, không gọi nghiệp vụ/callback
 
         pack();
         setResizable(false);
     }
 
-    private void populateTargetAccounts() {
-        if (bank == null) return;
-        List<AccountSummary> summaries = bank.listAccounts();
-        if (summaries != null) {
-            for (AccountSummary acc : summaries) {
-                if (sourceNumber == null || !acc.accountNumber().equals(sourceNumber)) {
-                    cbTargetAccount.addItem(acc.accountNumber());
-                }
-            }
-        }
-    }
-
     private void handleConfirm() {
+        if (!btnConfirm.isEnabled()) { return; }
         if (bank == null) {
             JOptionPane.showMessageDialog(this, "Hệ thống ngân hàng chưa sẵn sàng!", "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);
             return;
@@ -105,17 +91,26 @@ public class TransactionDialog extends JDialog {
             return;
         }
 
+        String targetNumber = null;
+        if (operation == TransactionType.TRANSFER) {
+            if (txtTargetAccount == null) {
+                JOptionPane.showMessageDialog(this, "Lỗi ô nhập tài khoản đích!", "Lỗi UI", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            targetNumber = txtTargetAccount.getText().trim();
+            if (targetNumber.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập số tài khoản đích!", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Bước 1: Thực hiện giao dịch ngân hàng
         try {
             if (operation == TransactionType.DEPOSIT) {
                 bank.deposit(sourceNumber, amount);
             } else if (operation == TransactionType.WITHDRAW) {
                 bank.withdraw(sourceNumber, amount);
             } else if (operation == TransactionType.TRANSFER) {
-                String targetNumber = (String) cbTargetAccount.getSelectedItem();
-                if (targetNumber == null || targetNumber.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Vui lòng chọn tài khoản đích!", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
                 bank.transfer(sourceNumber, targetNumber, amount);
             } else {
                 JOptionPane.showMessageDialog(this, "Loại giao dịch không hỗ trợ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -126,14 +121,20 @@ public class TransactionDialog extends JDialog {
             return;
         }
 
+        // Bước 2: Thông báo thành công và đóng Dialog trước
+        btnConfirm.setEnabled(false);
         JOptionPane.showMessageDialog(this, "Giao dịch thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         dispose();
 
+        // Bước 3: Cập nhật UI (Nằm ngoài try-catch nghiệp vụ)
         if (afterSuccess != null) {
             try {
                 afterSuccess.run();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(getOwner(),
+                        "Giao dịch đã thành công nhưng chưa làm mới được giao diện. "
+                        + "Không thực hiện lại giao dịch.\n" + ex.getMessage(),
+                        "Lỗi cập nhật giao diện", JOptionPane.WARNING_MESSAGE);
             }
         }
     }

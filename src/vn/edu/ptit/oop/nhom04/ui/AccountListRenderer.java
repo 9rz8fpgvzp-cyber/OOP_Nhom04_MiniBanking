@@ -28,30 +28,34 @@ public class AccountListRenderer extends JPanel implements ListCellRenderer<Acco
 
     private String getIconForType(Object type) {
         if (type == null) return "📄";
-        
         String name = type.toString().toUpperCase();
-        if (name.contains("SAVINGS")) {
-            return "💰"; // Tài khoản tiết kiệm
-        } else if (name.contains("CHECKING")) {
-            return "💳"; // Tài khoản thanh toán
-        } else if (name.contains("FIXED") || name.contains("TERM")) {
-            return "⏳"; // Tài khoản tiết kiệm kỳ hạn
-        }
+        if (name.contains("SAVINGS")) return "💰";
+        if (name.contains("CHECKING")) return "💳";
+        if (name.contains("FIXED") || name.contains("TERM")) return "⏳";
         return "📄";
+    }
+
+    private String getAccountTypeNameVi(Object type) {
+        if (type == null) return "";
+        String name = type.toString().toUpperCase();
+        if (name.contains("SAVINGS")) return "Tiết kiệm";
+        if (name.contains("CHECKING")) return "Thanh toán";
+        if (name.contains("FIXED") || name.contains("TERM")) return "Tiền gửi có kỳ hạn";
+        return type.toString();
     }
 
     @Override
     public Component getListCellRendererComponent(
-            JList<? extends AccountSummary> list, 
-            AccountSummary value, 
-            int index, 
-            boolean isSelected, 
+            JList<? extends AccountSummary> list,
+            AccountSummary value,
+            int index,
+            boolean isSelected,
             boolean cellHasFocus) {
 
         if (value != null) {
             lblIcon.setText(getIconForType(value.type()));
             lblAccountNumber.setText("STK: " + value.accountNumber());
-            lblAccountType.setText(value.type() != null ? value.type().toString() : "");
+            lblAccountType.setText(getAccountTypeNameVi(value.type()));
         } else {
             lblIcon.setText("");
             lblAccountNumber.setText("");

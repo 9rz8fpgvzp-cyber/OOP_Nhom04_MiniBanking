@@ -44,13 +44,13 @@ public class CsvExportAction extends AbstractAction {
         Optional<String> selected = selectedAccount.get();
         if (selected.isEmpty()) {
             JOptionPane.showMessageDialog(owner,
-                    "Hãy chọn và đăng nhập một tài khoản trước khi xuất sao kê.",
+                    "Hãy đăng nhập và chọn tài khoản trước khi xuất sao kê.",
                     TITLE, JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         String accountNumber = selected.get();
 
-       
+
         try {
             bank.getTransactions(accountNumber);
         } catch (RuntimeException ex) {
@@ -63,7 +63,7 @@ public class CsvExportAction extends AbstractAction {
         chooser.setFileFilter(new FileNameExtensionFilter("Tệp CSV (*.csv)", "csv"));
         chooser.setSelectedFile(new File("saoke_" + accountNumber + ".csv"));
         if (chooser.showSaveDialog(owner) != JFileChooser.APPROVE_OPTION) {
-            return; 
+            return;
         }
         File file = ensureCsvExtension(chooser.getSelectedFile());
 

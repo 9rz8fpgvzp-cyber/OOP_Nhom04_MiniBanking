@@ -1,7 +1,6 @@
-# Package repository
+# Repository trong bộ nhớ
 
-Package dự kiến: `vn.edu.ptit.oop.nhom04.repository`.
-
-Bản tuần này dùng dữ liệu trong bộ nhớ, Bank quản lý Map tài khoản. Chưa giao việc lưu file/database, nên không cần tạo lớp Java tại đây. Thư mục được giữ để phù hợp cấu trúc chung của đề; xem phân công trong README gốc.
-
-> Phân công hiện hành: [BAN_GIAO.md](https://github.com/9rz8fpgvzp-cyber/OOP_Nhom04_MiniBanking/blob/main/docs/BAN_GIAO.md). Mốc chốt 20/10/2026, thuyết trình sáng 22/10. Theo bản này nếu mô tả cũ có khác.
+`AccountRepository` khai báo tìm theo STK, chủ sở hữu và lấy danh sách nội bộ.
+`InMemoryAccountRepository` giữ LinkedHashMap, duy trì thứ tự và cùng đối tượng Account.
+Danh sách trả về không sửa được. Bank kiểm tra quyền trước khi đưa dữ liệu cho GUI.
+Dữ liệu chỉ nằm trong RAM; đóng app rồi mở lại sẽ tạo dữ liệu mẫu mới.
